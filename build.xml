@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="ant-sfdx" default="build" xmlns:if="ant:if" xmlns:unless="ant:unless">
+  <property environment="env" />
+
+  <property name="verbosity" value="info" />
+
+  <property name="bin.dir" value="${basedir}/bin" />
+  <property name="src.dir" value="${basedir}/src" />
+  <property name="tmp.dir" value="${basedir}/tmp" />
+
+  <property name="tmp.bin.dir" value="${tmp.dir}/bin" />
+  <property name="tmp.obj.dir" value="${tmp.dir}/obj" />
+  <property name="tmp.out.dir" value="${tmp.dir}/out" />
+  <property name="tmp.test.dir" value="${tmp.dir}/test" />
+
+  <property name="tmp.out.bin.dir" value="${tmp.out.dir}/bin" />
+
+
+
+  <!-- prepare -->
+  <target name="prepare" depends="prepare.log" />
+
+  <target name="prepare.log">
+    <record name="${basedir}/build.log" loglevel="${verbosity}" append="false" />
+  </target>
+
+  <target name="prepare.tmp">
+    <mkdir dir="${tmp.dir}" />
+  </target>
+
+
+
+  <!-- clean -->
+  <target name="clean" depends="prepare.log,clean.tmp" description="Cleans the project" />
+
+  <target name="clean.tmp">
+    <delete dir="${tmp.dir}" includeemptydirs="true" quiet="true" failonerror="false" />
+  </target>
+
+
+
+  <!-- compile -->
+  <target name="compile" depends="prepare.log" description="Compiles the project.">
+    <mkdir dir="${tmp.bin.dir}" />
+    <javac destdir="${tmp.bin.dir}" source="8" includeAntRuntime="false">
+      <src path="${src.dir}" />
+      <classpath path="${env.ANT_HOME}/lib/ant.jar" />
+    </javac>
+  </target>
+
+
+
+  <!-- test -->
+  <target name="test" depends="prepare.log" />
+
+
+
+  <!-- analysis -->
+  <target name="analysis" depends="prepare.log,analysis.pmd,analysis.cloc" description="Performs code analysis on the project." />
+
+  <target name="analysis.cloc" depends="prepare.tmp" description="Runs CLOC on the project.">
+    <exec executable="${bin.dir}/cloc.exe" osfamily="windows">
+      <arg value="--3" />
+      <arg line="--progress-rate=0" />
+      <arg value="--xml" />
+      <arg line="--out &quot;${tmp.dir}/cloc-results.xml&quot;" />
+      <arg value="src" />
+    </exec>
+    <exec executable="perl" osfamily="unix">
+      <arg line="&quot;${bin.dir}/cloc.pl&quot;" />
+      <arg value="--3" />
+      <arg line="--progress-rate=0" />
+      <arg value="--xml" />
+      <arg line="--out &quot;${tmp.dir}/cloc-results.xml&quot;" />
+      <arg value="src" />
+    </exec>
+  </target>
+
+  <target name="analysis.pmd" depends="prepare.tmp" description="Runs PMD on the project.">
+    <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" />
+    <condition property="pmd.formatter" value="textcolor" else="text">
+      <os family="unix" />
+    </condition>
+
+    <pmd failOnRuleViolation="true" cacheLocation="${tmp.obj.dir}/pmd.bin">
+      <fileset dir="${src.dir}">
+        <include name="**/*.java" />
+      </fileset>
+      <sourceLanguage name="java" version="1.8"/>
+      <ruleset>java-basic</ruleset>
+      <formatter type="${pmd.formatter}" toConsole="true" />
+      <formatter type="html" toFile="${tmp.dir}/pmd-results.html" />
+      <formatter type="xml" toFile="${tmp.dir}/pmd-results.xml" />
+    </pmd>
+  </target>
+
+
+
+  <!-- package -->
+  <target name="package" depends="prepare.log,compile">
+    <jar destfile="${tmp.out.bin.dir}/${ant.project.name}.jar" basedir="${tmp.bin.dir}" index="true" />
+  </target>
+
+
+
+  <!-- build -->
+  <target name="build" depends="prepare.log,compile,test,analysis" description="Builds the project." />
+  <!-- rebuild -->
+  <target name="rebuild" depends="prepare.log,clean,build" description="Rebuilds the project." />
+  <!-- release -->
+  <target name="release" depends="prepare.log,rebuild,package" description="Creates a release for the project." />
+</project>
