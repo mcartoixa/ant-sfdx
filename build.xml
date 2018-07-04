@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="ant-sfdx" default="build" xmlns:if="ant:if" xmlns:unless="ant:unless">
-  <property environment="env" />
+<project name="ant-sfdx" default="default" basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless" xmlns:ivy="antlib:org.apache.ivy.ant">
+  <description>Builds, tests, and runs the project ant-sfdx.</description>
 
   <property name="verbosity" value="info" />
 
+  <property environment="env" />
+  <property name="var.ANT_HOME" value="${env.ANT_HOME}" />
+
   <property name="bin.dir" value="${basedir}/bin" />
+  <property name="ivy.dir" value="${basedir}/ivy" />
   <property name="src.dir" value="${basedir}/src" />
   <property name="tmp.dir" value="${basedir}/tmp" />
+
+  <property name="ivy.lib.dir" value="${ivy.dir}/lib" />
 
   <property name="tmp.bin.dir" value="${tmp.dir}/bin" />
   <property name="tmp.obj.dir" value="${tmp.dir}/obj" />
@@ -16,10 +22,32 @@
 
   <property name="tmp.out.bin.dir" value="${tmp.out.dir}/bin" />
 
+  <import file="nbproject/build-impl.xml"/>
+
 
 
   <!-- prepare -->
   <target name="prepare" depends="prepare.log" />
+  <target name="-pre-init" depends="prepare.log,prepare.ivy" />
+
+  <target name="prepare.ivy">
+    <pathconvert property="ivy.classpath" dirsep="/" pathsep=":">
+      <path>
+        <fileset dir="${ivy.lib.dir}/runtime" includes="**/*.jar" />
+      </path>
+      <map from="${basedir}${file.separator}" to="" />
+    </pathconvert>
+    <pathconvert property="ivy.test.classpath" dirsep="/" pathsep=":">
+      <path>
+        <fileset dir="${ivy.lib.dir}/test" includes="**/*.jar" />
+      </path>
+      <map from="${basedir}${file.separator}" to="" />
+    </pathconvert>
+    <propertyfile file="nbproject/project.properties">
+      <entry operation="=" key="ivy.classpath" value="${ivy.classpath}" />
+      <entry operation="=" key="ivy.test.classpath" value="${ivy.test.classpath}" />
+    </propertyfile>
+  </target>
 
   <target name="prepare.log">
     <record name="${basedir}/build.log" loglevel="${verbosity}" append="false" />
@@ -31,28 +59,34 @@
 
 
 
-  <!-- clean -->
-  <target name="clean" depends="prepare.log,clean.tmp" description="Cleans the project" />
+  <!-- clean  (already defined by NetBeans) -->
+  <target name="-post-clean" depends="clean.tmp" />
 
   <target name="clean.tmp">
     <delete dir="${tmp.dir}" includeemptydirs="true" quiet="true" failonerror="false" />
   </target>
 
-
-
-  <!-- compile -->
-  <target name="compile" depends="prepare.log" description="Compiles the project.">
-    <mkdir dir="${tmp.bin.dir}" />
-    <javac destdir="${tmp.bin.dir}" source="8" includeAntRuntime="false">
-      <src path="${src.dir}" />
-      <classpath path="${env.ANT_HOME}/lib/ant.jar" />
-    </javac>
+  <target name="clean.ivy">
+    <delete dir="${ivy.lib.dir}" includeemptydirs="true" quiet="true" failonerror="false" />
   </target>
 
 
 
-  <!-- test -->
-  <target name="test" depends="prepare.log" />
+  <!-- compile  (already defined by NetBeans) -->
+  <target name="-pre-compile" depends="prepare.ivy" />
+  <target name="-pre-compile-single" depends="prepare.ivy" />
+
+
+
+  <!-- test  (already defined by NetBeans) -->
+  <target name="test-report" if="have.tests" depends="init">
+    <junitreport todir="${tmp.dir}" tofile="junit-results.xml">
+      <fileset dir="${tmp.obj.dir}/test/results">
+        <include name="TEST-*.xml" />
+      </fileset>
+      <report format="frames" todir="${tmp.dir}/junit-results" />
+    </junitreport>
+  </target>
 
 
 
@@ -77,18 +111,18 @@
     </exec>
   </target>
 
-  <target name="analysis.pmd" depends="prepare.tmp" description="Runs PMD on the project.">
+  <target name="analysis.pmd" depends="prepare.tmp,prepare.ivy,init" description="Runs PMD on the project.">
     <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" />
     <condition property="pmd.formatter" value="textcolor" else="text">
       <os family="unix" />
     </condition>
 
-    <pmd failOnRuleViolation="true" cacheLocation="${tmp.obj.dir}/pmd.bin">
+    <pmd failOnRuleViolation="true" cacheLocation="${tmp.obj.dir}/pmd.cache">
       <fileset dir="${src.dir}">
         <include name="**/*.java" />
       </fileset>
-      <sourceLanguage name="java" version="1.8"/>
-      <ruleset>java-basic</ruleset>
+      <sourceLanguage name="java" version="${javac.source}"/>
+      <ruleset>${basedir}/.ruleset.xml</ruleset>
       <formatter type="${pmd.formatter}" toConsole="true" />
       <formatter type="html" toFile="${tmp.dir}/pmd-results.html" />
       <formatter type="xml" toFile="${tmp.dir}/pmd-results.xml" />
@@ -98,8 +132,8 @@
 
 
   <!-- package -->
-  <target name="package" depends="prepare.log,compile">
-    <jar destfile="${tmp.out.bin.dir}/${ant.project.name}.jar" basedir="${tmp.bin.dir}" index="true" />
+  <target name="package" depends="prepare.log,jar" description="Packages the project.">
+    <copy file="${dist.jar}" todir="${tmp.out.bin.dir}" preservelastmodified="true" />
   </target>
 
 

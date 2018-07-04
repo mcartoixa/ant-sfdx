@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ivy-module version="2.4">
+  <info organisation="mcartoixa" module="ant-sfdx" />
+  <configurations>
+    <conf name="default" />
+    <conf name="build" visibility="private" />
+    <conf name="test" visibility="private" />
+    <conf name="compile" visibility="private" />
+    <conf name="runtime" extends="compile" />
+  </configurations>
+  <dependencies>
+    <dependency org="org.json" name="json" rev="20180130" conf="runtime->default" />
+    <dependency org="junit" name="junit" rev="4.12" conf="test->default" />
+    <dependency org="xalan" name="xalan" rev="2.7.2" conf="test->default" />
+    <dependency org="net.sourceforge.pmd" name="pmd" rev="6.5.0" conf="build->default" />
+  </dependencies>
+</ivy-module>

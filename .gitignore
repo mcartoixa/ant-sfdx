@@ -25,7 +25,9 @@ hs_err_pid*
 
 .tmp/
 .vs/
+ivy/
 tmp/
 
 .DS_Store
 .env
+/nbproject/private/

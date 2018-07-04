@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="DisplayTaskTest" basedir="." xmlns:force-org="antlib:com.mcartoixa.ant.sfdx.force.org">
+  <target name="init">
+    <taskdef name="org-display" classname="com.mcartoixa.ant.sfdx.force.org.DisplayTask" classpath="tmp/obj/classes" />
+  </target>
+
+  <target name="execute-default" depends="init">
+    <org-display />
+  </target>
+</project>

@@ -19,6 +19,7 @@ ECHO SET PMD_HOME=%PMD_HOME%
 IF NOT EXIST "%PMD_HOME%\bin\pmd.bat" GOTO ERROR_PMD
 
 SET PATH=%ANT_HOME%\bin;%PATH%
+GOTO END
 
 
 
@@ -77,19 +78,19 @@ EXIT /B 0
 
 
 :ERROR_EXT
-ECHO [31mCould not activate command extensions[0m
+ECHO [31mCould not activate command extensions[0m 1>&2
 GOTO END_ERROR
 
 :ERROR_JDK
-ECHO [31mCould not find Java JDK 8[0m
+ECHO [31mCould not find Java JDK 8[0m 1>&2
 GOTO END_ERROR
 
 :ERROR_ANT
-ECHO [31mCould not find Apache Ant 1.10[0m
+ECHO [31mCould not find Apache Ant 1.10[0m 1>&2
 GOTO END_ERROR
 
 :ERROR_PMD
-ECHO [31mCould not find PMD 6.x[0m
+ECHO [31mCould not find PMD 6.x[0m 1>&2
 GOTO END_ERROR
 
 :END_ERROR

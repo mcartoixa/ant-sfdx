@@ -36,9 +36,26 @@ GOTO END
 :: Builds the project
 :: -------------------------------------------------------------------
 :BUILD
+IF "%TARGET%"=="clean" (
+    IF EXIST tmp RMDIR /S /Q tmp
+    IF EXIST ivy RMDIR /S /Q ivy
+) ELSE (
+    :: Ivy
+    IF NOT EXIST ivy MKDIR ivy
+    PUSHD ivy
+    SET IVY_VERSION=2.4.0
+    IF NOT EXIST ivy.jar (
+        powershell.exe -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "& { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest https://repo1.maven.org/maven2/org/apache/ivy/ivy/$Env:IVY_VERSION/ivy-$Env:IVY_VERSION.jar -OutFile ivy.jar; }"
+        IF ERRORLEVEL 1 GOTO END_ERROR
+    )
+    POPD
+    "%JAVA_HOME%\bin\java.exe" -jar ivy\ivy.jar -retrieve "ivy\lib\[conf]\[artifact].[ext]"
+    IF ERRORLEVEL 1 GOTO END_ERROR
 
-CALL "%ANT_HOME%\bin\ant.bat" -noclasspath -nouserlib -noinput -lib "%PMD_HOME%\lib" -Dverbosity=%VERBOSITY% -f %PROJECT% %TARGET%
-IF ERRORLEVEL 1 GOTO END_ERROR
+    ECHO.
+    CALL "%ANT_HOME%\bin\ant.bat" -noclasspath -nouserlib -noinput -lib "ivy\lib\test" -lib "%PMD_HOME%\lib" -Dverbosity=%VERBOSITY% -f %PROJECT% %TARGET%
+    IF ERRORLEVEL 1 GOTO END_ERROR
+)
 GOTO END
 
 
@@ -69,7 +86,7 @@ IF /I "%~1"=="/log"                 SET VERBOSITY=verbose& SHIFT & GOTO ARGS_PAR
 IF /I "%~1"=="/NoPause"             SET NO_PAUSE=1& SHIFT & GOTO ARGS_PARSE
 IF /I "%~1"=="/?"   GOTO SHOW_USAGE
 IF    "%~1" EQU ""  GOTO ARGS_DONE
-ECHO [31mUnknown command-line switch[0m %~1
+ECHO [31mUnknown command-line switch[0m %~1 1>&2
 GOTO ERROR_USAGE
 
 :ARGS_DONE
@@ -91,7 +108,7 @@ GOTO BUILD
 :: Errors
 :: -------------------------------------------------------------------
 :ERROR_EXT
-ECHO [31mCould not activate command extensions[0m
+ECHO [31mCould not activate command extensions[0m 1>&2
 GOTO END_ERROR
 
 :ERROR_USAGE

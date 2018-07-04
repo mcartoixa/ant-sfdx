@@ -5,9 +5,6 @@ Ant tasks that encapsulate the Salesforce DX CLI
 
 ### Prerequisites
 * [Java SE Development Kit 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
-  * MacOS:
-    * Execute the installer.
-    * Set the `JAVA_HOME` environment variable in your `~/.zprofile` file: `export JAVA_HOME="``/usr/libexec/java_home -v 1.8``"`
   * Ubuntu:
     * `sudo add-apt-repository ppa:webupd8team/java`
     * `sudo apt update`
@@ -16,13 +13,20 @@ Ant tasks that encapsulate the Salesforce DX CLI
   * Windows:
     * Execute the installer.
     * Set the `JAVA_HOME` environment variable (e.g. `C:\Program Files\Java\jdk1.8.0_65`).
-* [Ant 1.10.x](https://ant.apache.org/manual/install.html)
+* [Ant 1.9.x](https://ant.apache.org/manual/install.html)
   * Ubuntu:
-    * `sudo apt install ant`
-    * Set the `ANT_HOME` environment variable in your `~/.profile` file: `export JAVA_HOME="/usr/share/ant"`
+    * `wget http://wwwftp.ciril.fr/pub/apache//ant/binaries/apache-ant-1.9.12-bin.tar.gz`
+    * `sudo tar -xf apache-ant-1.9.12-bin.tar.gz -C /usr/local/share`
+    * Add the `ANT_HOME` environment variable in your personal environment file`.env` at the root of the project:
+```
+ANT_HOME=/usr/local/share/apache-ant-1.9.12
+```
   * Windows:
     * Unzip the archive in the folder of your choice.
-    * Set the `ANT_HOME` environment variable to this folder (e.g. `C:\Program Files\apache-ant-1.10.3`).
+    * Add the `ANT_HOME` environment variable in your personal environment file`.env` at the root of the project:
+```
+ANT_HOME=C:\Program Files\apache-ant-1.9.12
+```
 * [PMD 6.x](https://pmd.github.io/pmd-6.4.0/pmd_userdocs_getting_started.html)
   * Ubuntu:
     * Unzip the archive in the folder of your choice.
@@ -35,5 +39,6 @@ Ant tasks that encapsulate the Salesforce DX CLI
     * `sudo apt install perl`
 
 ### Environment
-* [Visual Studio Code](https://code.visualstudio.com/) :
-  * Extension [EditorConfig](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
+* [NetBeans](https://netbeans.org/downloads/) 8.2:
+  * Initialize the *ANT_HOME* ant variable (cf. prerequisites).
+  * [EditorConfig plugin](https://github.com/welovecoding/editorconfig-netbeans)
