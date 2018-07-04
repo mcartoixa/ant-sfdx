@@ -1,0 +1,34 @@
+language: java
+jdk:
+  - oraclejdk8
+dist: trusty
+sudo: required
+cache:
+  directories:
+    - .tmp
+    - ivy
+
+env:
+  global:
+    - _ANT_VERSION=1.9.12
+    - _PMD_VERSION=6.5.0
+    - _IVY_VERSION=2.4.0
+
+install:
+  - if [ ! -d .tmp ]; then mkdir .tmp; fi
+  # SFDX CLI
+  - if [ ! -f .tmp/node_modules/.bin/sfdx ]; then cd .tmp && npm install sfdx-cli && cd ..; fi
+  - export PATH=$TRAVIS_BUILD_DIR/.tmp/node_modules/.bin:$PATH
+  # Apache Ant
+  - if [ ! -f .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz ]; then wget -nv -O .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz http://wwwftp.ciril.fr/pub/apache//ant/binaries/apache-ant-$_ANT_VERSION-bin.tar.gz && tar -xzvf .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz -C .tmp; fi
+  - export ANT_HOME=$TRAVIS_BUILD_DIR/.tmp/apache-ant-$_ANT_VERSION
+  # PMD
+  - if [ ! -f .tmp/pmd-bin-$_PMD_VERSION.zip ]; then wget -nv -O .tmp/pmd-bin-$_PMD_VERSION.zip https://github.com/pmd/pmd/releases/download/pmd_releases%2F$_PMD_VERSION/pmd-bin-$_PMD_VERSION.zip && unzip .tmp/pmd-bin-$_PMD_VERSION.zip -d .tmp; fi
+  - export PMD_HOME=$TRAVIS_BUILD_DIR/.tmp/pmd-bin-$_PMD_VERSION
+  # Apache Ivy
+  - if [ ! -d ivy ]; then mkdir ivy; fi
+  - if [ ! -f ivy/ivy.jar ]; then wget -nv -O ivy/ivy.jar https://repo1.maven.org/maven2/org/apache/ivy/ivy/$_IVY_VERSION/ivy-$_IVY_VERSION.jar; fi
+  - $JAVA_HOME/bin/java -jar ivy/ivy.jar -retrieve "ivy/lib/[conf]/[artifact].[ext]"
+
+script:
+  - $ANT_HOME/bin/ant -noclasspath -nouserlib -noinput -lib "ivy/lib/test" -lib "$PMD_HOME/lib" -logger org.apache.tools.ant.listener.AnsiColorLogger -f build.xml release

@@ -22,7 +22,7 @@
 
   <property name="tmp.out.bin.dir" value="${tmp.out.dir}/bin" />
 
-  <import file="nbproject/build-impl.xml"/>
+  <import file="nbproject/build-impl.xml" />
 
 
 

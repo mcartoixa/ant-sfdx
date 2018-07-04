@@ -1,3 +1,4 @@
+[![Build status](https://travis-ci.org/mcartoixa/ant-sfdx.svg?branch=master)](https://travis-ci.org/mcartoixa/ant-sfdx)
 # ant-sfdx
 Ant tasks that encapsulate the Salesforce DX CLI
 
