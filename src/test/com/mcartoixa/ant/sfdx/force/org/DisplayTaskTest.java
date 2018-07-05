@@ -40,7 +40,7 @@ public class DisplayTaskTest {
 
     @Before
     public void setUp() {
-        buildRule.configureProject("test/com/mcartoixa/ant/sfdx/force/org/display.xml");
+        buildRule.configureProject("src/test/com/mcartoixa/ant/sfdx/force/org/display.xml");
     }
 
     @Test

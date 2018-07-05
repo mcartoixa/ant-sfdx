@@ -10,10 +10,12 @@
 
   <property name="bin.dir" value="${basedir}/bin" />
   <property name="ivy.dir" value="${basedir}/ivy" />
-  <property name="src.dir" value="${basedir}/src" />
   <property name="tmp.dir" value="${basedir}/tmp" />
 
   <property name="ivy.lib.dir" value="${ivy.dir}/lib" />
+
+  <property name="src.dir" value="${basedir}/src/main" />
+  <property name="test.dir" value="${basedir}/src/test" />
 
   <property name="tmp.bin.dir" value="${tmp.dir}/bin" />
   <property name="tmp.obj.dir" value="${tmp.dir}/obj" />
