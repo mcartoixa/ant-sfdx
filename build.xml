@@ -43,7 +43,8 @@
       </path>
       <map from="${basedir}${file.separator}" to="" />
     </pathconvert>
-    <propertyfile file="nbproject/project.properties">
+    <uptodate property="prepare.ivy.nbproject.isuptodate" srcfile="${basedir}/ivy.xml" targetfile="nbproject/project.properties" />
+    <propertyfile file="nbproject/project.properties" unless:set="prepare.ivy.nbproject.isuptodate">
       <entry operation="=" key="ivy.classpath" value="${ivy.classpath}" />
       <entry operation="=" key="ivy.test.classpath" value="${ivy.test.classpath}" />
     </propertyfile>
