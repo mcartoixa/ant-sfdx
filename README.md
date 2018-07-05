@@ -28,13 +28,6 @@ ANT_HOME=/usr/local/share/apache-ant-1.9.12
 ```
 ANT_HOME=C:\Program Files\apache-ant-1.9.12
 ```
-* [PMD 6.x](https://pmd.github.io/pmd-6.4.0/pmd_userdocs_getting_started.html)
-  * Ubuntu:
-    * Unzip the archive in the folder of your choice.
-    * Set the `PMD_HOME` environment variable in your `~/.profile` file: `export PMD_HOME="$HOME/pmd-bin-6.4.0"`
-  * Windows:
-    * Unzip the archive in the folder of your choice.
-    * Set the `PMD_HOME` environment variable to this folder (e.g. `C:\Program Files\pmd`).
 * Perl (unused on Windows) :
   * Ubuntu:
     * `sudo apt install perl`

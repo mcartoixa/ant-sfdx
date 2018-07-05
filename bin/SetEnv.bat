@@ -3,6 +3,10 @@
 :: Reset ERRORLEVEL
 VERIFY OTHER 2>nul
 
+
+SET _PMD_VERSION=6.5.0
+
+
 :: -------------------------------------------------------------------
 :: Set environment variables
 :: -------------------------------------------------------------------
@@ -15,8 +19,16 @@ ECHO SET JAVA_HOME=%JAVA_HOME%
 ECHO SET ANT_HOME=%ANT_HOME%
 IF NOT EXIST "%ANT_HOME%\bin\ant.bat" GOTO ERROR_ANT
 
+:: Best would to be able to manage PMD with Apache Ivy but this looks like an impossible task...
+SET PMD_HOME=%CD%\.tmp\pmd-bin-%_PMD_VERSION%
+IF NOT EXIST "%PMD_HOME%\bin\pmd.bat" (
+    IF NOT EXIST .tmp MKDIR .tmp
+    powershell.exe -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "& { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest https://github.com/pmd/pmd/releases/download/pmd_releases%%2F$Env:_PMD_VERSION/pmd-bin-$Env:_PMD_VERSION.zip -OutFile .tmp\pmd-bin-$Env:_PMD_VERSION.zip; }"
+    IF ERRORLEVEL 1 GOTO END_ERROR
+    powershell.exe  -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "Expand-Archive -Path .tmp\pmd-bin-$Env:_PMD_VERSION.zip -DestinationPath .tmp -Force"
+    IF ERRORLEVEL 1 GOTO END_ERROR
+)
 ECHO SET PMD_HOME=%PMD_HOME%
-IF NOT EXIST "%PMD_HOME%\bin\pmd.bat" GOTO ERROR_PMD
 
 SET PATH=%ANT_HOME%\bin;%PATH%
 GOTO END
@@ -90,7 +102,7 @@ ECHO [31mCould not find Apache Ant 1.10[0m 1>&2
 GOTO END_ERROR
 
 :ERROR_PMD
-ECHO [31mCould not find PMD 6.x[0m 1>&2
+ECHO [31mCould not install PMD 6.x[0m 1>&2
 GOTO END_ERROR
 
 :END_ERROR

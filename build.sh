@@ -45,6 +45,7 @@ for i in "$@"; do
 done
 
 if [ $_TARGET = "clean" ]; then
+    if [ -d .tmp ]; then rm -Rf .tmp; fi
     if [ -d ivy ]; then rm -Rf ivy; fi
     if [ -d tmp ]; then rm -Rf tmp; fi
 else

@@ -37,8 +37,9 @@ GOTO END
 :: -------------------------------------------------------------------
 :BUILD
 IF "%TARGET%"=="clean" (
-    IF EXIST tmp RMDIR /S /Q tmp
+    IF EXIST .tmp RMDIR /S /Q .tmp
     IF EXIST ivy RMDIR /S /Q ivy
+    IF EXIST tmp RMDIR /S /Q tmp
 ) ELSE (
     :: Ivy
     IF NOT EXIST ivy MKDIR ivy
