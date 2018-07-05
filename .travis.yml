@@ -5,8 +5,9 @@ dist: trusty
 sudo: required
 cache:
   directories:
-    - .tmp
-    - ivy
+    - .tmp/
+    - ivy/
+    - $HOME/.ivy2/
 
 env:
   global:
