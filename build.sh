@@ -44,26 +44,20 @@ for i in "$@"; do
     shift
 done
 
-if [ $_TARGET = "clean" ]; then
-    if [ -d .tmp ]; then rm -Rf .tmp; fi
-    if [ -d ivy ]; then rm -Rf ivy; fi
-    if [ -d tmp ]; then rm -Rf tmp; fi
-else
-    # Ivy
-    if [ ! -d ivy ]; then mkdir ivy; fi
-    _IVY_VERSION=2.4.0
-    if [ ! -f ivy/ivy.jar ]; then wget -nv -O ivy/ivy.jar https://repo1.maven.org/maven2/org/apache/ivy/ivy/$_IVY_VERSION/ivy-$_IVY_VERSION.jar; fi
-    if [ $? -ne 0 ]; then
-        failed
-    fi
-    $JAVA_HOME/bin/java -jar ivy/ivy.jar -retrieve "ivy/lib/[conf]/[artifact].[ext]"
-    if [ $? -ne 0 ]; then
-        failed
-    fi
+# Ivy
+if [ ! -d ivy ]; then mkdir ivy; fi
+_IVY_VERSION=2.4.0
+if [ ! -f ivy/ivy.jar ]; then wget -nv -O ivy/ivy.jar https://repo1.maven.org/maven2/org/apache/ivy/ivy/$_IVY_VERSION/ivy-$_IVY_VERSION.jar; fi
+if [ $? -ne 0 ]; then
+    failed
+fi
+$JAVA_HOME/bin/java -jar ivy/ivy.jar -retrieve "ivy/lib/[conf]/[artifact].[ext]"
+if [ $? -ne 0 ]; then
+    failed
+fi
 
-    echo
-    $ANT_HOME/bin/ant -noclasspath -nouserlib -noinput -lib "ivy/lib/test" -lib "$PMD_HOME/lib" -logger org.apache.tools.ant.listener.AnsiColorLogger -Dverbosity=$_VERBOSITY -f $_PROJECT $_TARGET
-    if [ $? -ne 0 ]; then
-        failed
-    fi
+echo
+$ANT_HOME/bin/ant -noclasspath -nouserlib -noinput -lib "ivy/lib/test" -lib "$PMD_HOME/lib" -logger org.apache.tools.ant.listener.AnsiColorLogger -Dverbosity=$_VERBOSITY -f $_PROJECT $_TARGET
+if [ $? -ne 0 ]; then
+    failed
 fi

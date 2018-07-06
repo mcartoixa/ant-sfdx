@@ -8,4 +8,8 @@
   <target name="execute-default" depends="init">
     <org-display />
   </target>
+
+  <target name="execute-devw" depends="init">
+    <org-display targetusername="devw" resultproperty="execute-devw.result" />
+  </target>
 </project>

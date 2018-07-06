@@ -17,10 +17,13 @@ package com.mcartoixa.ant.sfdx.force.org;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.BuildFileRule;
+import org.apache.tools.ant.Project;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 import org.junit.rules.ExpectedException;
 
 /**
@@ -40,7 +43,7 @@ public class DisplayTaskTest {
 
     @Before
     public void setUp() {
-        buildRule.configureProject("src/test/com/mcartoixa/ant/sfdx/force/org/display.xml");
+        buildRule.configureProject("src/test/com/mcartoixa/ant/sfdx/force/org/display.xml", Project.MSG_DEBUG);
     }
 
     @Test
@@ -49,5 +52,12 @@ public class DisplayTaskTest {
         thrown.expectMessage("No defaultusername org found");
 
         buildRule.executeTarget("execute-default");
+    }
+
+    @Ignore("Not ready yet: environment specific")
+    @Test
+    public void testDevw() {
+        buildRule.executeTarget("execute-devw");
+        Assert.assertEquals("", buildRule.getFullLog());
     }
 }

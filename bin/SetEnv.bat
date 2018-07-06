@@ -4,6 +4,7 @@
 VERIFY OTHER 2>nul
 
 
+SET _ANT_VERSION=1.9.12
 SET _PMD_VERSION=6.5.0
 
 
@@ -12,25 +13,38 @@ SET _PMD_VERSION=6.5.0
 :: -------------------------------------------------------------------
 CALL :SetLocalEnvHelper 2>nul
 
+:: Java
 CALL :SetJavaHomeHelper > nul 2>&1
 IF ERRORLEVEL 1 GOTO ERROR_JDK
 ECHO SET JAVA_HOME=%JAVA_HOME%
 
+:: Ant
+SET ANT_HOME=%CD%\.tmp\apache-ant-%_ANT_VERSION%
+IF NOT EXIST "%ANT_HOME%\bin\ant.bat" (
+    IF NOT EXIST .tmp MKDIR .tmp
+    powershell.exe -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "& { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest http://apache.mindstudios.com//ant/binaries/apache-ant-$Env:_ANT_VERSION-bin.zip -OutFile .tmp\apache-ant-$Env:_ANT_VERSION-bin.zip; }"
+    IF ERRORLEVEL 1 GOTO ERROR_ANT
+    powershell.exe  -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "Expand-Archive -Path .tmp\apache-ant-$Env:_ANT_VERSION-bin.zip -DestinationPath .tmp -Force"
+    IF ERRORLEVEL 1 GOTO ERROR_ANT
+)
 ECHO SET ANT_HOME=%ANT_HOME%
-IF NOT EXIST "%ANT_HOME%\bin\ant.bat" GOTO ERROR_ANT
 
+:: PMD
 :: Best would to be able to manage PMD with Apache Ivy but this looks like an impossible task...
 SET PMD_HOME=%CD%\.tmp\pmd-bin-%_PMD_VERSION%
 IF NOT EXIST "%PMD_HOME%\bin\pmd.bat" (
     IF NOT EXIST .tmp MKDIR .tmp
     powershell.exe -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "& { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest https://github.com/pmd/pmd/releases/download/pmd_releases%%2F$Env:_PMD_VERSION/pmd-bin-$Env:_PMD_VERSION.zip -OutFile .tmp\pmd-bin-$Env:_PMD_VERSION.zip; }"
-    IF ERRORLEVEL 1 GOTO END_ERROR
+    IF ERRORLEVEL 1 GOTO ERROR_PMD
     powershell.exe  -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "Expand-Archive -Path .tmp\pmd-bin-$Env:_PMD_VERSION.zip -DestinationPath .tmp -Force"
-    IF ERRORLEVEL 1 GOTO END_ERROR
+    IF ERRORLEVEL 1 GOTO ERROR_PMD
 )
 ECHO SET PMD_HOME=%PMD_HOME%
 
 SET PATH=%ANT_HOME%\bin;%PATH%
+
+:: sfdx hates spaces in LOCALAPPDATA
+FOR %%d IN ("%LOCALAPPDATA%") DO SET LOCALAPPDATA=%%~sd
 GOTO END
 
 
@@ -98,7 +112,7 @@ ECHO [31mCould not find Java JDK 8[0m 1>&2
 GOTO END_ERROR
 
 :ERROR_ANT
-ECHO [31mCould not find Apache Ant 1.10[0m 1>&2
+ECHO [31mCould not install Apache Ant 1.10[0m 1>&2
 GOTO END_ERROR
 
 :ERROR_PMD

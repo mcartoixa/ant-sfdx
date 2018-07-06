@@ -1,5 +1,6 @@
 #!/bin/bash
 
+_ANT_VERSION=1.9.12
 _PMD_VERSION=6.5.0
 
 if [ -f ~/.bashrc ]; then
@@ -14,11 +15,17 @@ fi
 
 echo \$JAVA_HOME=$JAVA_HOME
 
-if [ -z ${ANT_HOME+x} ]; then
-    export $ANT_HOME=/usr/share/ant
+if [ ! -d .tmp ]; then mkdir .tmp; fi
+
+#Ant
+if [ ! -f .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz ]; then
+    wget -nv -O .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz http://wwwftp.ciril.fr/pub/apache//ant/binaries/apache-ant-$_ANT_VERSION-bin.tar.gz
+    tar -xzvf .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz -C .tmp
 fi
+export ANT_HOME=$(pwd)/.tmp/apache-ant-$_ANT_VERSION
 echo \$ANT_HOME=$ANT_HOME
 
+# PMD
 # Best would to be able to manage PMD with Apache Ivy but this looks like an impossible task...
 if [ ! -f .tmp/pmd-bin-$_PMD_VERSION/bin/run.sh ]; then
     wget -nv -O .tmp/pmd-bin-$_PMD_VERSION.zip https://github.com/pmd/pmd/releases/download/pmd_releases%2F$_PMD_VERSION/pmd-bin-$_PMD_VERSION.zip

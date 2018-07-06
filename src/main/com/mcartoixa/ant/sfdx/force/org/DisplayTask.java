@@ -15,11 +15,9 @@
  */
 package com.mcartoixa.ant.sfdx.force.org;
 
-import com.mcartoixa.ant.sfdx.ISfdxJsonParser;
 import java.util.List;
 
 import com.mcartoixa.ant.sfdx.SfdxTask;
-import org.json.JSONObject;
 
 /**
  *
@@ -27,25 +25,8 @@ import org.json.JSONObject;
  */
 public class DisplayTask extends SfdxTask {
 
-    /* default */ class JsonParser implements ISfdxJsonParser {
-
-        /* default */ JsonParser() {
-        }
-
-        @Override
-        public void log(final String message, final int level) {
-            DisplayTask.this.log(message, level);
-        }
-
-        @Override
-        public void parse(final JSONObject json) {
-        }
-    }
-
     public DisplayTask() {
         super();
-
-        parser = new JsonParser();
     }
 
     @Override
@@ -53,7 +34,8 @@ public class DisplayTask extends SfdxTask {
         final List<String> ret = super.createArguments();
 
         if (targetUserName != null && !targetUserName.isEmpty()) {
-            ret.add("-u ".concat(targetUserName));
+            ret.add("-u");
+            ret.add(targetUserName);
         }
 
         return ret;
@@ -64,15 +46,9 @@ public class DisplayTask extends SfdxTask {
         return "force:org:display";
     }
 
-    @Override
-    protected ISfdxJsonParser getParser() {
-        return parser;
-    }
-
     public void setTargetUserName(final String userName) {
         targetUserName = userName;
     }
 
-    private final JsonParser parser;
     private transient String targetUserName;
 }
