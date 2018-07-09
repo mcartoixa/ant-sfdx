@@ -55,6 +55,12 @@ public class DisplayTaskTest {
         Assert.assertEquals("1", buildRule.getProject().getProperty("execute-default.status"));
     }
 
+    @Test
+    public void testDefaultNoError() {
+        buildRule.executeTarget("execute-default-noerror");
+        Assert.assertEquals("1", buildRule.getProject().getProperty("execute-default-noerror.status"));
+    }
+
     @Ignore("Not ready yet: environment specific")
     @Test
 

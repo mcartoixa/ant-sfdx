@@ -39,9 +39,14 @@ public abstract class SfdxTask extends Task {
         protected JsonParser() {
         }
 
+        @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
         @Override
         public void log(final String message, final int level) {
-            SfdxTask.this.log(message, level);
+            int l = level;
+            if (SfdxTask.this.getQuiet() && level > Project.MSG_VERBOSE) {
+                l = Project.MSG_VERBOSE;
+            }
+            SfdxTask.this.log(message, l);
         }
 
         @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
@@ -118,7 +123,7 @@ public abstract class SfdxTask extends Task {
             exe.setCommandline(cmd.getCommandline());
             final int r = exe.execute();
 
-            if (Execute.isFailure(r)) {
+            if (Execute.isFailure(r) && this.getFailOnError()) {
                 String message = this.errorMessage;
                 if (message == null || message.isEmpty()) {
                     message = cmd.getExecutable() + " returned " + r;
@@ -127,6 +132,25 @@ public abstract class SfdxTask extends Task {
             }
         } catch (IOException e) {
             throw new BuildException(e, getLocation());
+        }
+    }
+
+    /**
+     * If false, note errors but continue.
+     *
+     * @param failonerror true or false
+     */
+    public void setFailOnError(final boolean failonerror) {
+        this.failonerror = failonerror;
+    }
+
+    /**
+     * @param quiet "true" or "on"
+     */
+    public void setQuiet(final boolean quiet) {
+        this.quiet = quiet;
+        if (quiet) {
+            this.failonerror = false;
         }
     }
 
@@ -151,6 +175,16 @@ public abstract class SfdxTask extends Task {
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
+    /* default */ boolean getFailOnError() {
+        return this.failonerror;
+    }
+
+    @SuppressWarnings("PMD.DefaultPackage")
+    /* default */ boolean getQuiet() {
+        return this.quiet;
+    }
+
+    @SuppressWarnings("PMD.DefaultPackage")
     /* default */ String getResultProperty() {
         return this.resultProperty;
     }
@@ -167,6 +201,8 @@ public abstract class SfdxTask extends Task {
 
     private final transient Commandline cmd = new Commandline();
     private transient String errorMessage;
+    private transient boolean failonerror = true;
+    private transient boolean quiet = false;
     private transient String resultProperty;
     private transient String statusProperty;
 }

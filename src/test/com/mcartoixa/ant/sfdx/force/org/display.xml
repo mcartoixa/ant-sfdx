@@ -9,6 +9,10 @@
     <org-display statusproperty="execute-default.status" resultproperty="execute-default.result" />
   </target>
 
+  <target name="execute-default-noerror" depends="init">
+    <org-display failonerror="false" statusproperty="execute-default-noerror.status" resultproperty="execute-default-noerror.result" />
+  </target>
+
   <target name="execute-devw" depends="init">
     <org-display targetusername="devw" statusproperty="execute-devw.status" resultproperty="execute-devw.result" />
   </target>

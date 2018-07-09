@@ -33,9 +33,14 @@ public class SfdxOutputParser extends PumpStreamHandler {
             this.task = task;
         }
 
+        @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
         @Override
         public void log(final String message, final int level) {
-            this.task.log(message, level);
+            int l = level;
+            if (this.task.getQuiet() && level > Project.MSG_VERBOSE) {
+                l = Project.MSG_VERBOSE;
+            }
+            this.task.log(message, l);
         }
 
         @SuppressWarnings({"PMD.DataflowAnomalyAnalysis", "PMD.NPathComplexity"})
