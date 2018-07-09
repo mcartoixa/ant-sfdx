@@ -44,14 +44,30 @@ public abstract class SfdxTask extends Task {
             SfdxTask.this.log(message, level);
         }
 
+        @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
         @Override
         public void parse(final JSONObject json) {
             if (json != null) {
                 this.log(json.toString(), Project.MSG_DEBUG);
 
+                final int status = json.getInt("status");
+                if (SfdxTask.this.getStatusProperty() != null && !SfdxTask.this.getStatusProperty().isEmpty()) {
+                    SfdxTask.this.getProject().setNewProperty(SfdxTask.this.getStatusProperty(), Integer.toString(status));
+                }
+
                 final JSONObject result = json.getJSONObject("result");
                 if (result != null && SfdxTask.this.getResultProperty() != null && !SfdxTask.this.getResultProperty().isEmpty()) {
                     parseJsonObject(SfdxTask.this.getResultProperty(), result);
+                }
+
+                final JSONArray warnings = json.getJSONArray("warnings");
+                if (warnings != null) {
+                    for (int i = 0; i < warnings.length(); i++) {
+                        final String w = warnings.getString(i);
+                        if (w != null && !w.isEmpty()) {
+                            this.log(w, Project.MSG_WARN);
+                        }
+                    }
                 }
             }
         }
@@ -118,6 +134,10 @@ public abstract class SfdxTask extends Task {
         this.resultProperty = resultProperty;
     }
 
+    public void setStatusProperty(final String statusProperty) {
+        this.statusProperty = statusProperty;
+    }
+
     protected abstract String getCommand();
 
     protected ISfdxJsonParser getParser() {
@@ -136,6 +156,11 @@ public abstract class SfdxTask extends Task {
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
+    /* default */ String getStatusProperty() {
+        return this.statusProperty;
+    }
+
+    @SuppressWarnings("PMD.DefaultPackage")
     /* default */ void setErrorMessage(final String message) {
         this.errorMessage = message;
     }
@@ -143,4 +168,5 @@ public abstract class SfdxTask extends Task {
     private final transient Commandline cmd = new Commandline();
     private transient String errorMessage;
     private transient String resultProperty;
+    private transient String statusProperty;
 }

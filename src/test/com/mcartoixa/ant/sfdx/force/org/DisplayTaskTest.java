@@ -52,10 +52,12 @@ public class DisplayTaskTest {
         thrown.expectMessage("No defaultusername org found");
 
         buildRule.executeTarget("execute-default");
+        Assert.assertEquals("1", buildRule.getProject().getProperty("execute-default.status"));
     }
 
     @Ignore("Not ready yet: environment specific")
     @Test
+
     public void testDevw() {
         buildRule.executeTarget("execute-devw");
         Assert.assertEquals("", buildRule.getFullLog());

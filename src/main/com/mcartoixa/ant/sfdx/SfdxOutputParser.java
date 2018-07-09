@@ -38,15 +38,21 @@ public class SfdxOutputParser extends PumpStreamHandler {
             this.task.log(message, level);
         }
 
-        @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+        @SuppressWarnings({"PMD.DataflowAnomalyAnalysis", "PMD.NPathComplexity"})
         @Override
         public void parse(final JSONObject json) {
             if (json != null) {
+                this.log(json.toString(), Project.MSG_DEBUG);
+
+                final int status = json.getInt("status");
+                if (this.task.getStatusProperty() != null && !this.task.getStatusProperty().isEmpty()) {
+                    this.task.getProject().setNewProperty(this.task.getStatusProperty(), Integer.toString(status));
+                }
+
                 final String message = json.getString("message");
                 if (message != null && !message.isEmpty()) {
                     this.log(message, Project.MSG_ERR);
                     this.task.setErrorMessage(message);
-
                 }
 
                 final JSONArray warnings = json.getJSONArray("warnings");
