@@ -6,7 +6,6 @@
   <property name="verbosity" value="info" />
 
   <property environment="env" />
-  <property name="var.ANT_HOME" value="${env.ANT_HOME}" />
 
   <property name="bin.dir" value="${basedir}/bin" />
   <property name="ivy.dir" value="${basedir}/ivy" />
@@ -58,6 +57,10 @@
 
   <target name="prepare.tmp">
     <mkdir dir="${tmp.dir}" />
+  </target>
+
+  <target name="prepare.version" if:set="env.PACKAGE_VERSION">
+    <replaceregexp file="${basedir}/ivy.xml" match="(revision=&quot;).*(&quot;)" replace="\1${env.PACKAGE_VERSION}\2" byline="true" />
   </target>
 
 
@@ -136,7 +139,19 @@
 
   <!-- package -->
   <target name="package" depends="prepare.log,jar" description="Packages the project.">
-    <copy file="${dist.jar}" todir="${tmp.out.bin.dir}" preservelastmodified="true" />
+    <copy file="${dist.jar}" todir="${tmp.out.bin.dir}" preservelastmodified="true">
+      <resources>
+        <file file="${dist.jar}" />
+        <file file="${basedir}/ivy.xml" />
+        <file file="${basedir}/ivysettings.xml" />
+      </resources>
+    </copy>
+    <zip destfile="${tmp.out.bin.dir}/${ant.project.name}.zip" compress="true" filesonly="true">
+      <resources>
+        <file file="${dist.jar}" />
+        <file file="${ivy.classpath}" />
+      </resources>
+    </zip>
   </target>
 
 
@@ -146,5 +161,5 @@
   <!-- rebuild -->
   <target name="rebuild" depends="prepare.log,clean,build" description="Rebuilds the project." />
   <!-- release -->
-  <target name="release" depends="prepare.log,rebuild,package" description="Creates a release for the project." />
+  <target name="release" depends="prepare.log,prepare.version,rebuild,package" description="Creates a release for the project." />
 </project>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ivysettings>
+  <resolvers>
+    <url name="mcartoixa">
+      <ivy pattern="https://github.com/mcartoixa/[module]/releases/v[revision]/ivy.xml" />
+      <artifact pattern="https://github.com/mcartoixa/[module]/releases/v[revision]/[artifact].[ext]" />
+    </url>
+  </resolvers>
+</ivysettings>

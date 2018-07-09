@@ -1,6 +1,7 @@
 {
     "files.exclude": {
         "**/.git": true,
+        ".tmp/": true,
         ".vs/": true,
         "ivy/": true,
         "nbproject/private/": true,

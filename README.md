@@ -10,14 +10,19 @@ Ant tasks that encapsulate the Salesforce DX CLI
     * `sudo add-apt-repository ppa:webupd8team/java`
     * `sudo apt update`
     * `sudo apt install oracle-java8-installer`
-    * Set the `JAVA_HOME` environment variable in your `~/.profile` file: `export JAVA_HOME="/usr/lib/jvm/java-8-oracle"`
+    * Set the `JAVA_HOME` environment variable in your `~/.profile` file: `export JAVA_HOME="/usr/lib/jvm/java-8-oracle"`.
   * Windows:
     * Execute the installer.
-    * Set the `JAVA_HOME` environment variable (e.g. `C:\Program Files\Java\jdk1.8.0_65`).
 * Perl (unused on Windows) :
   * Ubuntu:
     * `sudo apt install perl`
 
+Alternatively you can set your environment variables in a local `.env` file, e.g.:
+```
+JAVA_HOME=/usr/lib/jvm/java-8-oracle
+```
+
 ### Environment
 * [NetBeans](https://netbeans.org/downloads/) 8.2:
   * [EditorConfig plugin](https://github.com/welovecoding/editorconfig-netbeans)
+  * Execute the build script at least once before opening NetBeans.

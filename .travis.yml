@@ -14,6 +14,7 @@ env:
     - _ANT_VERSION=1.9.12
     - _PMD_VERSION=6.5.0
     - _IVY_VERSION=2.4.0
+    - PACKAGE_VERSION=0.0.$TRAVIS_BUILD_NUMBER
 
 install:
   - if [ ! -d .tmp ]; then mkdir .tmp; fi
@@ -33,3 +34,13 @@ install:
 
 script:
   - $ANT_HOME/bin/ant -noclasspath -nouserlib -noinput -lib "ivy/lib/test" -lib "$PMD_HOME/lib" -logger org.apache.tools.ant.listener.AnsiColorLogger -f build.xml release
+
+deploy:
+  provider: releases
+  api_key:
+    secure: "INNpFmoYvlXS14SoTTs2vbQNEz9dTui2oUxIEZoWFGtmK40VUBBvlkZZAoupWcflEvh0bacz7v2fjdmYexV9QKuRqIR9DOjdT0uYbELv37gAneH6utwqPJsdgIsyD0ZJs3SFDeN3pWnCSSDJH9+N/kPioXrFNLT3yltomIDG9SJbBSdx8nFs8tgRfRNORBZXUiE4cjTB5dd3J4j/3+Gahpxy6cTqlBfe3a5Bw31AhZvIKfNM0+IdF+WoJX5lMG3FF8ErFAZAQh/smrRxYdANBMvS2zZV/nik/WFVb/eYse+9SHk5Nz1OZtFdVoEsd0rVfCVTQqZGwZZikCevpRUmsJS8yTdXEov76NF/Zmpspt1QZdF+PHWe8Tiltk4xN04fNScL4I90mnge0dLKrHN1YpraoVd39U07jk17odz1dW1xfNOxbWH5uqPLGbKNjyzgyft4zX2j7+XSdPyemKoMfRzX718Wu4L5E7J8/31O+4siR0hNPITg+kY8YlvDlHtyDVvY0EBQR1KN1IOJG/yApw9cCpMzvxn/bJQFenYZxnFniHwPKgLnEtPtPUAFZTqgQDXJ/fvFWqNb0r9zmKE8rDVqtcvLFyerksd5PAH05WkutOXgu3dNWiY7U4l/hqd+P/4h5vIzOEAX2EoewV7lDZsHdIvnDtCd8cERSw5cd/g="
+  file_glob: true
+  file: tmp/out/bin/*
+  skip_cleanup: true
+  on:
+    tags: true
