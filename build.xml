@@ -59,8 +59,19 @@
     <mkdir dir="${tmp.dir}" />
   </target>
 
-  <target name="prepare.version" if:set="env.PACKAGE_VERSION">
-    <replaceregexp file="${basedir}/ivy.xml" match="(revision=&quot;).*(&quot;)" replace="\1${env.PACKAGE_VERSION}\2" byline="true" />
+  <target name="prepare.version" if="env.PACKAGE_VERSION">
+    <property name="package.version" value="${env.PACKAGE_VERSION}" />
+    <echo message="Package version is ${package.version}" />
+
+    <loadresource property="package.revision">
+      <string value="${package.version}" />
+      <filterchain>
+        <tokenfilter>
+          <replaceregex pattern="(\d+\.\d+)\.\d+" replace="\1" />
+        </tokenfilter>
+      </filterchain>
+    </loadresource>
+    <replaceregexp file="${basedir}/ivy.xml" match="(revision=&quot;).*(&quot;)" replace="\1${package.revision}\2" byline="true" />
   </target>
 
 
@@ -138,7 +149,7 @@
 
 
   <!-- package -->
-  <target name="package" depends="prepare.log,jar" description="Packages the project.">
+  <target name="package" depends="prepare.log,prepare.version,jar" description="Packages the project.">
     <copy file="${dist.jar}" todir="${tmp.out.bin.dir}" preservelastmodified="true">
       <resources>
         <file file="${dist.jar}" />

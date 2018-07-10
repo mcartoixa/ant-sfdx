@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <ivy-module version="2.0">
-  <info organisation="mcartoixa" module="ant-sfdx" revision="0.0.0">
+  <info organisation="mcartoixa" module="ant-sfdx" revision="0.0">
     <license name="Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt" />
   </info>
   <configurations>
