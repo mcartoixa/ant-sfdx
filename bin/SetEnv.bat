@@ -22,7 +22,7 @@ ECHO SET JAVA_HOME=%JAVA_HOME%
 SET ANT_HOME=%CD%\.tmp\apache-ant-%_ANT_VERSION%
 IF NOT EXIST "%ANT_HOME%\bin\ant.bat" (
     IF NOT EXIST .tmp MKDIR .tmp
-    powershell.exe -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "& { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest http://apache.mindstudios.com//ant/binaries/apache-ant-$Env:_ANT_VERSION-bin.zip -OutFile .tmp\apache-ant-$Env:_ANT_VERSION-bin.zip; }"
+    powershell.exe -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "& { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest http://apache.mirrors.ovh.net/ftp.apache.org/dist//ant/binaries/apache-ant-$Env:_ANT_VERSION-bin.zip -OutFile .tmp\apache-ant-$Env:_ANT_VERSION-bin.zip; }"
     IF ERRORLEVEL 1 GOTO ERROR_ANT
     powershell.exe  -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "Expand-Archive -Path .tmp\apache-ant-$Env:_ANT_VERSION-bin.zip -DestinationPath .tmp -Force"
     IF ERRORLEVEL 1 GOTO ERROR_ANT

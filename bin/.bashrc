@@ -19,7 +19,7 @@ if [ ! -d .tmp ]; then mkdir .tmp; fi
 
 #Ant
 if [ ! -f .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz ]; then
-    wget -nv -O .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz http://wwwftp.ciril.fr/pub/apache//ant/binaries/apache-ant-$_ANT_VERSION-bin.tar.gz
+    wget -nv -O .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz http://apache.mirrors.ovh.net/ftp.apache.org/dist//ant/binaries/apache-ant-$_ANT_VERSION-bin.tar.gz
     tar -xzvf .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz -C .tmp
 fi
 export ANT_HOME=$(pwd)/.tmp/apache-ant-$_ANT_VERSION
