@@ -15,9 +15,10 @@
  */
 package com.mcartoixa.ant.sfdx.force.org;
 
-import java.util.List;
-
+import com.mcartoixa.ant.sfdx.ISfdxJsonParser;
 import com.mcartoixa.ant.sfdx.SfdxTask;
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.types.Commandline.Argument;
 
 /**
  *
@@ -25,20 +26,39 @@ import com.mcartoixa.ant.sfdx.SfdxTask;
  */
 public class DisplayTask extends SfdxTask {
 
-    public DisplayTask() {
-        super();
-    }
+    /* default */ class JsonParser extends SfdxTask.JsonParser {
 
-    @Override
-    protected List<String> createArguments() {
-        final List<String> ret = super.createArguments();
-
-        if (targetUserName != null && !targetUserName.isEmpty()) {
-            ret.add("-u");
-            ret.add(targetUserName);
+        /* default */ JsonParser() {
+            super();
         }
 
-        return ret;
+        @Override
+        protected void handleValue(final String property, final String key, final String value) {
+            super.handleValue(property, key, value);
+
+            if (!DisplayTask.this.getQuiet()) {
+                switch (key) {
+                    case "alias":
+                        this.log("Alias: ".concat(value), Project.MSG_INFO);
+                        break;
+                    case "expirationdate":
+                        this.log("Expiration date: ".concat(value), Project.MSG_INFO);
+                        break;
+                    case "orgname":
+                        this.log("Name: ".concat(value), Project.MSG_INFO);
+                        break;
+                    case "username":
+                        this.log("Username: ".concat(value), Project.MSG_INFO);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
+    public DisplayTask() {
+        super();
     }
 
     @Override
@@ -47,8 +67,15 @@ public class DisplayTask extends SfdxTask {
     }
 
     public void setTargetUserName(final String userName) {
-        targetUserName = userName;
+        if (userName != null && !userName.isEmpty()) {
+            final Argument arg = getCommandline().createArgument();
+            arg.setPrefix("-u");
+            arg.setValue(userName);
+        }
     }
 
-    private transient String targetUserName;
+    @Override
+    protected ISfdxJsonParser getParser() {
+        return new JsonParser();
+    }
 }

@@ -20,8 +20,6 @@ package com.mcartoixa.ant.sfdx;
  * @author mcartoixa
  */
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 import org.apache.tools.ant.BuildException;
@@ -110,10 +108,9 @@ public abstract class SfdxTask extends Task {
 
     @Override
     public void execute() throws BuildException {
-        cmd.addArguments(new String[]{getCommand()});
 
-        final List<String> arguments = createArguments();
-        cmd.addArguments(arguments.toArray(new String[arguments.size()]));
+        cmd.createArgument(true).setValue(getCommand());
+        createArguments();
 
         try {
             final Project p = getProject();
@@ -168,20 +165,21 @@ public abstract class SfdxTask extends Task {
         return new JsonParser();
     }
 
-    protected List<String> createArguments() {
-        final List<String> ret = new ArrayList<>();
-        ret.add("--json");
-        return ret;
+    protected void createArguments() {
+        cmd.createArgument().setValue("--json");
+    }
+
+    protected Commandline getCommandline() {
+        return cmd;
+    }
+
+    protected boolean getQuiet() {
+        return this.quiet;
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
     /* default */ boolean getFailOnError() {
         return this.failonerror;
-    }
-
-    @SuppressWarnings("PMD.DefaultPackage")
-    /* default */ boolean getQuiet() {
-        return this.quiet;
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
