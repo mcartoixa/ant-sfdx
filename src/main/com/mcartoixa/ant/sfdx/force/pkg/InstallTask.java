@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mcartoixa.ant.sfdx.force.org;
+package com.mcartoixa.ant.sfdx.force.pkg;
 
 import com.mcartoixa.ant.sfdx.ISfdxJsonParser;
 import com.mcartoixa.ant.sfdx.SfdxTask;
@@ -24,7 +24,7 @@ import org.apache.tools.ant.types.Commandline.Argument;
  *
  * @author mcartoixa
  */
-public class DisplayTask extends SfdxTask {
+public class InstallTask extends SfdxTask {
 
     /* default */ class JsonParser extends SfdxTask.JsonParser {
 
@@ -36,19 +36,10 @@ public class DisplayTask extends SfdxTask {
         protected void handleValue(final String property, final String key, final String value) {
             super.handleValue(property, key, value);
 
-            if (!DisplayTask.this.getQuiet()) {
+            if (!InstallTask.this.getQuiet()) {
                 switch (key) {
-                    case "alias":
-                        this.log("Alias          : ".concat(value), Project.MSG_INFO);
-                        break;
-                    case "expirationdate":
-                        this.log("Expiration date: ".concat(value), Project.MSG_INFO);
-                        break;
-                    case "orgname":
-                        this.log("Name           : ".concat(value), Project.MSG_INFO);
-                        break;
-                    case "username":
-                        this.log("Username       : ".concat(value), Project.MSG_INFO);
+                    case "subscriberpackageversionkey":
+                        this.log("Package installed: ".concat(value), Project.MSG_INFO);
                         break;
                     default:
                         break;
@@ -57,13 +48,32 @@ public class DisplayTask extends SfdxTask {
         }
     }
 
-    public DisplayTask() {
+    public InstallTask() {
         super();
     }
 
-    @Override
-    protected String getCommand() {
-        return "force:org:display";
+    public void setInstallationKey(final String key) {
+        if (key != null && !key.isEmpty()) {
+            final Argument arg = getCommandline().createArgument();
+            arg.setPrefix("-k");
+            arg.setValue(key);
+        }
+    }
+
+    public void setPackage(final String id) {
+        if (id != null && !id.isEmpty()) {
+            final Argument arg = getCommandline().createArgument();
+            arg.setPrefix("--package");
+            arg.setValue(id);
+        }
+    }
+
+    public void setPublishWait(final int timeout) {
+        if (timeout > 0) {
+            final Argument arg = getCommandline().createArgument();
+            arg.setPrefix("-p");
+            arg.setValue(Integer.toString(timeout));
+        }
     }
 
     public void setTargetUserName(final String userName) {
@@ -74,8 +84,26 @@ public class DisplayTask extends SfdxTask {
         }
     }
 
+    public void setWait(final int timeout) {
+        if (timeout > 0) {
+            final Argument arg = getCommandline().createArgument();
+            arg.setPrefix("-w");
+            arg.setValue(Integer.toString(timeout));
+        }
+    }
+
+    @Override
+    protected void createArguments() {
+        this.getCommandline().createArgument().setValue("-r");
+    }
+
+    @Override
+    protected String getCommand() {
+        return "force:package:install";
+    }
+
     @Override
     protected ISfdxJsonParser getParser() {
-        return new DisplayTask.JsonParser();
+        return new JsonParser();
     }
 }

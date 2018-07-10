@@ -72,6 +72,8 @@
       </filterchain>
     </loadresource>
     <replaceregexp file="${basedir}/ivy.xml" match="(revision=&quot;).*(&quot;)" replace="\1${package.revision}\2" byline="true" />
+
+    <replaceregexp file="${basedir}/manifest.mf" match="^(Implementation-Version:\s).*$" replace="\1${package.version}" byline="true" />
   </target>
 
 

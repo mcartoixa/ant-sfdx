@@ -51,7 +51,7 @@ public abstract class SfdxTask extends Task {
         @Override
         public void parse(final JSONObject json) {
             if (json != null) {
-                this.log(json.toString(), Project.MSG_DEBUG);
+                this.log("JSON received: " + json.toString(), Project.MSG_DEBUG);
 
                 final int status = json.getInt("status");
                 if (SfdxTask.this.getStatusProperty() != null && !SfdxTask.this.getStatusProperty().isEmpty()) {
@@ -59,16 +59,18 @@ public abstract class SfdxTask extends Task {
                 }
 
                 final JSONObject result = json.getJSONObject("result");
-                if (result != null && SfdxTask.this.getResultProperty() != null && !SfdxTask.this.getResultProperty().isEmpty()) {
+                if (result != null) {
                     parseJsonObject(SfdxTask.this.getResultProperty(), result);
                 }
 
-                final JSONArray warnings = json.getJSONArray("warnings");
-                if (warnings != null) {
-                    for (int i = 0; i < warnings.length(); i++) {
-                        final String w = warnings.getString(i);
-                        if (w != null && !w.isEmpty()) {
-                            this.log(w, Project.MSG_WARN);
+                if (json.has("warnings")) {
+                    final JSONArray warnings = json.getJSONArray("warnings");
+                    if (warnings != null) {
+                        for (int i = 0; i < warnings.length(); i++) {
+                            final String w = warnings.getString(i);
+                            if (w != null && !w.isEmpty()) {
+                                this.log(w, Project.MSG_WARN);
+                            }
                         }
                     }
                 }
@@ -76,7 +78,9 @@ public abstract class SfdxTask extends Task {
         }
 
         protected void handleValue(final String property, final String key, final String value) {
-            SfdxTask.this.getProject().setNewProperty(property + "." + key, value);
+            if (SfdxTask.this.getResultProperty() != null && !SfdxTask.this.getResultProperty().isEmpty()) {
+                SfdxTask.this.getProject().setNewProperty(property + "." + key, value);
+            }
         }
 
         @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
@@ -159,27 +163,26 @@ public abstract class SfdxTask extends Task {
         this.statusProperty = statusProperty;
     }
 
-    protected abstract String getCommand();
-
-    protected ISfdxJsonParser getParser() {
-        return new JsonParser();
-    }
-
     protected void createArguments() {
         cmd.createArgument().setValue("--json");
     }
+
+    protected abstract String getCommand();
 
     protected Commandline getCommandline() {
         return cmd;
     }
 
-    protected boolean getQuiet() {
-        return this.quiet;
+    protected boolean getFailOnError() {
+        return this.failonerror;
     }
 
-    @SuppressWarnings("PMD.DefaultPackage")
-    /* default */ boolean getFailOnError() {
-        return this.failonerror;
+    protected ISfdxJsonParser getParser() {
+        return new JsonParser();
+    }
+
+    protected boolean getQuiet() {
+        return this.quiet;
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
