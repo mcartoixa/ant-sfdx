@@ -5,6 +5,7 @@
   </info>
   <configurations>
     <conf name="default" />
+    <conf name="build" visibility="private" />
     <conf name="test" visibility="private" />
     <conf name="runtime" />
   </configurations>
@@ -15,5 +16,6 @@
     <dependency org="org.json" name="json" rev="20180130" conf="runtime->default" />
     <dependency org="junit" name="junit" rev="4.12" conf="test->default" />
     <dependency org="xalan" name="xalan" rev="2.7.2" conf="test->default" />
+    <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5.6" conf="build->default" />
   </dependencies>
 </ivy-module>

@@ -18,6 +18,7 @@ SET NO_PAUSE=0
 SET PROJECT=build.xml
 SET TARGET=build
 SET VERBOSITY=info
+SET IVY_VERSION=2.5.0-rc1
 GOTO ARGS
 
 :SHOW_USAGE
@@ -39,7 +40,6 @@ GOTO END
 :: Ivy
 IF NOT EXIST ivy MKDIR ivy
 PUSHD ivy
-SET IVY_VERSION=2.4.0
 IF NOT EXIST ivy.jar (
     powershell.exe -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "& { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest https://repo1.maven.org/maven2/org/apache/ivy/ivy/$Env:IVY_VERSION/ivy-$Env:IVY_VERSION.jar -OutFile ivy.jar; }"
     IF ERRORLEVEL 1 GOTO END_ERROR
@@ -49,7 +49,7 @@ POPD
 IF ERRORLEVEL 1 GOTO END_ERROR
 
 ECHO.
-CALL "%ANT_HOME%\bin\ant.bat" -noclasspath -nouserlib -noinput -lib "ivy\lib\test" -lib "%PMD_HOME%\lib" -Dverbosity=%VERBOSITY% -f %PROJECT% %TARGET%
+CALL "%ANT_HOME%\bin\ant.bat" -noclasspath -nouserlib -noinput -lib "ivy\lib\test" -Dverbosity=%VERBOSITY% -f %PROJECT% %TARGET%
 IF ERRORLEVEL 1 GOTO END_ERROR
 GOTO END
 

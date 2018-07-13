@@ -31,8 +31,10 @@
   <target name="prepare" depends="prepare.log" />
   <target name="-pre-init" depends="prepare.log,prepare.ivy" />
 
-  <target name="prepare.ivy">
-    <pathconvert property="ivy.classpath" dirsep="/" pathsep=":">
+  <target name="prepare.ivy" depends="prepare.ivy.tasks,prepare.ivy.credentials">
+    <ivy:retrieve pattern="${ivy.lib.dir}/[conf]/[artifact].[ext]" log="quiet" />
+
+    <pathconvert property="ivy.runtime.classpath" dirsep="/" pathsep=":">
       <path>
         <fileset dir="${ivy.lib.dir}/runtime" includes="**/*.jar" />
       </path>
@@ -46,9 +48,31 @@
     </pathconvert>
     <uptodate property="prepare.ivy.nbproject.isuptodate" srcfile="${basedir}/ivy.xml" targetfile="nbproject/project.properties" />
     <propertyfile file="nbproject/project.properties" unless:set="prepare.ivy.nbproject.isuptodate">
-      <entry operation="=" key="ivy.classpath" value="${ivy.classpath}" />
+      <entry operation="=" key="ivy.runtime.classpath" value="${ivy.runtime.classpath}" />
       <entry operation="=" key="ivy.test.classpath" value="${ivy.test.classpath}" />
     </propertyfile>
+  </target>
+
+  <target name="prepare.ivy.tasks">
+    <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant">
+      <classpath>
+        <pathelement location="${ivy.dir}/ivy.jar" />
+        <fileset dir="${ivy.lib.dir}/build">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+    </taskdef>
+  </target>
+
+  <target name="prepare.ivy.credentials" depends="prepare.ivy.tasks" if="env.MYGET_KEY">
+    <echoxml file="${tmp.obj.dir}/ivysettings.xml">
+      <ivysettings>
+        <include file="${basedir}/ivysettings.xml" />
+
+        <credentials host="www.myget.org" username="mcartoixa" passwd="${env.MYGET_KEY}" />
+      </ivysettings>
+    </echoxml>
+    <ivy:configure override="true" file="${tmp.obj.dir}/ivysettings.xml" />
   </target>
 
   <target name="prepare.log">
@@ -130,8 +154,14 @@
     </exec>
   </target>
 
-  <target name="analysis.pmd" depends="prepare.tmp,prepare.ivy,init" description="Runs PMD on the project.">
-    <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" />
+  <target name="analysis.pmd" depends="prepare.tmp,prepare.ivy,init" if="env.PMD_HOME" description="Runs PMD on the project.">
+    <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask">
+      <classpath>
+        <fileset dir="${env.PMD_HOME}/lib">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+    </taskdef>
     <condition property="pmd.formatter" value="textcolor" else="text">
       <os family="unix" />
     </condition>
@@ -155,16 +185,26 @@
     <copy file="${dist.jar}" todir="${tmp.out.bin.dir}" preservelastmodified="true">
       <resources>
         <file file="${dist.jar}" />
-        <file file="${basedir}/ivy.xml" />
-        <file file="${basedir}/ivysettings.xml" />
       </resources>
     </copy>
     <zip destfile="${tmp.out.bin.dir}/${ant.project.name}.zip" compress="true" filesonly="true">
       <resources>
         <file file="${dist.jar}" />
-        <file file="${ivy.classpath}" />
+        <file file="${ivy.runtime.classpath}" />
       </resources>
     </zip>
+  </target>
+
+  <target name="package.ivy" depends="prepare.ivy.credentials,prepare.version" if="package.revision">
+    <ivy:makepom ivyfile="${basedir}/ivy.xml" pomfile="${tmp.bin.dir}/pom.xml" conf="runtime">
+      <mapping conf="default" scope="compile" />
+      <mapping conf="test" scope="test" />
+      <mapping conf="runtime" scope="runtime" />
+    </ivy:makepom>
+    <!-- This fails miserably, quite possibly due to my inability to make Ivy work with Apache Http Client -->
+    <ivy:publish resolver="mcartoixa" pubrevision="${package.revision}" status="release" if:set="env.MYGET_KEY">
+      <artifacts pattern="${tmp.bin.dir}/[artifact].[ext]" />
+    </ivy:publish>
   </target>
 
 

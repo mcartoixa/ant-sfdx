@@ -8,8 +8,8 @@ if [ -f ~/.bashrc ]; then
 fi
 if [ -f ./.env ]; then
     # xargs does not support the -d option on BSD (MacOS X)
-    export $(grep -a -v -e '^#' -e '^[[:space:]]*$' .env | tr '\n' '\0' | xargs -0 -r)
-    grep -a -v -e '^#' -e '^[[:space:]]*$' .env | tr '\n' '\0' | xargs -0 -r printf "\$%s\n"
+    export $(grep -a -v -e '^#' -e '^[[:space:]]*$' .env | tr '\n' '\0' | xargs -0)
+    grep -a -v -e '^#' -e '^[[:space:]]*$' .env | tr '\n' '\0' | xargs -0 printf "\$%s\n"
     echo
 fi
 
@@ -19,7 +19,7 @@ if [ ! -d .tmp ]; then mkdir .tmp; fi
 
 #Ant
 if [ ! -f .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz ]; then
-    wget -nv -O .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz http://apache.mirrors.ovh.net/ftp.apache.org/dist//ant/binaries/apache-ant-$_ANT_VERSION-bin.tar.gz
+    wget -nv --show-progress -O .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz http://apache.mirrors.ovh.net/ftp.apache.org/dist//ant/binaries/apache-ant-$_ANT_VERSION-bin.tar.gz
     tar -xzvf .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz -C .tmp
 fi
 export ANT_HOME=$(pwd)/.tmp/apache-ant-$_ANT_VERSION
@@ -28,7 +28,7 @@ echo \$ANT_HOME=$ANT_HOME
 # PMD
 # Best would to be able to manage PMD with Apache Ivy but this looks like an impossible task...
 if [ ! -f .tmp/pmd-bin-$_PMD_VERSION/bin/run.sh ]; then
-    wget -nv -O .tmp/pmd-bin-$_PMD_VERSION.zip https://github.com/pmd/pmd/releases/download/pmd_releases%2F$_PMD_VERSION/pmd-bin-$_PMD_VERSION.zip
+    wget -nv --show-progress -O .tmp/pmd-bin-$_PMD_VERSION.zip https://github.com/pmd/pmd/releases/download/pmd_releases%2F$_PMD_VERSION/pmd-bin-$_PMD_VERSION.zip
     unzip .tmp/pmd-bin-$_PMD_VERSION.zip -d .tmp
 fi
 export PMD_HOME=$(pwd)/.tmp/pmd-bin-$_PMD_VERSION

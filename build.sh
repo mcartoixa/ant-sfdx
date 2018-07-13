@@ -5,6 +5,8 @@ source bin/.bashrc
 _PROJECT=build.xml
 _TARGET=build
 _VERBOSITY=info
+_IVY_VERSION=2.5.0-rc1
+
 
 usage() {
     cat <<EOF
@@ -46,8 +48,7 @@ done
 
 # Ivy
 if [ ! -d ivy ]; then mkdir ivy; fi
-_IVY_VERSION=2.4.0
-if [ ! -f ivy/ivy.jar ]; then wget -nv -O ivy/ivy.jar https://repo1.maven.org/maven2/org/apache/ivy/ivy/$_IVY_VERSION/ivy-$_IVY_VERSION.jar; fi
+if [ ! -f ivy/ivy.jar ]; then wget -nv  --show-progress -O ivy/ivy.jar https://repo1.maven.org/maven2/org/apache/ivy/ivy/$_IVY_VERSION/ivy-$_IVY_VERSION.jar; fi
 if [ $? -ne 0 ]; then
     failed
 fi
@@ -57,7 +58,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo
-$ANT_HOME/bin/ant -noclasspath -nouserlib -noinput -lib "ivy/lib/test" -lib "$PMD_HOME/lib" -logger org.apache.tools.ant.listener.AnsiColorLogger -Dverbosity=$_VERBOSITY -f $_PROJECT $_TARGET
+$ANT_HOME/bin/ant -noclasspath -nouserlib -noinput -lib "ivy/lib/test" -logger org.apache.tools.ant.listener.AnsiColorLogger -Dverbosity=$_VERBOSITY -f $_PROJECT $_TARGET
 if [ $? -ne 0 ]; then
     failed
 fi

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ivysettings>
-  <resolvers>
-    <url name="github">
-      <ivy pattern="https://github.com/[organisation]/[module]/releases/v[revision]/ivy.xml" />
-      <artifact pattern="https://github.com/[organisation]/[module]/releases/v[revision]/[artifact].[ext]" />
-    </url>
-  </resolvers>
-</ivysettings>
