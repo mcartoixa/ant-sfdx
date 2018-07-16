@@ -38,8 +38,18 @@ public class InstallTask extends SfdxTask {
 
             if (!InstallTask.this.getQuiet()) {
                 switch (key) {
-                    case "subscriberpackageversionkey":
-                        this.log("Package installed: ".concat(value), Project.MSG_INFO);
+                    case "status":
+                        switch (value) {
+                            case "IN_PROGRESS":
+                                this.log("Package " + InstallTask.this.getPackage() + " installation in progress...", Project.MSG_INFO);
+                                break;
+                            case "SUCCESS":
+                                this.log("Package " + InstallTask.this.getPackage() + " installation succeeded", Project.MSG_INFO);
+                                break;
+                            default:
+                                this.log("Package " + InstallTask.this.getPackage() + " installation status: " + value, Project.MSG_INFO);
+                                break;
+                        }
                         break;
                     default:
                         break;
@@ -61,6 +71,8 @@ public class InstallTask extends SfdxTask {
     }
 
     public void setPackage(final String id) {
+        this.packageId = id;
+
         if (id != null && !id.isEmpty()) {
             final Argument arg = getCommandline().createArgument();
             arg.setPrefix("--package");
@@ -71,7 +83,7 @@ public class InstallTask extends SfdxTask {
     public void setPublishWait(final int timeout) {
         if (timeout > 0) {
             final Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-p");
+            arg.setPrefix("--publishwait");
             arg.setValue(Integer.toString(timeout));
         }
     }
@@ -106,4 +118,11 @@ public class InstallTask extends SfdxTask {
     protected ISfdxJsonParser getParser() {
         return new JsonParser();
     }
+
+    @SuppressWarnings("PMD.DefaultPackage")
+    /* default */ String getPackage() {
+        return this.packageId;
+    }
+
+    private transient String packageId;
 }
