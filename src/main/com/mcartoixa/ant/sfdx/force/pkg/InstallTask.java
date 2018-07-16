@@ -106,7 +106,8 @@ public class InstallTask extends SfdxTask {
 
     @Override
     protected void createArguments() {
-        this.getCommandline().createArgument().setValue("-r");
+        this.getCommandline().createArgument()
+                .setValue("-r"); // no prompt
     }
 
     @Override

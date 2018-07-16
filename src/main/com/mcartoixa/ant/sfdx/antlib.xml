@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <antlib>
+  <taskdef name="force-org-delete" classname="com.mcartoixa.ant.sfdx.force.org.DeleteTask" />
   <taskdef name="force-org-display" classname="com.mcartoixa.ant.sfdx.force.org.DisplayTask" />
   <taskdef name="force-package-install" classname="com.mcartoixa.ant.sfdx.force.pkg.InstallTask" />
 </antlib>
