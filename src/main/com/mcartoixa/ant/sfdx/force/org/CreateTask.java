@@ -63,7 +63,7 @@ public class CreateTask extends SfdxTask {
 
     public Property createParam() {
         final Property ret = new Property();
-        properties.add(ret);
+        this.params.add(ret);
         return ret;
     }
 
@@ -139,7 +139,7 @@ public class CreateTask extends SfdxTask {
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     @Override
     protected void createArguments() {
-        properties.forEach((p) -> {
+        this.params.forEach((p) -> {
             final Commandline.Argument arg = this.getCommandline().createArgument();
             arg.setPrefix(p.getName() + "=");
             arg.setValue(p.getValue());
@@ -154,5 +154,5 @@ public class CreateTask extends SfdxTask {
         return new CreateTask.JsonParser();
     }
 
-    private final transient List<Property> properties = new ArrayList<>();
+    private final transient List<Property> params = new ArrayList<>();
 }
