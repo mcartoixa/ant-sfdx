@@ -19,7 +19,7 @@ import com.mcartoixa.ant.sfdx.ISfdxJsonParser;
 import com.mcartoixa.ant.sfdx.SfdxTask;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
-import org.apache.tools.ant.types.Commandline.Argument;
+import org.apache.tools.ant.types.Commandline;
 
 /**
  *
@@ -71,7 +71,7 @@ public class InstallTask extends SfdxTask {
 
     public void setInstallationKey(final String key) {
         if (key != null && !key.isEmpty()) {
-            final Argument arg = getCommandline().createArgument();
+            final Commandline.Argument arg = getCommandline().createArgument();
             arg.setPrefix("-k");
             arg.setValue(key);
         }
@@ -81,21 +81,21 @@ public class InstallTask extends SfdxTask {
         this.packageId = id;
 
         if (id != null && !id.isEmpty()) {
-            final Argument arg = getCommandline().createArgument();
+            final Commandline.Argument arg = getCommandline().createArgument();
             arg.setLine("--package " + id);
         }
     }
 
     public void setPublishWait(final int timeout) {
         if (timeout > 0) {
-            final Argument arg = getCommandline().createArgument();
+            final Commandline.Argument arg = getCommandline().createArgument();
             arg.setLine("--publishwait " + Integer.toString(timeout));
         }
     }
 
     public void setTargetUserName(final String userName) {
         if (userName != null && !userName.isEmpty()) {
-            final Argument arg = getCommandline().createArgument();
+            final Commandline.Argument arg = getCommandline().createArgument();
             arg.setPrefix("-u");
             arg.setValue(userName);
         }
@@ -103,7 +103,7 @@ public class InstallTask extends SfdxTask {
 
     public void setWait(final int timeout) {
         if (timeout > 0) {
-            final Argument arg = getCommandline().createArgument();
+            final Commandline.Argument arg = getCommandline().createArgument();
             arg.setPrefix("-w");
             arg.setValue(Integer.toString(timeout));
         }
