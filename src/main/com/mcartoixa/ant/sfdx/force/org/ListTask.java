@@ -55,6 +55,7 @@ public class ListTask extends SfdxTask {
             }
         }
 
+        @SuppressWarnings("PMD.NPathComplexity")
         @Override
         protected void handleValue(final String property, final String key, final String value) {
             super.handleValue(property, key, value);
