@@ -130,7 +130,7 @@ public abstract class SfdxTask extends Task {
             exe.setCommandline(cmd.getCommandline());
             final int r = exe.execute();
 
-            if (this.getFailOnError() && Execute.isFailure(r) || this.errorMessage != null) {
+            if (this.getFailOnError() && Execute.isFailure(r) || this.hasErrorMessage()) {
                 String message = this.errorMessage;
                 if (message == null || message.isEmpty()) {
                     message = cmd.getExecutable() + " returned " + r;
@@ -189,6 +189,10 @@ public abstract class SfdxTask extends Task {
 
     protected boolean getQuiet() {
         return this.quiet;
+    }
+
+    protected boolean hasErrorMessage() {
+        return this.errorMessage != null && !this.errorMessage.isEmpty();
     }
 
     protected void setErrorMessage(final String message) {

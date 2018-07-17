@@ -55,7 +55,7 @@ public class CreateTask extends SfdxTask {
                                     final String e = errors.getString(i);
                                     if (e != null && !e.isEmpty()) {
                                         this.log(e, Project.MSG_ERR);
-                                        if (CreateTask.this.getFailOnError()) {
+                                        if (CreateTask.this.getFailOnError() && !CreateTask.this.hasErrorMessage()) {
                                             CreateTask.this.setErrorMessage(e);
                                         }
                                     }
@@ -66,7 +66,6 @@ public class CreateTask extends SfdxTask {
                 }
             }
         }
-
     }
 
     public CreateTask() {

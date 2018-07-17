@@ -17,16 +17,16 @@ limitations under the License.
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-us">
   <head>
-    <title>force-org-delete Task</title>
+    <title>force-user-permset-assign Task</title>
     <link rel="stylesheet" type="text/css" href="css/index.css" />
   </head>
 
   <body>
-    <h2>force-org-delete Task</h2>
+    <h2>force-user-permset-assign Task</h2>
 
     <h3>Description</h3>
-    <p>Marks a scratch org for deletion.</p>
-    <p>It executes the <a href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_force_org.htm#cli_reference_delete" target="_blank">force:org:delete</a> command.</p>
+    <p>Assigns a named permission set to one or more users of an org.</p>
+    <p>It executes the <a href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_force_user.htm#cli_reference_permset_assign" target="_blank">force-user-permset-assign</a> command.</p>
 
     <h3>Parameters</h3>
     <p>In addition to <a href="common.html">the attributes used by every ant-sfdx task</a>, this task uses the following attributes:</p>
@@ -41,15 +41,21 @@ limitations under the License.
       </thead>
       <tbody>
         <tr>
-          <td>targetusername</td>
-          <td>-u</td>
-          <td>A username or alias for the target org.</td>
+          <td>onbehalfof</td>
+          <td>-o</td>
+          <td>Comma-separated list of usernames or aliases to assign the permission set to.</td>
           <td>No</td>
         </tr>
         <tr>
-          <td>targetdevhubusername</td>
-          <td>-v</td>
-          <td>A username or alias for the target Dev Hub org.</td>
+          <td>permsetname</td>
+          <td>-n</td>
+          <td>The name of the permission set to assign.</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>targetusername</td>
+          <td>-u</td>
+          <td>A username or alias for the target org.</td>
           <td>No</td>
         </tr>
       </tbody>
