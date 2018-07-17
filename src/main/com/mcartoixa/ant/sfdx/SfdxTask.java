@@ -40,11 +40,13 @@ public abstract class SfdxTask extends Task {
         @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
         @Override
         public void log(final String message, final int level) {
-            int l = level;
-            if (SfdxTask.this.getQuiet() && level < Project.MSG_VERBOSE) {
-                l = Project.MSG_VERBOSE;
+            if (message != null && !message.isEmpty()) {
+                int l = level;
+                if (SfdxTask.this.getQuiet() && level < Project.MSG_VERBOSE) {
+                    l = Project.MSG_VERBOSE;
+                }
+                SfdxTask.this.log(message, l);
             }
-            SfdxTask.this.log(message, l);
         }
 
         @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
@@ -128,7 +130,7 @@ public abstract class SfdxTask extends Task {
             exe.setCommandline(cmd.getCommandline());
             final int r = exe.execute();
 
-            if (Execute.isFailure(r) && this.getFailOnError()) {
+            if (this.getFailOnError() && Execute.isFailure(r) || this.errorMessage != null) {
                 String message = this.errorMessage;
                 if (message == null || message.isEmpty()) {
                     message = cmd.getExecutable() + " returned " + r;
@@ -189,6 +191,10 @@ public abstract class SfdxTask extends Task {
         return this.quiet;
     }
 
+    protected void setErrorMessage(final String message) {
+        this.errorMessage = message;
+    }
+
     @SuppressWarnings("PMD.DefaultPackage")
     /* default */ String getResultProperty() {
         return this.resultProperty;
@@ -197,11 +203,6 @@ public abstract class SfdxTask extends Task {
     @SuppressWarnings("PMD.DefaultPackage")
     /* default */ String getStatusProperty() {
         return this.statusProperty;
-    }
-
-    @SuppressWarnings("PMD.DefaultPackage")
-    /* default */ void setErrorMessage(final String message) {
-        this.errorMessage = message;
     }
 
     private final transient Commandline cmd = new Commandline();

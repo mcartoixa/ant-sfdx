@@ -36,11 +36,13 @@ public class SfdxOutputParser extends PumpStreamHandler {
         @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
         @Override
         public void log(final String message, final int level) {
-            int l = level;
-            if (this.task.getQuiet() && level < Project.MSG_VERBOSE) {
-                l = Project.MSG_VERBOSE;
+            if (message != null && !message.isEmpty()) {
+                int l = level;
+                if (this.task.getQuiet() && level < Project.MSG_VERBOSE) {
+                    l = Project.MSG_VERBOSE;
+                }
+                this.task.log(message, l);
             }
-            this.task.log(message, l);
         }
 
         @SuppressWarnings({"PMD.DataflowAnomalyAnalysis", "PMD.NPathComplexity"})
@@ -57,16 +59,16 @@ public class SfdxOutputParser extends PumpStreamHandler {
                 final String message = json.getString("message");
                 if (message != null && !message.isEmpty()) {
                     this.log(message, Project.MSG_ERR);
-                    this.task.setErrorMessage(message);
+                    if (this.task.getFailOnError()) {
+                        this.task.setErrorMessage(message);
+                    }
                 }
 
                 final JSONArray warnings = json.getJSONArray("warnings");
                 if (warnings != null) {
                     for (int i = 0; i < warnings.length(); i++) {
                         final String w = warnings.getString(i);
-                        if (w != null && !w.isEmpty()) {
-                            this.log(w, Project.MSG_WARN);
-                        }
+                        this.log(w, Project.MSG_WARN);
                     }
                 }
 
@@ -74,9 +76,7 @@ public class SfdxOutputParser extends PumpStreamHandler {
                 if (action != null && !action.isEmpty()) {
                     final String[] alines = action.split("\n");
                     for (final String a : alines) {
-                        if (a != null && !a.isEmpty()) {
-                            this.log(a, Project.MSG_INFO);
-                        }
+                        this.log(a, Project.MSG_INFO);
                     }
                 }
             }
