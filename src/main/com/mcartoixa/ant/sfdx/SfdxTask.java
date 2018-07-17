@@ -41,7 +41,7 @@ public abstract class SfdxTask extends Task {
         @Override
         public void log(final String message, final int level) {
             int l = level;
-            if (SfdxTask.this.getQuiet() && level > Project.MSG_VERBOSE) {
+            if (SfdxTask.this.getQuiet() && level < Project.MSG_VERBOSE) {
                 l = Project.MSG_VERBOSE;
             }
             SfdxTask.this.log(message, l);
@@ -60,7 +60,11 @@ public abstract class SfdxTask extends Task {
 
                 final JSONObject result = json.getJSONObject("result");
                 if (result != null) {
-                    parseJsonObject(SfdxTask.this.getResultProperty(), result);
+                    String property = SfdxTask.this.getResultProperty();
+                    if (property == null) {
+                        property = "";
+                    }
+                    parseJsonObject(property, result);
                 }
 
                 if (json.has("warnings")) {

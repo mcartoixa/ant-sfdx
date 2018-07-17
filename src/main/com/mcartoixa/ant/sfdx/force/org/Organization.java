@@ -113,9 +113,9 @@ public class Organization {
     public String toString() {
         return String.format(
                 "%s (%s) %s %s",
-                alias,
+                alias == null ? "" : alias,
                 orgId,
-                orgName,
+                orgName == null ? "" : orgName,
                 userName
         );
     }

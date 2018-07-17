@@ -15,6 +15,7 @@
  */
 package com.mcartoixa.ant.sfdx.force.org;
 
+import com.mcartoixa.ant.sfdx.ISfdxJsonParser;
 import com.mcartoixa.ant.sfdx.SfdxTask;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +47,8 @@ public class ListTask extends SfdxTask {
                 nonScratchOrgs.forEach((nso) -> {
                     this.log(nso.toString(), Project.MSG_INFO);
                     scratchOrgs.forEach((so) -> {
-                        if (so.getDevHubOrgId() == null ? nso.getOrgId() == null : so.getDevHubOrgId().equals(nso.getOrgId())) {
-                            this.log("\t" + so.toString(), Project.MSG_INFO);
+                        if (nso.getOrgId() == null ? so.getDevHubOrgId() == null : so.getDevHubOrgId().equals(nso.getOrgId())) {
+                            this.log("\t- " + so.toString(), Project.MSG_INFO);
                         }
                     });
                 });
@@ -58,16 +59,31 @@ public class ListTask extends SfdxTask {
         protected void handleValue(final String property, final String key, final String value) {
             super.handleValue(property, key, value);
 
+            final int plio = property.lastIndexOf('.');
+            int nsolio = property.lastIndexOf(".nonscratchorgs.");
+            if (nsolio >= 0) {
+                nsolio += ".nonscratchorgs.".length() - 1;
+            }
+            int solio = property.lastIndexOf(".scratchorgs.");
+            if (solio >= 0) {
+                solio += ".scratchorgs.".length() - 1;
+            }
+            if (nsolio >= 0 && plio == nsolio) {
+                final int index = Integer.parseInt(property.substring(nsolio + 1));
+                if (nonScratchOrgs.size() <= index) {
+                    currentOrg = new Organization();
+                    nonScratchOrgs.add(currentOrg);
+                }
+            } else if (solio >= 0 && plio == solio) {
+                final int index = Integer.parseInt(property.substring(solio + 1));
+                if (scratchOrgs.size() <= index) {
+                    currentOrg = new Organization();
+                    scratchOrgs.add(currentOrg);
+                }
+            }
+
             if (!ListTask.this.getQuiet()) {
                 switch (key) {
-                    case "nonscratchorgs":
-                        currentOrg = new Organization();
-                        nonScratchOrgs.add(currentOrg);
-                        break;
-                    case "scratchorgs":
-                        currentOrg = new Organization();
-                        scratchOrgs.add(currentOrg);
-                        break;
                     case "alias":
                         if (currentOrg != null) {
                             currentOrg.setAlias(value);
@@ -136,5 +152,11 @@ public class ListTask extends SfdxTask {
     protected void createArguments() {
         this.getCommandline().createArgument()
                 .setValue("-p"); // no prompt
+        super.createArguments();
+    }
+
+    @Override
+    protected ISfdxJsonParser getParser() {
+        return new ListTask.JsonParser();
     }
 }

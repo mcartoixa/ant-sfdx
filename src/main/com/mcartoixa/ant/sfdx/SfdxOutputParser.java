@@ -37,7 +37,7 @@ public class SfdxOutputParser extends PumpStreamHandler {
         @Override
         public void log(final String message, final int level) {
             int l = level;
-            if (this.task.getQuiet() && level > Project.MSG_VERBOSE) {
+            if (this.task.getQuiet() && level < Project.MSG_VERBOSE) {
                 l = Project.MSG_VERBOSE;
             }
             this.task.log(message, l);
@@ -47,7 +47,7 @@ public class SfdxOutputParser extends PumpStreamHandler {
         @Override
         public void parse(final JSONObject json) {
             if (json != null) {
-                this.log(json.toString(), Project.MSG_DEBUG);
+                this.log("JSON received: " + json.toString(), Project.MSG_DEBUG);
 
                 final int status = json.getInt("status");
                 if (this.task.getStatusProperty() != null && !this.task.getStatusProperty().isEmpty()) {

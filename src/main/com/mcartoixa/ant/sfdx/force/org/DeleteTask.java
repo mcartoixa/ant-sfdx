@@ -15,6 +15,7 @@
  */
 package com.mcartoixa.ant.sfdx.force.org;
 
+import com.mcartoixa.ant.sfdx.ISfdxJsonParser;
 import com.mcartoixa.ant.sfdx.SfdxTask;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Commandline;
@@ -38,7 +39,7 @@ public class DeleteTask extends SfdxTask {
             if (!DeleteTask.this.getQuiet()) {
                 switch (key) {
                     case "orgid":
-                        this.log("Org " + value + "deleted", Project.MSG_INFO);
+                        this.log("Org " + value + " deleted", Project.MSG_INFO);
                         break;
                     default:
                         break;
@@ -76,5 +77,11 @@ public class DeleteTask extends SfdxTask {
     protected void createArguments() {
         this.getCommandline().createArgument()
                 .setValue("-p"); // no prompt
+        super.createArguments();
+    }
+
+    @Override
+    protected ISfdxJsonParser getParser() {
+        return new DeleteTask.JsonParser();
     }
 }

@@ -17,6 +17,7 @@ package com.mcartoixa.ant.sfdx.force.pkg;
 
 import com.mcartoixa.ant.sfdx.ISfdxJsonParser;
 import com.mcartoixa.ant.sfdx.SfdxTask;
+import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Commandline.Argument;
 
@@ -62,6 +63,12 @@ public class InstallTask extends SfdxTask {
         super();
     }
 
+    @Override
+    public void execute() throws BuildException {
+        this.log("Package " + this.getPackage() + " is being installed...", Project.MSG_INFO);
+        super.execute();
+    }
+
     public void setInstallationKey(final String key) {
         if (key != null && !key.isEmpty()) {
             final Argument arg = getCommandline().createArgument();
@@ -75,16 +82,14 @@ public class InstallTask extends SfdxTask {
 
         if (id != null && !id.isEmpty()) {
             final Argument arg = getCommandline().createArgument();
-            arg.setPrefix("--package");
-            arg.setValue(id);
+            arg.setLine("--package " + id);
         }
     }
 
     public void setPublishWait(final int timeout) {
         if (timeout > 0) {
             final Argument arg = getCommandline().createArgument();
-            arg.setPrefix("--publishwait");
-            arg.setValue(Integer.toString(timeout));
+            arg.setLine("--publishwait " + Integer.toString(timeout));
         }
     }
 
@@ -108,6 +113,7 @@ public class InstallTask extends SfdxTask {
     protected void createArguments() {
         this.getCommandline().createArgument()
                 .setValue("-r"); // no prompt
+        super.createArguments();
     }
 
     @Override
