@@ -62,10 +62,7 @@ public class ExecuteTask extends SfdxTask {
 
                     final String logs = result.optString("logs");
                     if (logs != null && !logs.isEmpty()) {
-                        final String[] llines = logs.split("\n");
-                        for (final String l : llines) {
-                            this.log(l, Project.MSG_VERBOSE);
-                        }
+                        this.log(logs, Project.MSG_VERBOSE);
                     }
                 }
             }

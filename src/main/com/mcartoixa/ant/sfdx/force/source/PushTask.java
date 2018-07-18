@@ -48,12 +48,33 @@ public class PushTask extends SfdxTask {
                         if (filePath == null || filePath.isEmpty() || filePath.equals("N/A")) {
                             this.log(object.getString("error"), Project.MSG_ERR);
                         } else {
+                            final String lineNumber = object.optString("lineNumber");
                             final String message = String.format(
                                     "%s:%s: %s error: %s",
                                     new File(filePath).getAbsolutePath(),
-                                    object.optString("lineNumber"),
+                                    lineNumber == null || lineNumber.isEmpty() ? "0" : lineNumber,
                                     object.getString("type"),
                                     object.getString("error")
+                            );
+                            this.log(message, Project.MSG_ERR);
+                        }
+                    }
+                }
+            }
+
+            final JSONObject success = json.optJSONObject("result");
+            if (success != null) {
+                final JSONArray pushedSource = success.optJSONArray("pushedSource");
+                if (pushedSource != null) {
+                    for (int i = 0; i < pushedSource.length(); i++) {
+                        final Object value = pushedSource.get(i);
+                        if (value instanceof JSONObject) {
+                            final JSONObject object = (JSONObject) value;
+                            final String message = String.format(
+                                    "%s %s %s",
+                                    object.getString("state"),
+                                    object.getString("type"),
+                                    object.getString("fullname")
                             );
                             this.log(message, Project.MSG_ERR);
                         }
@@ -76,6 +97,10 @@ public class PushTask extends SfdxTask {
         }
 
         super.execute();
+
+        if (!this.getQuiet()) {
+            this.log("Push completed.", Project.MSG_INFO);
+        }
     }
 
     @Override

@@ -132,6 +132,7 @@ public abstract class SfdxTask extends Task {
 
     @Override
     public void execute() throws BuildException {
+        this.checkConfiguration();
 
         cmd.createArgument(true).setValue(getCommand());
         createArguments();
@@ -183,8 +184,12 @@ public abstract class SfdxTask extends Task {
         this.statusProperty = statusProperty;
     }
 
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
+    protected void checkConfiguration() {
+    }
+
     protected void createArguments() {
-        cmd.createArgument().setValue("--json");
+        getCommandline().createArgument().setValue("--json");
     }
 
     protected abstract String getCommand();
