@@ -56,7 +56,7 @@ public class CreateTask extends SfdxTask {
                                     if (e != null && !e.isEmpty()) {
                                         this.log(e, Project.MSG_ERR);
                                         if (CreateTask.this.getFailOnError() && !CreateTask.this.hasErrorMessage()) {
-                                            CreateTask.this.setErrorMessage(e);
+                                            CreateTask.this.setErrorMessage("The record could not be created.");
                                         }
                                     }
                                 }

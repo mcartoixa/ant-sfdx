@@ -7,5 +7,6 @@
   <taskdef name="force-org-display" classname="com.mcartoixa.ant.sfdx.force.org.DisplayTask" />
   <taskdef name="force-org-list" classname="com.mcartoixa.ant.sfdx.force.org.ListTask" />
   <taskdef name="force-package-install" classname="com.mcartoixa.ant.sfdx.force.pkg.InstallTask" />
+  <taskdef name="force-source-push" classname="com.mcartoixa.ant.sfdx.force.source.PushTask" />
   <taskdef name="force-user-permset-assign" classname="com.mcartoixa.ant.sfdx.force.user.permset.AssignTask" />
 </antlib>

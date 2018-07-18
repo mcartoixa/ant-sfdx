@@ -15,11 +15,8 @@
  */
 package com.mcartoixa.ant.sfdx;
 
-import org.apache.tools.ant.Project;
 import org.apache.tools.ant.util.FileUtils;
 import org.apache.tools.ant.taskdefs.PumpStreamHandler;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  *
@@ -27,72 +24,13 @@ import org.json.JSONObject;
  */
 public class SfdxOutputParser extends PumpStreamHandler {
 
-    /* default */ static class ErrorParser implements ISfdxJsonParser {
-
-        /* default */ ErrorParser(final SfdxTask task) {
-            this.task = task;
-        }
-
-        @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-        @Override
-        public void log(final String message, final int level) {
-            if (message != null && !message.isEmpty()) {
-                int l = level;
-                if (this.task.getQuiet() && level < Project.MSG_VERBOSE) {
-                    l = Project.MSG_VERBOSE;
-                }
-                this.task.log(message, l);
-            }
-        }
-
-        @SuppressWarnings({"PMD.DataflowAnomalyAnalysis", "PMD.NPathComplexity"})
-        @Override
-        public void parse(final JSONObject json) {
-            if (json != null) {
-                this.log("JSON received: " + json.toString(), Project.MSG_DEBUG);
-
-                final int status = json.getInt("status");
-                if (this.task.getStatusProperty() != null && !this.task.getStatusProperty().isEmpty()) {
-                    this.task.getProject().setNewProperty(this.task.getStatusProperty(), Integer.toString(status));
-                }
-
-                final String message = json.getString("message");
-                if (message != null && !message.isEmpty()) {
-                    this.log(message, Project.MSG_ERR);
-                    if (this.task.getFailOnError()) {
-                        this.task.setErrorMessage(message);
-                    }
-                }
-
-                final JSONArray warnings = json.getJSONArray("warnings");
-                if (warnings != null) {
-                    for (int i = 0; i < warnings.length(); i++) {
-                        final String w = warnings.getString(i);
-                        this.log(w, Project.MSG_WARN);
-                    }
-                }
-
-                final String action = json.getString("action");
-                if (action != null && !action.isEmpty()) {
-                    final String[] alines = action.split("\n");
-                    for (final String a : alines) {
-                        this.log(a, Project.MSG_INFO);
-                    }
-                }
-            }
-        }
-
-        private final transient SfdxTask task;
-    }
-
     /**
      * Creates log stream handler
      *
-     * @param task the task for whom to log
      * @param parser the parser to use
      */
-    public SfdxOutputParser(final SfdxTask task, final ISfdxJsonParser parser) {
-        super(new JsonOutputStream(parser), new JsonOutputStream(new ErrorParser(task)));
+    public SfdxOutputParser(final ISfdxJsonParser parser) {
+        super(new JsonOutputStream(parser), new JsonOutputStream(parser));
     }
 
     /**

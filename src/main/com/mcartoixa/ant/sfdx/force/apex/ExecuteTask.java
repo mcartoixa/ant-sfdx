@@ -45,14 +45,18 @@ public class ExecuteTask extends SfdxTask {
                     if (!result.getBoolean("success")) {
                         final String message = String.format(
                                 "%s:%d: %s: %s",
-                                getApexCodeFile().getPath(),
+                                getApexCodeFile().getAbsolutePath(),
                                 result.optInt("line"),
                                 result.getBoolean("compiled") ? "error" : "exception",
                                 result.getBoolean("compiled") ? result.optString("exceptionMessage") : result.optString("compileProblem")
                         );
                         this.log(message, Project.MSG_ERR);
                         if (ExecuteTask.this.getFailOnError()) {
-                            ExecuteTask.this.setErrorMessage(message);
+                            ExecuteTask.this.setErrorMessage(
+                                    result.getBoolean("compiled")
+                                    ? "An error ocurred during APEX compilation."
+                                    : "An exception occurred dunring APEX execution."
+                            );
                         }
                     }
 
@@ -60,7 +64,7 @@ public class ExecuteTask extends SfdxTask {
                     if (logs != null && !logs.isEmpty()) {
                         final String[] llines = logs.split("\n");
                         for (final String l : llines) {
-                            this.log(l, Project.MSG_DEBUG);
+                            this.log(l, Project.MSG_VERBOSE);
                         }
                     }
                 }

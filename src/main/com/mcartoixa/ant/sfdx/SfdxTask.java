@@ -49,18 +49,18 @@ public abstract class SfdxTask extends Task {
             }
         }
 
-        @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+        @SuppressWarnings({"PMD.DataflowAnomalyAnalysis", "PMD.NPathComplexity"})
         @Override
         public void parse(final JSONObject json) {
             if (json != null) {
                 this.log("JSON received: " + json.toString(), Project.MSG_DEBUG);
 
-                final int status = json.getInt("status");
+                final int status = json.optInt("status");
                 if (SfdxTask.this.getStatusProperty() != null && !SfdxTask.this.getStatusProperty().isEmpty()) {
                     SfdxTask.this.getProject().setNewProperty(SfdxTask.this.getStatusProperty(), Integer.toString(status));
                 }
 
-                final JSONObject result = json.getJSONObject("result");
+                final JSONObject result = json.optJSONObject("result");
                 if (result != null) {
                     String property = SfdxTask.this.getResultProperty();
                     if (property == null) {
@@ -69,15 +69,29 @@ public abstract class SfdxTask extends Task {
                     parseJsonObject(property, result);
                 }
 
-                if (json.has("warnings")) {
-                    final JSONArray warnings = json.getJSONArray("warnings");
-                    if (warnings != null) {
-                        for (int i = 0; i < warnings.length(); i++) {
-                            final String w = warnings.getString(i);
-                            if (w != null && !w.isEmpty()) {
-                                this.log(w, Project.MSG_WARN);
-                            }
+                final JSONArray warnings = json.optJSONArray("warnings");
+                if (warnings != null) {
+                    for (int i = 0; i < warnings.length(); i++) {
+                        final String w = warnings.getString(i);
+                        if (w != null && !w.isEmpty()) {
+                            this.log(w, Project.MSG_WARN);
                         }
+                    }
+                }
+
+                final String message = json.optString("message");
+                if (message != null && !message.isEmpty()) {
+                    this.log(message, status > 0 ? Project.MSG_ERR : Project.MSG_INFO);
+                    if (status > 0 && SfdxTask.this.getFailOnError()) {
+                        SfdxTask.this.setErrorMessage(message);
+                    }
+                }
+
+                final String action = json.optString("action");
+                if (action != null && !action.isEmpty()) {
+                    final String[] alines = action.split("\n");
+                    for (final String a : alines) {
+                        this.log(a, Project.MSG_INFO);
                     }
                 }
             }
@@ -90,7 +104,7 @@ public abstract class SfdxTask extends Task {
         }
 
         @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-        private void parseJsonValue(final String property, final String key, final Object value) {
+        protected void parseJsonValue(final String property, final String key, final Object value) {
             if (value instanceof JSONObject) {
                 parseJsonObject(property + "." + key, (JSONObject) value);
             } else if (value instanceof JSONArray) {
@@ -104,7 +118,7 @@ public abstract class SfdxTask extends Task {
         }
 
         @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-        private void parseJsonObject(final String property, final JSONObject object) {
+        protected void parseJsonObject(final String property, final JSONObject object) {
             object.keySet().forEach((key) -> {
                 parseJsonValue(property, key.toLowerCase(Locale.ROOT), object.get(key));
             });
@@ -124,7 +138,7 @@ public abstract class SfdxTask extends Task {
 
         try {
             final Project p = getProject();
-            final Execute exe = new Execute(new SfdxOutputParser(this, getParser()));
+            final Execute exe = new Execute(new SfdxOutputParser(getParser()));
             exe.setAntRun(p);
             exe.setWorkingDirectory(p.getBaseDir());
             exe.setCommandline(cmd.getCommandline());

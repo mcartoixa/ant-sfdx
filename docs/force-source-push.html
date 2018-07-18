@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Copyright 2018 Mathieu Cartoixa.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-us">
+  <head>
+    <title>force-source-push Task</title>
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+  </head>
+
+  <body>
+    <h2>force-source-push Task</h2>
+
+    <h3>Description</h3>
+    <p>Pushes changed source from your project to the scratch org to keep them in sync.</p>
+    <p>It executes the <a href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_force_source.htm#cli_reference_push" target="_blank">force-source-push</a> command.</p>
+
+    <h3>Parameters</h3>
+    <p>In addition to <a href="common.html">the attributes used by every ant-sfdx task</a>, this task uses the following attributes:</p>
+    <table class="attr">
+      <thead>
+        <tr>
+          <th scope="col">Attribute</th>
+          <th scope="col">Command line equivalent</th>
+          <th scope="col">Description</th>
+          <th scope="col">Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>forceoverwrite</td>
+          <td>-f</td>
+          <td>If <q>true</q>, runs the push command even if conflicts exist. Changes in the project overwrite changes in the scratch org.</td>
+          <td>No; defaults to <q>false</q></td>
+        </tr>
+        <tr>
+          <td>ignorewarnings</td>
+          <td>-g</td>
+          <td>If <q>true</q>, completes the deployment even if warnings are generated.</td>
+          <td>No; defaults to <q>false</q></td>
+        </tr>
+        <tr>
+          <td>targetusername</td>
+          <td>-u</td>
+          <td>A username or alias for the target org.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>wait</td>
+          <td>-w</td>
+          <td>Number of minutes to wait for the command to complete and display results to the terminal window.</td>
+          <td>No; defaults to <q>33</q></td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

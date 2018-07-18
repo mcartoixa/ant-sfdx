@@ -50,7 +50,7 @@ public class AssignTask extends SfdxTask {
                             if (message != null && !message.isEmpty()) {
                                 this.log(message, Project.MSG_ERR);
                                 if (AssignTask.this.getFailOnError() && !AssignTask.this.hasErrorMessage()) {
-                                    AssignTask.this.setErrorMessage(message);
+                                    AssignTask.this.setErrorMessage("Permissions could not be assigned.");
                                 }
                             }
                         }
