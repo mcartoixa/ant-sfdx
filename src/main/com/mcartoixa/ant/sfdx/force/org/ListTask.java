@@ -41,7 +41,7 @@ public class ListTask extends SfdxTask {
         @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
         @Override
         protected void doParse(final JSONObject json) {
-            super.parse(json);
+            super.doParse(json);
 
             if (!ListTask.this.getQuiet()) {
                 nonScratchOrgs.forEach((nso) -> {

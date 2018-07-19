@@ -82,7 +82,7 @@ public class PushTask extends SfdxTask {
                 }
             }
 
-            super.parse(json);
+            super.doParse(json);
         }
     }
 

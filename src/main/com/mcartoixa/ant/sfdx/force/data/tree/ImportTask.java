@@ -66,7 +66,7 @@ public class ImportTask extends SfdxTask {
                 }
             }
 
-            super.parse(json);
+            super.doParse(json);
         }
 
     }

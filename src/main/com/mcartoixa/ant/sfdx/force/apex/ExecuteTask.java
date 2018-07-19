@@ -37,7 +37,7 @@ public class ExecuteTask extends SfdxTask {
         @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
         @Override
         protected void doParse(final JSONObject json) {
-            super.parse(json);
+            super.doParse(json);
 
             if (json != null) {
                 final JSONObject result = json.getJSONObject("result");
