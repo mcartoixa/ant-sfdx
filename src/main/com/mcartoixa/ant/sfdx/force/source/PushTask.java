@@ -37,7 +37,7 @@ public class PushTask extends SfdxTask {
         }
 
         @Override
-        public void parse(final JSONObject json) {
+        protected void doParse(final JSONObject json) {
             final JSONArray result = json.optJSONArray("result");
             if (result != null) {
                 for (int i = 0; i < result.length(); i++) {
@@ -74,9 +74,9 @@ public class PushTask extends SfdxTask {
                                     "%s %s %s",
                                     object.getString("state"),
                                     object.getString("type"),
-                                    object.getString("fullname")
+                                    object.getString("fullName")
                             );
-                            this.log(message, Project.MSG_ERR);
+                            this.log(message, Project.MSG_INFO);
                         }
                     }
                 }

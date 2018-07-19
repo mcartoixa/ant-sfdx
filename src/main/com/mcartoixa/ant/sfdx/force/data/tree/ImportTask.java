@@ -50,7 +50,7 @@ public class ImportTask extends SfdxTask {
         }
 
         @Override
-        public void parse(final JSONObject json) {
+        protected void doParse(final JSONObject json) {
             final JSONArray result = json.optJSONArray("result");
             if (result != null) {
                 for (int i = 0; i < result.length(); i++) {

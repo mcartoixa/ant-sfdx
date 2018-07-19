@@ -49,51 +49,52 @@ public abstract class SfdxTask extends Task {
             }
         }
 
-        @SuppressWarnings({"PMD.DataflowAnomalyAnalysis", "PMD.NPathComplexity"})
         @Override
         public void parse(final JSONObject json) {
             if (json != null) {
                 this.log("JSON received: " + json.toString(), Project.MSG_DEBUG);
 
-                final int status = json.optInt("status");
-                if (SfdxTask.this.getStatusProperty() != null && !SfdxTask.this.getStatusProperty().isEmpty()) {
-                    SfdxTask.this.getProject().setNewProperty(SfdxTask.this.getStatusProperty(), Integer.toString(status));
-                }
+                doParse(json);
+            }
+        }
 
-                final JSONObject result = json.optJSONObject("result");
-                if (result != null) {
-                    String property = SfdxTask.this.getResultProperty();
-                    if (property == null) {
-                        property = "";
-                    }
-                    parseJsonObject(property, result);
-                }
+        @SuppressWarnings({"PMD.DataflowAnomalyAnalysis", "PMD.NPathComplexity"})
+        protected void doParse(final JSONObject json) {
+            final int status = json.optInt("status");
+            if (SfdxTask.this.getStatusProperty() != null && !SfdxTask.this.getStatusProperty().isEmpty()) {
+                SfdxTask.this.getProject().setNewProperty(SfdxTask.this.getStatusProperty(), Integer.toString(status));
+            }
 
-                final JSONArray warnings = json.optJSONArray("warnings");
-                if (warnings != null) {
-                    for (int i = 0; i < warnings.length(); i++) {
-                        final String w = warnings.getString(i);
-                        if (w != null && !w.isEmpty()) {
-                            this.log(w, Project.MSG_WARN);
-                        }
-                    }
+            final JSONObject result = json.optJSONObject("result");
+            if (result != null) {
+                String property = SfdxTask.this.getResultProperty();
+                if (property == null) {
+                    property = "";
                 }
+                parseJsonObject(property, result);
+            }
 
-                final String message = json.optString("message");
-                if (message != null && !message.isEmpty()) {
-                    this.log(message, status > 0 ? Project.MSG_ERR : Project.MSG_INFO);
-                    if (status > 0 && SfdxTask.this.getFailOnError()) {
-                        SfdxTask.this.setErrorMessage(message);
+            final JSONArray warnings = json.optJSONArray("warnings");
+            if (warnings != null) {
+                for (int i = 0; i < warnings.length(); i++) {
+                    final String w = warnings.getString(i);
+                    if (w != null && !w.isEmpty()) {
+                        this.log(w, Project.MSG_WARN);
                     }
                 }
+            }
 
-                final String action = json.optString("action");
-                if (action != null && !action.isEmpty()) {
-                    final String[] alines = action.split("\n");
-                    for (final String a : alines) {
-                        this.log(a, Project.MSG_INFO);
-                    }
+            final String message = json.optString("message");
+            if (message != null && !message.isEmpty()) {
+                this.log(message, status > 0 ? Project.MSG_ERR : Project.MSG_INFO);
+                if (status > 0 && SfdxTask.this.getFailOnError()) {
+                    SfdxTask.this.setErrorMessage(message);
                 }
+            }
+
+            final String action = json.optString("action");
+            if (action != null && !action.isEmpty()) {
+                this.log(action, Project.MSG_INFO);
             }
         }
 
