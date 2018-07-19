@@ -181,30 +181,31 @@
 
 
   <!-- package -->
-  <target name="package" depends="prepare.log,prepare.version,jar" description="Packages the project.">
+  <target name="package" depends="prepare.log,prepare.version,jar,package.ivy" description="Packages the project.">
     <copy file="${dist.jar}" todir="${tmp.out.bin.dir}" preservelastmodified="true">
       <resources>
         <file file="${dist.jar}" />
       </resources>
     </copy>
-    <zip destfile="${tmp.out.bin.dir}/${ant.project.name}.zip" compress="true" filesonly="true">
+    <zip destfile="${tmp.out.bin.dir}/${ant.project.name}.zip" compress="true" level="9" filesonly="true">
       <resources>
         <file file="${dist.jar}" />
         <file file="${ivy.runtime.classpath}" />
       </resources>
+      <zipfileset dir="docs" prefix="docs" />
     </zip>
   </target>
 
   <target name="package.ivy" depends="prepare.ivy.credentials,prepare.version" if="package.revision">
-    <ivy:makepom ivyfile="${basedir}/ivy.xml" pomfile="${tmp.bin.dir}/pom.xml" conf="runtime">
+    <ivy:makepom ivyfile="${basedir}/ivy.xml" pomfile="${tmp.out.bin.dir}/pom.xml" conf="runtime">
       <mapping conf="default" scope="compile" />
       <mapping conf="test" scope="test" />
       <mapping conf="runtime" scope="runtime" />
     </ivy:makepom>
     <!-- This fails miserably, quite possibly due to my inability to make Ivy work with Apache Http Client -->
-    <ivy:publish resolver="mcartoixa" pubrevision="${package.revision}" status="release" if:set="env.MYGET_KEY">
+    <!--ivy:publish resolver="mcartoixa" pubrevision="${package.revision}" status="release" if:set="env.MYGET_KEY">
       <artifacts pattern="${tmp.bin.dir}/[artifact].[ext]" />
-    </ivy:publish>
+    </ivy:publish-->
   </target>
 
 
