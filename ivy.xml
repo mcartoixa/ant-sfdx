@@ -7,13 +7,13 @@
     <conf name="default" />
     <conf name="build" visibility="private" />
     <conf name="test" visibility="private" />
-    <conf name="runtime" />
+    <conf name="compile" extends="default" />
   </configurations>
   <publications>
-    <artifact conf="runtime" />
+    <artifact conf="*" />
   </publications>
-  <dependencies defaultconf="runtime">
-    <dependency org="org.json" name="json" rev="20180130" conf="runtime->default" />
+  <dependencies>
+    <dependency org="org.json" name="json" rev="20180130" conf="compile->default" />
     <dependency org="junit" name="junit" rev="4.12" conf="test->default" />
     <dependency org="xalan" name="xalan" rev="2.7.2" conf="test->default" />
     <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5.6" conf="build->default" />

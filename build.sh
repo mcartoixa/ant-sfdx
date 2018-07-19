@@ -2,10 +2,11 @@
 
 source bin/.bashrc
 
+_IVY_VERSION=2.5.0-rc1
+
 _PROJECT=build.xml
 _TARGET=build
 _VERBOSITY=info
-_IVY_VERSION=2.5.0-rc1
 
 
 usage() {

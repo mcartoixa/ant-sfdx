@@ -18,20 +18,21 @@ echo \$JAVA_HOME=$JAVA_HOME
 if [ ! -d .tmp ]; then mkdir .tmp; fi
 
 #Ant
-if [ ! -f .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz ]; then
+export ANT_HOME=$(pwd)/.tmp/apache-ant-$_ANT_VERSION
+if [ ! -f $_ANT_HOME/bin/ant ]; then
     wget -nv --show-progress -O .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz http://apache.mirrors.ovh.net/ftp.apache.org/dist//ant/binaries/apache-ant-$_ANT_VERSION-bin.tar.gz
     tar -xzvf .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz -C .tmp
 fi
-export ANT_HOME=$(pwd)/.tmp/apache-ant-$_ANT_VERSION
 echo \$ANT_HOME=$ANT_HOME
 
 # PMD
 # Best would to be able to manage PMD with Apache Ivy but this looks like an impossible task...
-if [ ! -f .tmp/pmd-bin-$_PMD_VERSION/bin/run.sh ]; then
+export PMD_HOME=$(pwd)/.tmp/pmd-bin-$_PMD_VERSION
+if [ ! -f $PMD_HOME/bin/run.sh ]; then
     wget -nv --show-progress -O .tmp/pmd-bin-$_PMD_VERSION.zip https://github.com/pmd/pmd/releases/download/pmd_releases%2F$_PMD_VERSION/pmd-bin-$_PMD_VERSION.zip
     unzip .tmp/pmd-bin-$_PMD_VERSION.zip -d .tmp
 fi
-export PMD_HOME=$(pwd)/.tmp/pmd-bin-$_PMD_VERSION
 echo \$PMD_HOME=$PMD_HOME
+echo
 
 export PATH=$ANT_HOME/bin:$PATH

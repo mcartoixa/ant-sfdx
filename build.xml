@@ -34,9 +34,9 @@
   <target name="prepare.ivy" depends="prepare.ivy.tasks,prepare.ivy.credentials">
     <ivy:retrieve pattern="${ivy.lib.dir}/[conf]/[artifact].[ext]" log="quiet" />
 
-    <pathconvert property="ivy.runtime.classpath" dirsep="/" pathsep=":">
+    <pathconvert property="ivy.compile.classpath" dirsep="/" pathsep=":">
       <path>
-        <fileset dir="${ivy.lib.dir}/runtime" includes="**/*.jar" />
+        <fileset dir="${ivy.lib.dir}/compile" includes="**/*.jar" />
       </path>
       <map from="${basedir}${file.separator}" to="" />
     </pathconvert>
@@ -48,7 +48,7 @@
     </pathconvert>
     <uptodate property="prepare.ivy.nbproject.isuptodate" srcfile="${basedir}/ivy.xml" targetfile="nbproject/project.properties" />
     <propertyfile file="nbproject/project.properties" unless:set="prepare.ivy.nbproject.isuptodate">
-      <entry operation="=" key="ivy.runtime.classpath" value="${ivy.runtime.classpath}" />
+      <entry operation="=" key="ivy.compile.classpath" value="${ivy.compile.classpath}" />
       <entry operation="=" key="ivy.test.classpath" value="${ivy.test.classpath}" />
     </propertyfile>
   </target>
@@ -197,10 +197,10 @@
   </target>
 
   <target name="package.ivy" depends="prepare.ivy.credentials,prepare.version" if="package.revision">
-    <ivy:makepom ivyfile="${basedir}/ivy.xml" pomfile="${tmp.out.bin.dir}/pom.xml" conf="runtime">
-      <mapping conf="default" scope="compile" />
+    <ivy:makepom ivyfile="${basedir}/ivy.xml" pomfile="${tmp.out.bin.dir}/pom.xml" conf="default,compile">
+      <mapping conf="default" scope="default" />
       <mapping conf="test" scope="test" />
-      <mapping conf="runtime" scope="runtime" />
+      <mapping conf="compile" scope="compile" />
     </ivy:makepom>
     <!-- This fails miserably, quite possibly due to my inability to make Ivy work with Apache Http Client -->
     <!--ivy:publish resolver="mcartoixa" pubrevision="${package.revision}" status="release" if:set="env.MYGET_KEY">
