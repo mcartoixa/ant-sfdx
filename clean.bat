@@ -14,7 +14,7 @@ IF "%PROCESSOR_ARCHITECTURE%"=="x86" (
 IF /I "%~1"=="/NoPause"             SET NO_PAUSE=1& SHIFT & GOTO ARGS_PARSE
 IF    "%~1" EQU ""  GOTO ARGS_DONE
 ECHO [31mUnknown command-line switch[0m %~1 1>&2
-GOTO ERROR_USAGE
+GOTO END
 
 :ARGS_DONE
 
@@ -24,4 +24,5 @@ IF EXIST tmp RMDIR /S /Q tmp
 
 IF EXIST build.log DEL /F build.log
 
+:END
 @IF NOT "%NO_PAUSE%"=="1" PAUSE
