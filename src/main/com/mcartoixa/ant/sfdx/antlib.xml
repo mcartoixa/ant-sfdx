@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <antlib>
   <taskdef name="force-apex-execute" classname="com.mcartoixa.ant.sfdx.force.apex.ExecuteTask" />
+  <taskdef name="force-apex-test-run" classname="com.mcartoixa.ant.sfdx.force.apex.test.RunTask" />
   <taskdef name="force-data-record-create" classname="com.mcartoixa.ant.sfdx.force.data.record.CreateTask" />
   <taskdef name="force-data-tree-import" classname="com.mcartoixa.ant.sfdx.force.data.tree.ImportTask" />
-  <taskdef name="force-limits-api-display" classname="com.mcartoixa.ant.sfdx.force.lmiits.api.DisplayTask" />
+  <taskdef name="force-limits-api-display" classname="com.mcartoixa.ant.sfdx.force.limits.api.DisplayTask" />
   <taskdef name="force-org-create" classname="com.mcartoixa.ant.sfdx.force.org.CreateTask" />
   <taskdef name="force-org-delete" classname="com.mcartoixa.ant.sfdx.force.org.DeleteTask" />
   <taskdef name="force-org-display" classname="com.mcartoixa.ant.sfdx.force.org.DisplayTask" />

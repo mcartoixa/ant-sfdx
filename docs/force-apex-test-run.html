@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Copyright 2018 Mathieu Cartoixa.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-us">
+  <head>
+    <title>force-apex-test-run Task</title>
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+  </head>
+
+  <body>
+    <h2>force-apex-test-run Task</h2>
+
+    <h3>Description</h3>
+    <p>Runs Apex tests.</p>
+    <p>It executes the <a href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_force_apex.htm#cli_reference_test_run" target="_blank">force-apex-test-run</a> command.</p>
+    <p><strong>Note</strong>: This task depends on the same external libraries as the <a href="https://ant.apache.org/manual/Tasks/junitreport.html">junitreport</a> task.
+      See <a href="https://ant.apache.org/manual/install.html#librarydependencies">Library Dependencies</a> for more
+      information.</p>
+
+    <h3>Parameters</h3>
+    <p>In addition to <a href="common.html">the attributes used by every ant-sfdx task</a>, this task uses the following attributes:</p>
+    <table class="attr">
+      <thead>
+        <tr>
+          <th scope="col">Attribute</th>
+          <th scope="col">Command line equivalent</th>
+          <th scope="col">Description</th>
+          <th scope="col">Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>synchronous</td>
+          <td>-y</td>
+          <td>Indicates whether test methods from a single Apex class are run synchronously.</td>
+          <td>No; defaults to <q>false</q>.</td>
+        </tr>
+        <tr>
+          <td>targetusername</td>
+          <td>-u</td>
+          <td>A username or alias for the target org.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>testlevel</td>
+          <td>-l</td>
+          <td>Specifies which tests to run. Accepatble values are:
+            <ul>
+              <li><q>RunAllTestsInOrg</q>: all tests in your org and in installed managed packages are run.</li>
+              <li><q>RunLocalTests</q>: all tests in your org are run, except the ones that originate from installed managed packages.</li>
+              <li><q>RunSpecifiedTests</q>: only the tests that you specify are run.</li>
+            </ul>
+          </td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>todir</td>
+          <td>-d</td>
+          <td>The directory to store test run files.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>tofile</td>
+          <td />
+          <td>The file to copy the JUnit results to.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>wait</td>
+          <td>-w</td>
+          <td>The streaming client socket timeout, in minutes.</td>
+          <td>No; defaults to <q>6</q>.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Parameters specified as nested elements</h3>
+
+    <h4>class</h4>
+    <p>Specifies an Apex test class name to run. This parameter cannot be used in conjonction with a <var>suite</var> or a <var>test</var> parameter.</p>
+
+    <h4>suite</h4>
+    <p>Specifies an Apex test suite to run. This parameter cannot be used in conjonction with a <var>class</var> or a <var>test</var> parameter.</p>
+
+    <h4>test</h4>
+    <p>Specifies an Apex test class name or ID and test method, if applicable, to run. This parameter cannot be used in conjonction with a <var>class</var> or a <var>suite</var> parameter.</p>
+
+    <h4>report</h4>
+    <p>Generate a browsable report.</p>
+    <h5>Parameters</h5>
+    <table class="attr">
+      <tr>
+        <th scope="col">Attribute</th>
+        <th scope="col">Description</th>
+        <th scope="col">Required</th>
+      </tr>
+      <tr>
+        <td>format</td>
+        <td>The format of the generated report. Must be either <q>noframes</q> or <q>frames</q>.</td>
+        <td>No; defaults to <q>frames</q></td>
+      </tr>
+      <tr>
+        <td>styledir</td>
+        <td>The directory where the stylesheets are defined. They must be conforming to the following
+          conventions:
+          <ul>
+            <li><q>frames</q> format: the stylesheet must be named <samp>junit-frames.xsl</samp>,
+              or <samp>junit-frames-saxon.xsl</samp> if you are using Saxon 9+.</li>
+            <li><q>noframes</q> format: the stylesheet must be named <samp>junit-noframes.xsl</samp>,
+              or <samp>junit-noframes-saxon.xsl</samp> if you are using Saxon 9+.</li>
+          </ul>
+        </td>
+        <td>No; defaults to embedded stylesheets</td>
+      </tr>
+      <tr>
+        <td>todir</td>
+        <td>The directory where the files resulting from the transformation should be written to.</td>
+        <td>No; defaults to current directory</td>
+      </tr>
+    </table>
+    <p>This task assumes the following concerning the <q>frames</q> and <q>noframes</q> formats:</p>
+    <ul>
+      <li>The <q>frames</q> format uses a stylesheet which is generating output <em>only</em> by
+        redirecting.</li>
+      <li>The <q>noframes</q> format does not use redirecting and generates one file
+        called <samp>junit-noframes.html</samp>.</li>
+    </ul>
+    <p>Custom versions of <samp>junit-frames.xsl</samp> or <samp>junit-noframes.xsl</samp> must adhere
+      to the above conventions.</p>
+    <h5>Nested element of the report tag</h5>
+    <h6>param</h6>
+    <p><em>Since Ant 1.7</em>, the <var>report</var> tag supports nested <code>param</code> tags.  These
+      tags can pass XSL parameters to the stylesheet.</p>
+    <table class="attr">
+      <tr>
+        <th scope="col">Attribute</th>
+        <th scope="col">Description</th>
+        <th scope="col">Required</th>
+      </tr>
+      <tr>
+        <td>name</td>
+        <td>Name of the XSL parameter</td>
+        <td>Yes</td>
+      </tr>
+      <tr>
+        <td>expression</td>
+        <td>Text value to be placed into the <code>param</code>.<br/>Was originally intended to be an
+          XSL expression.</td>
+        <td>Yes</td>
+      </tr>
+      <tr>
+        <td>if</td>
+        <td>The <code>param</code> will only be passed <a href="https://ant.apache.org/manual/properties.html#if+unless">if this
+            property is set</a>.</td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td>unless</td>
+        <td>The <code>param</code> will not be passed <a href="https://ant.apache.org/manual/properties.html#if+unless">if this
+            property is set</a>.</td>
+        <td>No</td>
+      </tr>
+    </table>
+
+    <p>The built-in stylesheets support the following parameters:</p>
+    <table>
+      <tr>
+        <th scope="col">XSL Parameter</th>
+        <th scope="col">Description</th>
+        <th scope="col">Required</th>
+      </tr>
+      <tr>
+        <td>TITLE</td>
+        <td>Title used in <code>&lt;title&gt;</code> and <code>&lt;h1&gt;</code> tags</td>
+        <td>No; defaults to <q>Unit Test Results</q></td>
+      </tr>
+    </table>
+
+    <h6>classpath</h6>
+    <p><em>Since Ant 1.9.5</em>. Like for the <a href="https://ant.apache.org/manual/Tasks/style.html#classpath">XSLT task</a>, a
+      nested <code>&lt;classpath&gt;</code> will be used to load the processor.</p>
+
+    <h6>factory</h6>
+    <p><em>Since Ant 1.9.5</em>. Like for the <a href="https://ant.apache.org/manual/Tasks/style.html#classpath">XSLT task</a>, a
+      nested <code>&lt;factory&gt;</code> can be used to specify factory settings.</p>
+  </body>
+</html>

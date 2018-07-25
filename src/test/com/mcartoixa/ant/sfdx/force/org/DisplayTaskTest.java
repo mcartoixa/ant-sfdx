@@ -63,7 +63,6 @@ public class DisplayTaskTest {
 
     @Ignore("Not ready yet: environment specific")
     @Test
-
     public void testDevw() {
         buildRule.executeTarget("execute-devw");
         Assert.assertEquals("", buildRule.getFullLog());

@@ -146,6 +146,8 @@ public abstract class SfdxTask extends Task {
             exe.setCommandline(cmd.getCommandline());
             final int r = exe.execute();
 
+            this.onExecuted(r);
+
             if (this.getFailOnError() && Execute.isFailure(r) || this.hasErrorMessage()) {
                 String message = this.errorMessage;
                 if (message == null || message.isEmpty()) {
@@ -213,6 +215,10 @@ public abstract class SfdxTask extends Task {
 
     protected boolean hasErrorMessage() {
         return this.errorMessage != null && !this.errorMessage.isEmpty();
+    }
+
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
+    protected void onExecuted(final int result) {
     }
 
     protected void setErrorMessage(final String message) {

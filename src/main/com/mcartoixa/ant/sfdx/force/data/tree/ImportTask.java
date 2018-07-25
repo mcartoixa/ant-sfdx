@@ -68,7 +68,6 @@ public class ImportTask extends SfdxTask {
 
             super.doParse(json);
         }
-
     }
 
     public ImportTask() {
