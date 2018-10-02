@@ -1,0 +1,19 @@
+pool:
+  vmImage: 'vs2017-win2016'
+
+steps:
+- task: JavaToolInstaller@0
+  inputs:
+    versionSpec: '8'
+
+- task: BatchScript@1
+  inputs:
+    filename: build/SetEnv.bat
+
+- task: Ant@1
+  inputs:
+    buildFile: 'build.xml'
+    options:  -noclasspath -nouserlib -noinput -lib 'ivy/lib/test' -Dverbosity=info
+    publishJUnitResults: true
+    testResultsFiles: 'tmp/obj/test/results/**/TEST-*.xml'
+    antHomeDirectory: '.tmp/apache-ant-1.9.13'

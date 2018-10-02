@@ -1,7 +1,7 @@
 #!/bin/bash
 
-_ANT_VERSION=1.9.12
-_PMD_VERSION=6.5.0
+_ANT_VERSION=1.9.13
+_PMD_VERSION=6.6.0
 
 if [ -f ~/.bashrc ]; then
     . ~/.bashrc;
@@ -20,7 +20,7 @@ if [ ! -d .tmp ]; then mkdir .tmp; fi
 #Ant
 export ANT_HOME=$(pwd)/.tmp/apache-ant-$_ANT_VERSION
 if [ ! -f $_ANT_HOME/bin/ant ]; then
-    wget -nv --show-progress -O .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz http://apache.mirrors.ovh.net/ftp.apache.org/dist//ant/binaries/apache-ant-$_ANT_VERSION-bin.tar.gz
+    wget -nv --show-progress -O .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz http://mirrors.ircam.fr/pub/apache//ant/binaries/apache-ant-$_ANT_VERSION-bin.tar.gz
     tar -xzvf .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz -C .tmp
 fi
 echo \$ANT_HOME=$ANT_HOME

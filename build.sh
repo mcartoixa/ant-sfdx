@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source bin/.bashrc
+source build/.bashrc
 
 _IVY_VERSION=2.5.0-rc1
 

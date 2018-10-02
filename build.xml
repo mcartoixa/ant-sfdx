@@ -7,7 +7,7 @@
 
   <property environment="env" />
 
-  <property name="bin.dir" value="${basedir}/bin" />
+  <property name="bin.dir" value="${basedir}/build" />
   <property name="ivy.dir" value="${basedir}/ivy" />
   <property name="tmp.dir" value="${basedir}/tmp" />
 
@@ -141,16 +141,18 @@
       <arg value="--3" />
       <arg line="--progress-rate=0" />
       <arg value="--xml" />
+      <arg line="--exclude-dir=.tmp,.vscode,build,ivy,tmp" />
       <arg line="--out &quot;${tmp.dir}/cloc-results.xml&quot;" />
-      <arg value="src" />
+      <arg value="." />
     </exec>
     <exec executable="perl" osfamily="unix">
       <arg line="&quot;${bin.dir}/cloc.pl&quot;" />
       <arg value="--3" />
       <arg line="--progress-rate=0" />
       <arg value="--xml" />
+      <arg line="--exclude-dir=.tmp,.vscode,build,ivy,tmp" />
       <arg line="--out &quot;${tmp.dir}/cloc-results.xml&quot;" />
-      <arg value="src" />
+      <arg value="." />
     </exec>
   </target>
 

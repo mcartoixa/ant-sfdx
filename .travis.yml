@@ -11,8 +11,8 @@ cache:
 
 env:
   global:
-    - _ANT_VERSION=1.9.12
-    - _PMD_VERSION=6.5.0
+    - _ANT_VERSION=1.9.13
+    - _PMD_VERSION=6.6.0
     - _IVY_VERSION=2.5.0-rc1
     - PACKAGE_VERSION=0.2.$TRAVIS_BUILD_NUMBER
 
@@ -22,7 +22,7 @@ install:
   - if [ ! -f .tmp/node_modules/.bin/sfdx ]; then cd .tmp && npm install sfdx-cli && cd ..; fi
   - export PATH=$TRAVIS_BUILD_DIR/.tmp/node_modules/.bin:$PATH
   # Apache Ant
-  - if [ ! -f .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz ]; then wget -nv -O .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz http://apache.mirrors.ovh.net/ftp.apache.org/dist//ant/binaries/apache-ant-$_ANT_VERSION-bin.tar.gz && tar -xzvf .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz -C .tmp; fi
+  - if [ ! -f .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz ]; then wget -nv -O .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz http://mirrors.ircam.fr/pub/apache//ant/binaries/apache-ant-$_ANT_VERSION-bin.tar.gz && tar -xzvf .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz -C .tmp; fi
   - export ANT_HOME=$TRAVIS_BUILD_DIR/.tmp/apache-ant-$_ANT_VERSION
   # PMD
   - if [ ! -f .tmp/pmd-bin-$_PMD_VERSION.zip ]; then wget -nv -O .tmp/pmd-bin-$_PMD_VERSION.zip https://github.com/pmd/pmd/releases/download/pmd_releases%2F$_PMD_VERSION/pmd-bin-$_PMD_VERSION.zip && unzip .tmp/pmd-bin-$_PMD_VERSION.zip -d .tmp; fi

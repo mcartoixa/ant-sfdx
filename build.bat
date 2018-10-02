@@ -93,7 +93,7 @@ GOTO ERROR_USAGE
 :: Set environment variables
 :: -------------------------------------------------------------------
 :SETENV
-CALL bin\SetEnv.bat
+CALL build\SetEnv.bat
 IF ERRORLEVEL 1 GOTO END_ERROR
 ECHO.
 GOTO BUILD

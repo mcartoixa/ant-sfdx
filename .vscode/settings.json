@@ -4,20 +4,28 @@
         ".tmp/": true,
         ".vs/": true,
         "ivy/": true,
-        "nbproject/private/": true,
-        "tmp/": true
+        "nbproject/private/": true
+    },
+    "files.watcherExclude": {
+      "**/.git/objects/**": true,
+      "**/.git/subtree-cache/**": true,
+      "**/.sonarlint/*/**": true,
+      "**/.tmp/*/**": true,
+      "**/.vs/*/**": true,
+      "**/ivy/*/**": true,
+      "**/tmp/*/**": true
     },
     "terminal.integrated.shell.linux": "bash",
     "terminal.integrated.shell.osx": "bash",
     "terminal.integrated.shell.windows": "cmd.exe",
     "terminal.integrated.shellArgs.linux": [
         "--rcfile",
-        "bin/.bashrc",
+        "build/.bashrc",
         "-i"
     ],
     "terminal.integrated.shellArgs.osx": [
         "--rcfile",
-        "bin/.bashrc",
+        "build/.bashrc",
         "-i",
         "-c",
         "/bin/zsh",
@@ -26,6 +34,6 @@
     "terminal.integrated.shellArgs.windows": [
         "/V:ON",
         "/K",
-        "bin\\SetEnv.bat"
+        "build\\SetEnv.bat"
     ]
 }
