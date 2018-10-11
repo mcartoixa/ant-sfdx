@@ -37,11 +37,6 @@ public class ConvertTask extends SfdxTask {
         super();
     }
 
-    @Override
-    protected String getCommand() {
-        return "force:source:convert";
-    }
-
     public void setPackageName(final String name) {
         if (name != null && !name.isEmpty()) {
             final Commandline.Argument arg = getCommandline().createArgument();
@@ -67,6 +62,11 @@ public class ConvertTask extends SfdxTask {
             arg.setPrefix("-r");
             arg.setValue(dir.getAbsolutePath());
         }
+    }
+
+    @Override
+    protected String getCommand() {
+        return "force:source:convert";
     }
 
     @Override

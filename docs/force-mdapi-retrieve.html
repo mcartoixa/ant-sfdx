@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Copyright 2018 Mathieu Cartoixa.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-us">
+  <head>
+    <title>force-mdapi-retrieve Task</title>
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+  </head>
+
+  <body>
+    <h2>force-mdapi-retrieve Task</h2>
+
+    <h3>Description</h3>
+    <p>Uses Metadata API to retrieve a .zip of XML files that represent metadata from the targeted org.</p>
+    <p>It executes the <a href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_force_mdapi.htm#cli_reference_retrieve" target="_blank">force-mdapi-retrieve</a> command.</p>
+
+    <h3>Parameters</h3>
+    <p>In addition to <a href="common.html">the attributes used by every ant-sfdx task</a>, this task uses the following attributes:</p>
+    <table class="attr">
+      <thead>
+        <tr>
+          <th scope="col">Attribute</th>
+          <th scope="col">Command line equivalent</th>
+          <th scope="col">Description</th>
+          <th scope="col">Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>retrievetargetdir</td>
+          <td>-r</td>
+          <td>The root of the directory structure where the retrieved .zip or metadata files are put.</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>apiversion</td>
+          <td>-a</td>
+          <td>Use to override the default, which is the latest version supported by your CLI plug-in, with the version in your package.xml file.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>unpackaged</td>
+          <td>-k</td>
+          <td>The path for the manifest file that specifies the components to retrieve.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>sourcedir</td>
+          <td>-d</td>
+          <td>The source directory to use instead of the default manifest specified in sfdx-config.json.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>singlepackage</td>
+          <td>-s</td>
+          <td>Specifies whether only a single package is being retrieved (true) or more than one package (false).</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>targetusername</td>
+          <td>-u</td>
+          <td>A username or alias for the target org.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>wait</td>
+          <td>-w</td>
+          <td>The number of minutes to wait for the command to complete.</td>
+          <td>No; defaults to <q>-1</q>.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Parameters specified as nested elements</h3>
+
+    <h4>packagename</h4>
+    <p>Specifies a package name to retrieve.</p>
+  </body>
+</html>
