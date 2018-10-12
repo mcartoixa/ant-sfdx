@@ -5,6 +5,7 @@ VERIFY OTHER 2>nul
 
 
 SET _ANT_VERSION=1.9.13
+SET _CLOC_VERSION=1.80
 SET _PMD_VERSION=6.6.0
 
 
@@ -40,6 +41,13 @@ IF NOT EXIST "%PMD_HOME%\bin\pmd.bat" (
     IF ERRORLEVEL 1 GOTO ERROR_PMD
 )
 ECHO SET PMD_HOME=%PMD_HOME%
+
+IF NOT EXIST "%CD%\.tmp\cloc.exe" (
+    IF NOT EXIST .tmp MKDIR .tmp
+    powershell.exe -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "& { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest https://github.com/AlDanial/cloc/releases/download/v$Env:_CLOC_VERSION/cloc-$Env:_CLOC_VERSION.exe -OutFile .tmp\cloc.exe; }"
+    IF ERRORLEVEL 1 GOTO ERROR_CLOC
+)
+
 
 SET PATH=%ANT_HOME%\bin;%PATH%
 
@@ -112,11 +120,15 @@ ECHO [31mCould not find Java JDK 8[0m 1>&2
 GOTO END_ERROR
 
 :ERROR_ANT
-ECHO [31mCould not install Apache Ant 1.10[0m 1>&2
+ECHO [31mCould not install Apache Ant %_ANT_VERSION%[0m 1>&2
 GOTO END_ERROR
 
 :ERROR_PMD
-ECHO [31mCould not install PMD 6.x[0m 1>&2
+ECHO [31mCould not install %_PMD_VERSION%[0m 1>&2
+GOTO END_ERROR
+
+:ERROR_CLOC
+ECHO [31mCould not install %_CLOC_VERSION%[0m 1>&2
 GOTO END_ERROR
 
 :END_ERROR

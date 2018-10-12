@@ -12,6 +12,7 @@ cache:
 env:
   global:
     - _ANT_VERSION=1.9.13
+    - _CLOC_VERSION=1.80
     - _PMD_VERSION=6.6.0
     - _IVY_VERSION=2.5.0-rc1
     - PACKAGE_VERSION=0.3.$TRAVIS_BUILD_NUMBER
@@ -27,6 +28,8 @@ install:
   # PMD
   - if [ ! -f .tmp/pmd-bin-$_PMD_VERSION/bin/run.sh ]; then wget -nv -O .tmp/pmd-bin-$_PMD_VERSION.zip https://github.com/pmd/pmd/releases/download/pmd_releases%2F$_PMD_VERSION/pmd-bin-$_PMD_VERSION.zip && unzip .tmp/pmd-bin-$_PMD_VERSION.zip -d .tmp; fi
   - export PMD_HOME=$TRAVIS_BUILD_DIR/.tmp/pmd-bin-$_PMD_VERSION
+  # CLOC
+  - if [ ! -f .tmp/cloc.pl ]; then wget -nv -O .tmp/cloc.pl https://github.com/AlDanial/cloc/releases/download/v$_CLOC_VERSION/cloc-$_CLOC_VERSION.pl; fi
   # Apache Ivy
   - if [ ! -d ivy ]; then mkdir ivy; fi
   - if [ ! -f ivy/ivy.jar ]; then wget -nv -O ivy/ivy.jar https://repo1.maven.org/maven2/org/apache/ivy/ivy/$_IVY_VERSION/ivy-$_IVY_VERSION.jar; fi

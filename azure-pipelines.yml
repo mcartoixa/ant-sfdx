@@ -4,6 +4,7 @@ pool:
 
 variables:
   _ANT_VERSION: 1.9.13
+  _CLOC_VERSION: 1.80
   _PMD_VERSION: 6.6.0
   IVY_VERSION: 2.5.0-rc1
   ANT_HOME:
@@ -38,6 +39,13 @@ steps:
         IF ERRORLEVEL 1 GOTO ERROR_PMD
     )
   displayName: Install PMD $(_PMD_VERSION)
+- script: |
+    IF NOT EXIST "%CD%\.tmp\cloc.exe" (
+        IF NOT EXIST .tmp MKDIR .tmp
+        powershell.exe -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "& { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest https://github.com/AlDanial/cloc/releases/download/v$Env:_CLOC_VERSION/cloc-$Env:_CLOC_VERSION.exe -OutFile .tmp\cloc.exe; }"
+        IF ERRORLEVEL 1 GOTO ERROR_CLOC
+    )
+  displayName: Install CLOC $(_CLOC_VERSION)
 - script: |
     IF NOT EXIST ivy MKDIR ivy
     PUSHD ivy

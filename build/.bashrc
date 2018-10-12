@@ -1,6 +1,7 @@
 #!/bin/bash
 
 _ANT_VERSION=1.9.13
+_CLOC_VERSION=1.80
 _PMD_VERSION=6.6.0
 
 if [ -f ~/.bashrc ]; then
@@ -34,5 +35,9 @@ if [ ! -f $PMD_HOME/bin/run.sh ]; then
 fi
 echo \$PMD_HOME=$PMD_HOME
 echo
+
+if [ ! -f $(pwd)/.tmp/cloc.pl ]; then
+    wget -nv --show-progress -O .tmp/cloc.pl https://github.com/AlDanial/cloc/releases/download/v$_CLOC_VERSION/cloc-$_CLOC_VERSION.pl
+fi
 
 export PATH=$ANT_HOME/bin:$PATH

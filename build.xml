@@ -10,6 +10,7 @@
   <property name="bin.dir" value="${basedir}/build" />
   <property name="ivy.dir" value="${basedir}/ivy" />
   <property name="tmp.dir" value="${basedir}/tmp" />
+  <property name="_tmp.dir" value="${basedir}/.tmp" />
 
   <property name="ivy.lib.dir" value="${ivy.dir}/lib" />
 
@@ -137,7 +138,7 @@
   <target name="analysis" depends="prepare.log,analysis.pmd,analysis.cloc" description="Performs code analysis on the project." />
 
   <target name="analysis.cloc" depends="prepare.tmp" description="Runs CLOC on the project.">
-    <exec executable="${bin.dir}/cloc.exe" osfamily="windows">
+    <exec executable="${_tmp.dir}/cloc.exe" osfamily="windows">
       <arg value="--3" />
       <arg line="--progress-rate=0" />
       <arg value="--xml" />
@@ -146,7 +147,7 @@
       <arg value="." />
     </exec>
     <exec executable="perl" osfamily="unix">
-      <arg line="&quot;${bin.dir}/cloc.pl&quot;" />
+      <arg line="&quot;${_tmp.dir}/cloc.pl&quot;" />
       <arg value="--3" />
       <arg line="--progress-rate=0" />
       <arg value="--xml" />
