@@ -142,6 +142,7 @@ public abstract class SfdxTask extends Task {
             final Project p = getProject();
             final Execute exe = new Execute(new SfdxOutputParser(getParser()));
             exe.setAntRun(p);
+            exe.setEnvironment(new String[]{"SFDX_AUTOUPDATE_DISABLE=true"});
             exe.setWorkingDirectory(p.getBaseDir());
             exe.setCommandline(cmd.getCommandline());
             final int r = exe.execute();
