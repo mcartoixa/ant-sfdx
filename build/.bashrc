@@ -37,7 +37,7 @@ echo \$PMD_HOME=$PMD_HOME
 echo
 
 if [ ! -f $(pwd)/.tmp/cloc.pl ]; then
-    wget -nv --show-progress -O .tmp/cloc.pl https://github.com/AlDanial/cloc/releases/download/v$_CLOC_VERSION/cloc-$_CLOC_VERSION.pl
+    wget -nv --show-progress -O .tmp/cloc.pl https://github.com/AlDanial/cloc/releases/download/$_CLOC_VERSION/cloc-$_CLOC_VERSION.pl
 fi
 
 export PATH=$ANT_HOME/bin:$PATH
