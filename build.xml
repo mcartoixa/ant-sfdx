@@ -124,6 +124,9 @@
 
   <!-- test  (already defined by NetBeans) -->
   <target name="test-report" if="have.tests" depends="init">
+    <diagnostics/>
+    <echoproperties />
+
     <junitreport todir="${tmp.dir}" tofile="junit-results.xml">
       <fileset dir="${tmp.obj.dir}/test/results">
         <include name="TEST-*.xml" />

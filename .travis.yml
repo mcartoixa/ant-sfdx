@@ -20,8 +20,9 @@ env:
 install:
   - if [ ! -d .tmp ]; then mkdir .tmp; fi
   # SFDX CLI
-  - if [ ! -f .tmp/node_modules/.bin/sfdx ]; then cd .tmp && npm install sfdx-cli && cd ..; fi
-  - export PATH=$TRAVIS_BUILD_DIR/.tmp/node_modules/.bin:$PATH
+  - if [ ! -f .tmp/node_modules/.bin/sfdx ]; then cd .tmp && npm install sfdx-cli --loglevel info --cache npm-cache && cd ..; fi
+  - export SFDX_HOME=$TRAVIS_BUILD_DIR/.tmp/node_modules/.bin
+  - export PATH=$SFDX_HOME:$PATH
   # Apache Ant
   - if [ ! -f .tmp/apache-ant-$_ANT_VERSION/bin/ant ]; then wget -nv -O .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz http://mirrors.ircam.fr/pub/apache//ant/binaries/apache-ant-$_ANT_VERSION-bin.tar.gz && tar -xzvf .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz -C .tmp; fi
   - export ANT_HOME=$TRAVIS_BUILD_DIR/.tmp/apache-ant-$_ANT_VERSION

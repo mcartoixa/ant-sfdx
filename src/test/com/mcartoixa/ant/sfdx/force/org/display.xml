@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="DisplayTaskTest" basedir="." xmlns:force-org="antlib:com.mcartoixa.ant.sfdx.force.org">
+  <condition property="sfdx-path" value="sfdx.cmd" else="sfdx">
+    <os family="dos" />
+  </condition>
+
+
   <target name="init">
     <taskdef name="org-display" classname="com.mcartoixa.ant.sfdx.force.org.DisplayTask" classpath="tmp/obj/classes" />
   </target>
 
   <target name="execute-default" depends="init">
-    <org-display statusproperty="execute-default.status" resultproperty="execute-default.result" />
+    <org-display statusproperty="execute-default.status" resultproperty="execute-default.result" executable="${sfdx-path}" />
   </target>
 
   <target name="execute-default-noerror" depends="init">
-    <org-display failonerror="false" statusproperty="execute-default-noerror.status" resultproperty="execute-default-noerror.result" />
+    <org-display failonerror="false" statusproperty="execute-default-noerror.status" resultproperty="execute-default-noerror.result" executable="${sfdx-path}" />
   </target>
 
   <target name="execute-devw" depends="init">
-    <org-display targetusername="devw" statusproperty="execute-devw.status" resultproperty="execute-devw.result" />
+    <org-display targetusername="devw" statusproperty="execute-devw.status" resultproperty="execute-devw.result" executable="${sfdx-path}" />
   </target>
 </project>

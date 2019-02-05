@@ -11,11 +11,12 @@ variables:
 
 steps:
 - script: |
+    ECHO ##vso[task.setvariable variable=SFDX_HOME]%AGENT_BUILDDIRECTORY%\.tmp\node_modules\.bin
     ECHO ##vso[task.prependpath]%AGENT_BUILDDIRECTORY%\.tmp\node_modules\.bin
-    IF NOT EXIST .tmp MKDIR .tmp
-    IF NOT EXIST .tmp\node_modules\.bin\sfdx (
+    IF NOT EXIST ".tmp\node_modules\.bin\sfdx.cmd" (
+      IF NOT EXIST .tmp MKDIR .tmp
       PUSHD .tmp
-      npm install sfdx-cli
+      npm install sfdx-cli --loglevel info --cache .tmp\npm-cache
       POPD
     )
   displayName: Install SFDX CLI
@@ -56,9 +57,6 @@ steps:
     POPD
     "%JAVA_HOME%\bin\java.exe" -jar ivy\ivy.jar -retrieve "ivy\lib\[conf]\[artifact].[ext]"
   displayName: Install and execute Ivy $(IVY_VERSION)
-
-- script: SET
-  displayName: ECHO environment variables
 
 - task: Ant@1
   inputs:

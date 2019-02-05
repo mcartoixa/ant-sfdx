@@ -19,6 +19,16 @@ CALL :SetJavaHomeHelper > nul 2>&1
 IF ERRORLEVEL 1 GOTO ERROR_JDK
 ECHO SET JAVA_HOME=%JAVA_HOME%
 
+:: SFDX CLI
+SET SFDX_HOME=%CD%\.tmp\node_modules\.bin
+IF NOT EXIST "%SFDX_HOME%\sfdx.cmd" (
+    IF NOT EXIST .tmp MKDIR .tmp
+    PUSHD .tmp
+    npm install sfdx-cli --loglevel info --cache .tmp\npm-cache
+    POPD
+)
+ECHO SET SFDX_HOME=%SFDX_HOME%
+
 :: Ant
 SET ANT_HOME=%CD%\.tmp\apache-ant-%_ANT_VERSION%
 IF NOT EXIST "%ANT_HOME%\bin\ant.bat" (
@@ -49,7 +59,7 @@ IF NOT EXIST "%CD%\.tmp\cloc.exe" (
 )
 
 
-SET PATH=%ANT_HOME%\bin;%PATH%
+SET PATH=%SFDX_HOME%;%ANT_HOME%\bin;%PATH%
 
 :: sfdx hates spaces in LOCALAPPDATA
 FOR %%d IN ("%LOCALAPPDATA%") DO SET LOCALAPPDATA=%%~sd

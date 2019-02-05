@@ -18,6 +18,15 @@ echo \$JAVA_HOME=$JAVA_HOME
 
 if [ ! -d .tmp ]; then mkdir .tmp; fi
 
+#SFDX CLI
+export SFDX_HOME=$TRAVIS_BUILD_DIR/.tmp/node_modules/.bin
+if [ ! -f .tmp/node_modules/.bin/sfdx ]; then
+    cd .tmp
+    npm install sfdx-cli --loglevel info --cache npm-cache
+    cd ..
+fi
+echo \$SFDX_HOME=$SFDX_HOME
+
 #Ant
 export ANT_HOME=$(pwd)/.tmp/apache-ant-$_ANT_VERSION
 if [ ! -f $_ANT_HOME/bin/ant ]; then
@@ -40,4 +49,4 @@ if [ ! -f $(pwd)/.tmp/cloc.pl ]; then
     wget -nv --show-progress -O .tmp/cloc.pl https://github.com/AlDanial/cloc/releases/download/$_CLOC_VERSION/cloc-$_CLOC_VERSION.pl
 fi
 
-export PATH=$ANT_HOME/bin:$PATH
+export PATH=$SFDX_HOME:$ANT_HOME/bin:$PATH

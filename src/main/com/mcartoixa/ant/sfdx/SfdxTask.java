@@ -19,6 +19,7 @@ package com.mcartoixa.ant.sfdx;
  *
  * @author mcartoixa
  */
+import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
@@ -26,6 +27,7 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.taskdefs.Execute;
+import org.apache.tools.ant.taskdefs.condition.Os;
 import org.apache.tools.ant.types.Commandline;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -128,7 +130,6 @@ public abstract class SfdxTask extends Task {
 
     protected SfdxTask() {
         super();
-        cmd.setExecutable("sfdx");
     }
 
     @Override
@@ -161,6 +162,10 @@ public abstract class SfdxTask extends Task {
         }
     }
 
+    public void setExecutable(final String executable) {
+        this.cmd.setExecutable(executable);
+    }
+
     /**
      * If false, note errors but continue.
      *
@@ -188,8 +193,28 @@ public abstract class SfdxTask extends Task {
         this.statusProperty = statusProperty;
     }
 
-    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // cf. https://stackoverflow.com/a/21608520/8696
     protected void checkConfiguration() {
+        if (cmd.getExecutable() == null) {
+            cmd.setExecutable("sfdx");
+            if (IS_DOS) {
+                final String path = System.getenv("PATH");
+                final String pathSeparator = System.getProperty("path.separator");
+
+                for (final String pathElement : path.split(pathSeparator)) {
+                    final File command = new File(pathElement, "sfdx.cmd");
+                    if (command.isFile()) {
+                        cmd.setExecutable("sfdx.cmd");
+                        break;
+                    }
+                    final File executable = new File(pathElement, "sfdx.exe");
+                    if (executable.isFile()) {
+                        cmd.setExecutable("sfdx.exe");
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     protected void createArguments() {
@@ -227,6 +252,11 @@ public abstract class SfdxTask extends Task {
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
+    /* default */ String getExecutable() {
+        return this.cmd.getExecutable();
+    }
+
+    @SuppressWarnings("PMD.DefaultPackage")
     /* default */ String getResultProperty() {
         return this.resultProperty;
     }
@@ -242,4 +272,6 @@ public abstract class SfdxTask extends Task {
     private transient boolean quiet = false;
     private transient String resultProperty;
     private transient String statusProperty;
+
+    private static final boolean IS_DOS = Os.isFamily("dos");
 }
