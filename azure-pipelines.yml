@@ -13,16 +13,13 @@ steps:
 - script: |
     ECHO ##vso[task.setvariable variable=SFDX_HOME]%AGENT_BUILDDIRECTORY%\.tmp\node_modules\.bin
     ECHO ##vso[task.prependpath]%AGENT_BUILDDIRECTORY%\.tmp\node_modules\.bin
-    IF NOT EXIST ".tmp\node_modules\.bin\sfdx.cmd" (
-      IF NOT EXIST .tmp MKDIR .tmp
-      PUSHD .tmp
-      npm install sfdx-cli --loglevel info --cache .tmp\npm-cache
-      POPD
-    )
+    PUSHD .tmp
+    npm install sfdx-cli --loglevel info --cache npm-cache
+    POPD
   displayName: Install SFDX CLI
 - script: |
     ECHO ##vso[task.setvariable variable=ANT_HOME]%AGENT_BUILDDIRECTORY%\.tmp\apache-ant-%_ANT_VERSION%
-    IF NOT EXIST "%ANT_HOME%\bin\ant.bat" (
+    IF NOT EXIST "%AGENT_BUILDDIRECTORY%\.tmp\apache-ant-%_ANT_VERSION%\bin\ant.bat" (
         IF NOT EXIST .tmp MKDIR .tmp
         powershell.exe -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "& { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest http://mirrors.ircam.fr/pub/apache//ant/binaries/apache-ant-$Env:_ANT_VERSION-bin.zip -OutFile .tmp\apache-ant-$Env:_ANT_VERSION-bin.zip; }"
         IF ERRORLEVEL 1 GOTO ERROR_ANT
@@ -32,7 +29,7 @@ steps:
   displayName: Install Ant $(_ANT_VERSION)
 - script: |
     ECHO ##vso[task.setvariable variable=PMD_HOME]%AGENT_BUILDDIRECTORY%\.tmp\pmd-bin-%_PMD_VERSION%
-    IF NOT EXIST "%PMD_HOME%\bin\pmd.bat" (
+    IF NOT EXIST "%AGENT_BUILDDIRECTORY%\.tmp\pmd-bin-%_PMD_VERSION%\bin\pmd.bat" (
         IF NOT EXIST .tmp MKDIR .tmp
         powershell.exe -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "& { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest https://github.com/pmd/pmd/releases/download/pmd_releases%%2F$Env:_PMD_VERSION/pmd-bin-$Env:_PMD_VERSION.zip -OutFile .tmp\pmd-bin-$Env:_PMD_VERSION.zip; }"
         IF ERRORLEVEL 1 GOTO ERROR_PMD
@@ -64,6 +61,6 @@ steps:
     options:  -noclasspath -nouserlib -noinput -lib 'ivy/lib/test' -Dverbosity=verbose
     targets: release
     publishJUnitResults: true
-    testResultsFiles: 'tmp/obj/test/results/**/TEST-*.xml'
-    antHomeDirectory: '.tmp/apache-ant-$(_ANT_VERSION)'
-- script: ECHO ##vso[build.uploadlog]%AGENT_BUILDDIRECTORY%\build.log
+    testResultsFiles: '$(Agent.BuildDirectory)\tmp\obj\test\results\**\TEST-*.xml'
+    antHomeDirectory: '$(Agent.BuildDirectory)\.tmp\apache-ant-$(_ANT_VERSION)'
+- script: ECHO ##vso[build.uploadlog]$(Agent.BuildDirectory)\build.log

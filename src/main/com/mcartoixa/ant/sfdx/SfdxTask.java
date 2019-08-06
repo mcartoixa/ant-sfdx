@@ -146,6 +146,9 @@ public abstract class SfdxTask extends Task {
             exe.setEnvironment(new String[]{"SFDX_AUTOUPDATE_DISABLE=true"});
             exe.setWorkingDirectory(p.getBaseDir());
             exe.setCommandline(cmd.getCommandline());
+            if (cmd.getExecutable().endsWith(".cmd")) {
+                exe.setVMLauncher(false);
+            }
             final int r = exe.execute();
 
             this.onExecuted(r);

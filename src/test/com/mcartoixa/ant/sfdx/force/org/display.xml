@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="DisplayTaskTest" basedir="." xmlns:force-org="antlib:com.mcartoixa.ant.sfdx.force.org">
-  <condition property="sfdx-path" value="sfdx.cmd" else="sfdx">
+  <condition property="sfdx-path" value="..\..\..\..\..\..\..\..\.tmp/node_modules/.bin/sfdx.cmd" else="../../../../../../../../.tmp/node_modules/.bin/sfdx">
     <os family="dos" />
   </condition>
 

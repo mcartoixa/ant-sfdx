@@ -24,7 +24,7 @@ SET SFDX_HOME=%CD%\.tmp\node_modules\.bin
 IF NOT EXIST "%SFDX_HOME%\sfdx.cmd" (
     IF NOT EXIST .tmp MKDIR .tmp
     PUSHD .tmp
-    npm install sfdx-cli --loglevel info --cache .tmp\npm-cache
+    npm install sfdx-cli --loglevel info --cache npm-cache
     POPD
 )
 ECHO SET SFDX_HOME=%SFDX_HOME%

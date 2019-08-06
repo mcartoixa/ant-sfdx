@@ -20,7 +20,7 @@ env:
 install:
   - if [ ! -d .tmp ]; then mkdir .tmp; fi
   # SFDX CLI
-  - if [ ! -f .tmp/node_modules/.bin/sfdx ]; then cd .tmp && npm install sfdx-cli --loglevel info --cache npm-cache && cd ..; fi
+  - cd .tmp && npm install sfdx-cli --loglevel info --cache npm-cache && cd ..
   - export SFDX_HOME=$TRAVIS_BUILD_DIR/.tmp/node_modules/.bin
   - export PATH=$SFDX_HOME:$PATH
   # Apache Ant

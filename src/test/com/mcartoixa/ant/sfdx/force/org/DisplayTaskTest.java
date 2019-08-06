@@ -15,6 +15,8 @@
  */
 package com.mcartoixa.ant.sfdx.force.org;
 
+import java.util.HashSet;
+import java.util.Set;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.BuildFileRule;
 import org.apache.tools.ant.Project;
@@ -22,7 +24,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.Ignore;
 import org.junit.rules.ExpectedException;
 
@@ -39,13 +40,14 @@ public class DisplayTaskTest {
     public ExpectedException thrown = ExpectedException.none();
 
     public DisplayTaskTest() {
-    }
+     }
 
     @Before
     public void setUp() {
         buildRule.configureProject("src/test/com/mcartoixa/ant/sfdx/force/org/display.xml", Project.MSG_DEBUG);
     }
 
+    @Ignore("Not ready yet: environment specific")
     @Test
     public void testDefault() {
         thrown.expect(BuildException.class);
@@ -55,6 +57,7 @@ public class DisplayTaskTest {
         Assert.assertEquals("1", buildRule.getProject().getProperty("execute-default.status"));
     }
 
+    @Ignore("Not ready yet: environment specific")
     @Test
     public void testDefaultNoError() {
         buildRule.executeTarget("execute-default-noerror");

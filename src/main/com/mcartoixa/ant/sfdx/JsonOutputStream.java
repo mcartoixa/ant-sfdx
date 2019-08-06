@@ -15,9 +15,10 @@
  */
 package com.mcartoixa.ant.sfdx;
 
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.io.IOException;
 import org.apache.tools.ant.Project;
-import org.apache.tools.ant.util.LineOrientedOutputStream;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,7 +26,7 @@ import org.json.JSONObject;
  *
  * @author mcartoixa
  */
-public class JsonOutputStream extends LineOrientedOutputStream {
+public class JsonOutputStream extends OutputStream {
 
     /**
      * Creates a new instance of this class.
@@ -38,7 +39,16 @@ public class JsonOutputStream extends LineOrientedOutputStream {
     }
 
     @Override
-    protected void processLine(final String string) throws IOException {
+    public void close() throws IOException {
+        this.processBuffer(new String(buffer.toByteArray()));
+    }
+
+    @Override
+    public final void write(final int b) throws IOException {
+        buffer.write(b);
+    }
+
+    private void processBuffer(final String string) throws IOException {
         if (string != null && !string.isEmpty()) {
             try {
                 final JSONObject json = new JSONObject(string);
@@ -51,5 +61,8 @@ public class JsonOutputStream extends LineOrientedOutputStream {
     }
 
     private final transient ISfdxJsonParser parser;
+    private final transient ByteArrayOutputStream buffer = new ByteArrayOutputStream(INITIAL_SIZE);
+
+    private static final int INITIAL_SIZE = 132;
 
 }
