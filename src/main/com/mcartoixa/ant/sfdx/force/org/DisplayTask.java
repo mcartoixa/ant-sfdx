@@ -68,7 +68,7 @@ public class DisplayTask extends SfdxTask {
 
     public void setTargetUserName(final String userName) {
         if (userName != null && !userName.isEmpty()) {
-            final Argument arg = getCommandline().createArgument();
+            final Argument arg = this.getCommandline().createArgument();
             arg.setPrefix("-u");
             arg.setValue(userName);
         }

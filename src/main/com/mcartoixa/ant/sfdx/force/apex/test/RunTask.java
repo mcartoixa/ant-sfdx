@@ -235,6 +235,8 @@ public class RunTask extends SfdxTask {
         if (!this.classes.isEmpty() ? !this.suites.isEmpty() || !this.tests.isEmpty() : !this.suites.isEmpty() && !this.tests.isEmpty()) {
             throw new BuildException("The class, suite and test nested elements are mutually exclusive.");
         }
+
+        super.checkConfiguration();
     }
 
     @SuppressWarnings("PMD.ConfusingTernary")

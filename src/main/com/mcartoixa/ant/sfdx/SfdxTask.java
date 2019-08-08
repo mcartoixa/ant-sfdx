@@ -136,7 +136,7 @@ public abstract class SfdxTask extends Task {
     public void execute() throws BuildException {
         this.checkConfiguration();
 
-        cmd.createArgument(true).setValue(getCommand());
+        this.getCommandline().createArgument(true).setValue(getCommand());
         createArguments();
 
         try {
@@ -145,8 +145,8 @@ public abstract class SfdxTask extends Task {
             exe.setAntRun(p);
             exe.setEnvironment(new String[]{"SFDX_AUTOUPDATE_DISABLE=true"});
             exe.setWorkingDirectory(p.getBaseDir());
-            exe.setCommandline(cmd.getCommandline());
-            if (cmd.getExecutable().endsWith(".cmd")) {
+            exe.setCommandline(this.getCommandline().getCommandline());
+            if (this.getExecutable().endsWith(".cmd")) {
                 exe.setVMLauncher(false);
             }
             final int r = exe.execute();
@@ -166,7 +166,7 @@ public abstract class SfdxTask extends Task {
     }
 
     public void setExecutable(final String executable) {
-        this.cmd.setExecutable(executable);
+        this.getCommandline().setExecutable(executable);
     }
 
     /**
@@ -198,8 +198,8 @@ public abstract class SfdxTask extends Task {
 
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis") // cf. https://stackoverflow.com/a/21608520/8696
     protected void checkConfiguration() {
-        if (cmd.getExecutable() == null) {
-            cmd.setExecutable("sfdx");
+        if (this.getExecutable() == null) {
+            this.setExecutable("sfdx");
             if (IS_DOS) {
                 final String path = System.getenv("PATH");
                 final String pathSeparator = System.getProperty("path.separator");
@@ -207,12 +207,12 @@ public abstract class SfdxTask extends Task {
                 for (final String pathElement : path.split(pathSeparator)) {
                     final File command = new File(pathElement, "sfdx.cmd");
                     if (command.isFile()) {
-                        cmd.setExecutable("sfdx.cmd");
+                        this.setExecutable("sfdx.cmd");
                         break;
                     }
                     final File executable = new File(pathElement, "sfdx.exe");
                     if (executable.isFile()) {
-                        cmd.setExecutable("sfdx.exe");
+                        this.setExecutable("sfdx.exe");
                         break;
                     }
                 }
@@ -221,13 +221,13 @@ public abstract class SfdxTask extends Task {
     }
 
     protected void createArguments() {
-        getCommandline().createArgument().setValue("--json");
+        this.getCommandline().createArgument().setValue("--json");
     }
 
     protected abstract String getCommand();
 
     protected Commandline getCommandline() {
-        return cmd;
+        return this.cmd;
     }
 
     protected boolean getFailOnError() {
@@ -256,7 +256,7 @@ public abstract class SfdxTask extends Task {
 
     @SuppressWarnings("PMD.DefaultPackage")
     /* default */ String getExecutable() {
-        return this.cmd.getExecutable();
+        return this.getCommandline().getExecutable();
     }
 
     @SuppressWarnings("PMD.DefaultPackage")

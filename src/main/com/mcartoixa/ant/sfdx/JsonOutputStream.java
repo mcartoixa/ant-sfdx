@@ -54,8 +54,8 @@ public class JsonOutputStream extends OutputStream {
                 final JSONObject json = new JSONObject(string);
                 parser.parse(json);
             } catch (JSONException jex) {
-                parser.log(jex.getLocalizedMessage(), Project.MSG_DEBUG);
-                parser.log(string, Project.MSG_WARN);
+                parser.log(jex.getLocalizedMessage(), Project.MSG_WARN);
+                parser.log(string, Project.MSG_VERBOSE);
             }
         }
     }

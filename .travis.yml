@@ -15,7 +15,7 @@ env:
     - _CLOC_VERSION=1.80
     - _PMD_VERSION=6.6.0
     - _IVY_VERSION=2.5.0-rc1
-    - PACKAGE_VERSION=0.3.$TRAVIS_BUILD_NUMBER
+    - PACKAGE_VERSION=0.4.$TRAVIS_BUILD_NUMBER
 
 install:
   - if [ ! -d .tmp ]; then mkdir .tmp; fi

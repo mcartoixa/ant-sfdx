@@ -79,6 +79,8 @@ public class ImportTask extends SfdxTask {
         if (this.fileSets.isEmpty() && this.resources == null) {
             throw new BuildException("No resources specified", getLocation());
         }
+
+        super.checkConfiguration();
     }
 
     @Override
@@ -161,7 +163,7 @@ public class ImportTask extends SfdxTask {
             }
         }
         if (sobjecttreefiles.length() > 0) {
-            final Commandline.Argument arg = getCommandline().createArgument();
+            final Commandline.Argument arg = this.getCommandline().createArgument();
             arg.setPrefix("-f");
             arg.setValue(sobjecttreefiles.toString());
         }
