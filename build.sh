@@ -39,8 +39,8 @@ failed() {
 # Note: Currently, last one on the command line wins (ex: rebuild clean == clean)
 for i in "$@"; do
     case $1 in
-        analysis|build|clean|compile|package|rebuild|test) _TARGET=$1 ;;
-        -l|--log) _VERBOSITY=verbose ;;
+        analysis|build|compile|package|rebuild|test) _TARGET=$1 ;;
+        clean) _TARGET=clean; rm -rf .tmp/; rm -rf tmp ;;
         --help) usage ;;
         *) usage; error "Unknown option" ;;
     esac

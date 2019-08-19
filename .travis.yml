@@ -11,9 +11,9 @@ cache:
 
 env:
   global:
-    - _ANT_VERSION=1.9.13
-    - _CLOC_VERSION=1.80
-    - _PMD_VERSION=6.6.0
+    - _ANT_VERSION=1.9.14
+    - _CLOC_VERSION=1.82
+    - _PMD_VERSION=6.17.0
     - _IVY_VERSION=2.5.0-rc1
     - PACKAGE_VERSION=0.4.$TRAVIS_BUILD_NUMBER
 

@@ -70,7 +70,7 @@ IF "%PROCESSOR_ARCHITECTURE%"=="x86" (
 ::IF NOT "x%~5"=="x" GOTO ERROR_USAGE
 
 :ARGS_PARSE
-IF /I "%~1"=="clean"                SET TARGET=clean& SHIFT & GOTO ARGS_PARSE
+IF /I "%~1"=="clean"                SET TARGET=clean& RMDIR /S /Q .tmp 2>nul& RMDIR /S /Q tmp 2>nul& SHIFT & GOTO ARGS_PARSE
 IF /I "%~1"=="analysis"             SET TARGET=analysis& SHIFT & GOTO ARGS_PARSE
 IF /I "%~1"=="compile"              SET TARGET=compile& SHIFT & GOTO ARGS_PARSE
 IF /I "%~1"=="test"                 SET TARGET=test& SHIFT & GOTO ARGS_PARSE

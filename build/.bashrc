@@ -1,7 +1,7 @@
 #!/bin/bash
 
-_ANT_VERSION=1.9.13
-_CLOC_VERSION=1.80
+_ANT_VERSION=1.9.14
+_CLOC_VERSION=1.82
 _PMD_VERSION=6.6.0
 
 if [ -f ~/.bashrc ]; then

@@ -3,9 +3,9 @@ pool:
   vmImage: 'vs2017-win2016'
 
 variables:
-  _ANT_VERSION: 1.9.13
-  _CLOC_VERSION: 1.80
-  _PMD_VERSION: 6.6.0
+  _ANT_VERSION: 1.9.14
+  _CLOC_VERSION: 1.82
+  _PMD_VERSION: 6.17.0
   IVY_VERSION: 2.5.0-rc1
   ANT_HOME:
 
@@ -19,6 +19,7 @@ steps:
   displayName: Install SFDX CLI
 - script: |
     ECHO ##vso[task.setvariable variable=ANT_HOME]%AGENT_BUILDDIRECTORY%\.tmp\apache-ant-%_ANT_VERSION%
+    ECHO ##vso[task.prependpath]%AGENT_BUILDDIRECTORY%\.tmp\apache-ant-%_ANT_VERSION%\bin
     IF NOT EXIST "%CD%\.tmp\apache-ant-%_ANT_VERSION%\bin\ant.bat" (
         IF NOT EXIST .tmp MKDIR .tmp
         powershell.exe -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "& { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest http://mirrors.ircam.fr/pub/apache//ant/binaries/apache-ant-$Env:_ANT_VERSION-bin.zip -OutFile .tmp\apache-ant-$Env:_ANT_VERSION-bin.zip; }"
@@ -63,4 +64,5 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '$(Agent.BuildDirectory)\tmp\obj\test\results\**\TEST-*.xml'
     antHomeDirectory: '$(Agent.BuildDirectory)\.tmp\apache-ant-$(_ANT_VERSION)'
+    jdkVersionOption: 1.8
 - script: ECHO ##vso[build.uploadlog]$(Agent.BuildDirectory)\build.log

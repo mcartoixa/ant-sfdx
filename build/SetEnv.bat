@@ -4,9 +4,9 @@
 VERIFY OTHER 2>nul
 
 
-SET _ANT_VERSION=1.9.13
-SET _CLOC_VERSION=1.80
-SET _PMD_VERSION=6.6.0
+SET _ANT_VERSION=1.9.14
+SET _CLOC_VERSION=1.82
+SET _PMD_VERSION=6.17.0
 
 
 :: -------------------------------------------------------------------
