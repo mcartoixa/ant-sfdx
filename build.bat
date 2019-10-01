@@ -1,6 +1,6 @@
 @ECHO OFF
 ::--------------------------------------------------------------------
-:: Usage: "build [clean | compile | test | analysis | package | build | rebuild | release] [/log] [/NoPause] [/?]"
+:: Usage: "build [clean | compile | test | analyze | package | build | rebuild | release] [/log] [/NoPause] [/?]"
 ::
 ::                 /NoPause  - Does not pause after completion
 ::                 /log      - Creates an extensive log file
@@ -24,7 +24,7 @@ GOTO ARGS
 
 :SHOW_USAGE
 ECHO.
-ECHO Usage: "build [clean | compile | test | analysis | package | build | rebuild | release ] [/log] [/NoPause] [/?]"
+ECHO Usage: "build [clean | compile | test | analyze | package | build | rebuild | release ] [/log] [/NoPause] [/?]"
 ECHO.
 ECHO.                /NoPause  - Does not pause after completion
 ECHO.                /log      - Creates an extensive log file
@@ -70,8 +70,8 @@ IF "%PROCESSOR_ARCHITECTURE%"=="x86" (
 ::IF NOT "x%~5"=="x" GOTO ERROR_USAGE
 
 :ARGS_PARSE
-IF /I "%~1"=="clean"                SET TARGET=clean& RMDIR /S /Q .tmp 2>nul& RMDIR /S /Q tmp 2>nul& SHIFT & GOTO ARGS_PARSE
-IF /I "%~1"=="analysis"             SET TARGET=analysis& SHIFT & GOTO ARGS_PARSE
+IF /I "%~1"=="clean"                SET TARGET=clean& RMDIR /S /Q .tmp 2>nul& RMDIR /S /Q ivy 2>nul& RMDIR /S /Q tmp 2>nul& RMDIR /F build.log 2>nul& SHIFT & GOTO ARGS_PARSE
+IF /I "%~1"=="analyze"              SET TARGET=analyze& SHIFT & GOTO ARGS_PARSE
 IF /I "%~1"=="compile"              SET TARGET=compile& SHIFT & GOTO ARGS_PARSE
 IF /I "%~1"=="test"                 SET TARGET=test& SHIFT & GOTO ARGS_PARSE
 IF /I "%~1"=="package"              SET TARGET=package& SHIFT & GOTO ARGS_PARSE

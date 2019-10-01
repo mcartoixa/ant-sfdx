@@ -132,6 +132,7 @@ public abstract class SfdxTask extends Task {
         super();
     }
 
+    @SuppressWarnings("PMD.AvoidUncheckedExceptionsInSignatures")
     @Override
     public void execute() throws BuildException {
         this.checkConfiguration();

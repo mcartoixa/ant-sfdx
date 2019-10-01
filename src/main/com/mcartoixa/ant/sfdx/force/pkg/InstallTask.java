@@ -63,9 +63,13 @@ public class InstallTask extends SfdxTask {
         super();
     }
 
+    @SuppressWarnings("PMD.AvoidUncheckedExceptionsInSignatures")
     @Override
     public void execute() throws BuildException {
-        this.log("Package " + this.getPackage() + " is being installed...", Project.MSG_INFO);
+        if (!this.getQuiet()) {
+            this.log("Package " + this.getPackage() + " is being installed...", Project.MSG_INFO);
+        }
+
         super.execute();
     }
 

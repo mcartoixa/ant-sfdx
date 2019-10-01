@@ -12,7 +12,7 @@ _VERBOSITY=info
 usage() {
     cat <<EOF
 Usage: $0 [TARGET] [OPTION]
-    TARGET          analysis|build|clean|compile|package|rebuild|test
+    TARGET          analyze|build|clean|compile|package|rebuild|test
     OPTION
         --log       Creates an extensive build.log file
         --help      Shows this help
@@ -39,8 +39,8 @@ failed() {
 # Note: Currently, last one on the command line wins (ex: rebuild clean == clean)
 for i in "$@"; do
     case $1 in
-        analysis|build|compile|package|rebuild|test) _TARGET=$1 ;;
-        clean) _TARGET=clean; rm -rf .tmp/; rm -rf tmp ;;
+        analyze|build|compile|package|rebuild|test) _TARGET=$1 ;;
+        clean) _TARGET=clean; rm -Rfd .tmp/; rm -Rfd ivy; rm -Rfd tmp; rm -f build.log ;;
         --help) usage ;;
         *) usage; error "Unknown option" ;;
     esac

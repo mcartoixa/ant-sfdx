@@ -90,6 +90,7 @@ public class PushTask extends SfdxTask {
         super();
     }
 
+    @SuppressWarnings("PMD.AvoidUncheckedExceptionsInSignatures")
     @Override
     public void execute() throws BuildException {
         if (!this.getQuiet()) {

@@ -13,6 +13,7 @@ steps:
 - script: |
     ECHO ##vso[task.setvariable variable=SFDX_HOME]%AGENT_BUILDDIRECTORY%\.tmp\node_modules\.bin
     ECHO ##vso[task.prependpath]%AGENT_BUILDDIRECTORY%\.tmp\node_modules\.bin
+    IF NOT EXIST .tmp MKDIR .tmp
     PUSHD .tmp
     npm install sfdx-cli --loglevel info --cache npm-cache
     POPD

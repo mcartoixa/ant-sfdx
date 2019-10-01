@@ -37,7 +37,7 @@ install:
   - $JAVA_HOME/bin/java -jar ivy/ivy.jar -retrieve "ivy/lib/[conf]/[artifact].[ext]"
 
 script:
-  - $ANT_HOME/bin/ant -noclasspath -nouserlib -noinput -lib "ivy/lib/test" -lib "$PMD_HOME/lib" -logger org.apache.tools.ant.listener.AnsiColorLogger -f build.xml release
+  - $ANT_HOME/bin/ant -noclasspath -nouserlib -noinput -lib "ivy/lib/test" -logger org.apache.tools.ant.listener.AnsiColorLogger -f build.xml release
 
 deploy:
   provider: releases

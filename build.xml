@@ -134,10 +134,10 @@
 
 
 
-  <!-- analysis -->
-  <target name="analysis" depends="prepare.log,analysis.pmd,analysis.cloc" description="Performs code analysis on the project." />
+  <!-- analyze -->
+  <target name="analyze" depends="prepare.log,analyze.pmd,analyze.cloc" description="Performs code analysis on the project." />
 
-  <target name="analysis.cloc" depends="prepare.tmp" description="Runs CLOC on the project.">
+  <target name="analyze.cloc" depends="prepare.tmp" description="Runs CLOC on the project.">
     <exec executable="${_tmp.dir}/cloc.exe" osfamily="windows">
       <arg value="--3" />
       <arg line="--progress-rate=0" />
@@ -157,7 +157,7 @@
     </exec>
   </target>
 
-  <target name="analysis.pmd" depends="prepare.tmp,prepare.ivy,init" if="env.PMD_HOME" description="Runs PMD on the project.">
+  <target name="analyze.pmd" depends="prepare.tmp,prepare.ivy,init" if="env.PMD_HOME" description="Runs PMD on the project.">
     <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask">
       <classpath>
         <fileset dir="${env.PMD_HOME}/lib">
@@ -214,7 +214,7 @@
 
 
   <!-- build -->
-  <target name="build" depends="prepare.log,compile,test,analysis" description="Builds the project." />
+  <target name="build" depends="prepare.log,compile,test,analyze" description="Builds the project." />
   <!-- rebuild -->
   <target name="rebuild" depends="prepare.log,clean,build" description="Rebuilds the project." />
   <!-- release -->
