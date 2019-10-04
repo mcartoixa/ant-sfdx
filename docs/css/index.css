@@ -6,7 +6,7 @@
  *  (the "License"); you may not use this file except in compliance with
  *  the License.  You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,53 +16,53 @@
  *
  */
 body {
-    font-family: “Palatino Linotype”, Palatino, Georgia, “Century Schoolbook”, serif;
+    font-family: "Palatino Linotype", Palatino, Georgia, "Century Schoolbook", serif;
 }
 
 h2 {
-    font-size: 200%;
-    background-color: white;
+  font-size: 200%;
+  background-color: white;
 }
 
 h3 {
-    font-size: 130%;
-    color: white;
-    background-color: #525d76;
+  font-size: 130%;
+  color: white;
+  background-color: #525d76;
 }
 
 h4 {
-    color: white;
-    background-color: #828da6;
+  color: white;
+  background-color: #828da6;
 }
 
 h5 {
-    font-size: 100%;
-    color: white;
-    background-color: #a6adbe;
-    margin-top: .5rem;
-    margin-bottom: .5rem;
+  font-size: 100%;
+  color: white;
+  background-color: #a6adbe;
+  margin-top: .5rem;
+  margin-bottom: .5rem;
 }
 
 h6 {
-    font-size: 100%;
-    color: white;
-    background-color: #c1c5d1;
-    margin-top: .5rem;
-    margin-bottom: .5rem;
+  font-size: 100%;
+  color: white;
+  background-color: #c1c5d1;
+  margin-top: .5rem;
+  margin-bottom: .5rem;
 }
 
 h5 + p, h6 + p {
-    margin-top: .5rem;
-    margin-bottom: .5rem;
+  margin-top: .5rem;
+  margin-bottom: .5rem;
 }
 
 h3 > a, h4 > a, h5 > a, h6 > a {
-    color: white;
+   color: white;
 }
 
 h3 > a:visited, h4 > a:visited, h5 > a:visited, h6 > a:visited,
 h3 > a:hover, h4 > a:hover, h5 > a:hover, h6 > a:hover {
-    color: lightskyblue;
+   color: lightskyblue;
 }
 
 var {
@@ -99,10 +99,10 @@ h3 > var {
 }
 
 pre {
-    background-color: #efefef;
-    margin-right: 4rem;
-    margin-left: 4rem;
-    font-size: 1.125rem;
+   background-color: #efefef;
+   margin-right: 4rem;
+   margin-left: 4rem;
+   font-size: 1.125rem;
 }
 
 pre var, code var {
@@ -111,23 +111,23 @@ pre var, code var {
 
 /* code snippets in examples and tutorials */
 .code {
-    background: #efefef;
+   background: #efefef;
 }
 
 /* highlight console input */
 .input, kbd {
-    color: white;
-    background: darkseagreen;
-    overflow: hidden;
-    text-overflow: ellipsis;
+   color: white;
+   background: darkseagreen;
+   overflow: hidden;
+   text-overflow: ellipsis;
 }
 
 /* highlight console output */
 .output {
-    color: white;
-    background: #837a67;
-    overflow: hidden;
-    text-overflow: ellipsis;
+   color: white;
+   background: #837a67;
+   overflow: hidden;
+   text-overflow: ellipsis;
 }
 
 /* a workaround for invisible
@@ -140,9 +140,9 @@ pre.input:hover, pre.output:hover {
 }
 
 td {
-    vertical-align: top;
-    background-color: #eeeeee;
-    color: black;
+   vertical-align: top;
+   background-color: #eeeeee;
+   color: black;
 }
 
 tr:hover > td {
@@ -150,9 +150,9 @@ tr:hover > td {
 }
 
 th {
-    background-color: silver;
-    color: black;
-    vertical-align: middle;
+   background-color: silver;
+   color: black;
+   vertical-align: middle;
 }
 
 td pre {
@@ -175,11 +175,6 @@ table.attr td:first-child {
     font-style: italic;
 }
 
-table.attr td:nth-child(2) {
-    font-family: "Lucida Console", Monaco, monospace;
-    font-size: 0.8rem;
-}
-
 table.attr td:last-child {
     text-align: center;
 }
@@ -189,7 +184,7 @@ table.attr td.center, h1.center, p.center {
 }
 
 table.attr td.left {
-    font-family: “Palatino Linotype”, Palatino, Georgia, “Century Schoolbook”, serif;
+    font-family: "Palatino Linotype", Palatino, Georgia, "Century Schoolbook", serif;
     font-size: 1rem;
     font-style: normal;
     text-align: left;
@@ -200,13 +195,13 @@ table.attr td.var {
 }
 
 td[rowspan] {
-    vertical-align: middle;
+   vertical-align: middle;
 }
 
 ul.inlinelist {
-    list-style-type: none;
-    margin-left: 0;
-    padding: 0;
+   list-style-type: none;
+   margin-left: 0;
+   padding: 0;
 }
 
 li.indent {

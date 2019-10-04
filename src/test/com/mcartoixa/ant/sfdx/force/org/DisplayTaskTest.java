@@ -15,8 +15,6 @@
  */
 package com.mcartoixa.ant.sfdx.force.org;
 
-import java.util.HashSet;
-import java.util.Set;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.BuildFileRule;
 import org.apache.tools.ant.Project;
