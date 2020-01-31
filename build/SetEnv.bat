@@ -4,9 +4,9 @@
 VERIFY OTHER 2>nul
 
 
-SET _ANT_VERSION=1.9.14
-SET _CLOC_VERSION=1.82
-SET _PMD_VERSION=6.17.0
+
+CALL :SetVersionsEnvHelper 2>nul
+
 
 
 :: -------------------------------------------------------------------
@@ -15,16 +15,29 @@ SET _PMD_VERSION=6.17.0
 CALL :SetLocalEnvHelper 2>nul
 
 :: Java
-CALL :SetJavaHomeHelper > nul 2>&1
-IF ERRORLEVEL 1 GOTO ERROR_JDK
+IF NOT "%1" == "/useCurrentJavaHome" (
+    CALL :SetJavaHomeHelper > nul 2>&1
+    IF ERRORLEVEL 1 GOTO ERROR_JDK
+)
 ECHO SET JAVA_HOME=%JAVA_HOME%
+
+:: Node.js
+SET NODEJS_HOME=%CD%\.tmp\node-v%_NODEJS_VERSION%-win-x64
+IF NOT EXIST "%NODEJS_HOME%\npm.cmd" (
+    IF NOT EXIST .tmp MKDIR .tmp
+    powershell.exe -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "& { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest https://nodejs.org/dist/v$Env:_NODEJS_VERSION/node-v$Env:_NODEJS_VERSION-win-x64.zip -OutFile .tmp\node-v$Env:_NODEJS_VERSION-win-x64.zip; }"
+    IF ERRORLEVEL 1 GOTO ERROR_NODEJS
+    powershell.exe  -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "Expand-Archive -Path .tmp\node-v$Env:_NODEJS_VERSION-win-x64.zip -DestinationPath .tmp -Force"
+    IF ERRORLEVEL 1 GOTO ERROR_NODEJS
+)
+ECHO SET NODEJS_HOME=%NODEJS_HOME%
 
 :: SFDX CLI
 SET SFDX_HOME=%CD%\.tmp\node_modules\.bin
 IF NOT EXIST "%SFDX_HOME%\sfdx.cmd" (
     IF NOT EXIST .tmp MKDIR .tmp
     PUSHD .tmp
-    npm install sfdx-cli --loglevel info --cache npm-cache
+    CALL "%NODEJS_HOME%\npm.cmd" install sfdx-cli --cache npm-cache
     POPD
 )
 ECHO SET SFDX_HOME=%SFDX_HOME%
@@ -70,6 +83,18 @@ GOTO END
 :SetLocalEnvHelper
 IF EXIST .env (
     FOR /F "eol=# tokens=1* delims==" %%i IN (.env) DO (
+        SET "%%i=%%j"
+        ECHO SET %%i=%%j
+    )
+    ECHO.
+)
+EXIT /B 0
+
+
+
+:SetVersionsEnvHelper
+IF EXIST build\versions.env (
+    FOR /F "eol=# tokens=1* delims==" %%i IN (build\versions.env) DO (
         SET "%%i=%%j"
         ECHO SET %%i=%%j
     )

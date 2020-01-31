@@ -31,3 +31,4 @@ tmp/
 .DS_Store
 .env
 /nbproject/private/
+/bin/

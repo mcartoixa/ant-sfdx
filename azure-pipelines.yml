@@ -1,51 +1,17 @@
 pool:
-  # cf. https://github.com/Microsoft/azure-pipelines-image-generation/blob/master/images/win/Vs2017-Server2016-Readme.md
-  vmImage: 'vs2017-win2016'
+  # cf. https://github.com/actions/virtual-environments/blob/master/images/win/Windows2019-Readme.md
+  vmImage: 'windows-2019'
 
 variables:
-  _ANT_VERSION: 1.9.14
-  _CLOC_VERSION: 1.82
-  _PMD_VERSION: 6.17.0
-  IVY_VERSION: 2.5.0-rc1
-  ANT_HOME:
+  IVY_VERSION: 2.5.0
 
 steps:
-- script: |
-    ECHO ##vso[task.setvariable variable=SFDX_HOME]%AGENT_BUILDDIRECTORY%\.tmp\node_modules\.bin
-    ECHO ##vso[task.prependpath]%AGENT_BUILDDIRECTORY%\.tmp\node_modules\.bin
-    IF NOT EXIST .tmp MKDIR .tmp
-    PUSHD .tmp
-    npm install sfdx-cli --loglevel info --cache npm-cache
-    POPD
-  displayName: Install SFDX CLI
-- script: |
-    ECHO ##vso[task.setvariable variable=ANT_HOME]%AGENT_BUILDDIRECTORY%\.tmp\apache-ant-%_ANT_VERSION%
-    ECHO ##vso[task.prependpath]%AGENT_BUILDDIRECTORY%\.tmp\apache-ant-%_ANT_VERSION%\bin
-    IF NOT EXIST "%CD%\.tmp\apache-ant-%_ANT_VERSION%\bin\ant.bat" (
-        IF NOT EXIST .tmp MKDIR .tmp
-        powershell.exe -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "& { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest http://mirrors.ircam.fr/pub/apache//ant/binaries/apache-ant-$Env:_ANT_VERSION-bin.zip -OutFile .tmp\apache-ant-$Env:_ANT_VERSION-bin.zip; }"
-        IF ERRORLEVEL 1 GOTO ERROR_ANT
-        powershell.exe  -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "Expand-Archive -Path .tmp\apache-ant-$Env:_ANT_VERSION-bin.zip -DestinationPath .tmp -Force"
-        IF ERRORLEVEL 1 GOTO ERROR_ANT
-    )
-  displayName: Install Ant $(_ANT_VERSION)
-- script: |
-    ECHO ##vso[task.setvariable variable=PMD_HOME]%AGENT_BUILDDIRECTORY%\.tmp\pmd-bin-%_PMD_VERSION%
-    IF NOT EXIST "%CD%\.tmp\pmd-bin-%_PMD_VERSION%\bin\pmd.bat" (
-        IF NOT EXIST .tmp MKDIR .tmp
-        powershell.exe -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "& { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest https://github.com/pmd/pmd/releases/download/pmd_releases%%2F$Env:_PMD_VERSION/pmd-bin-$Env:_PMD_VERSION.zip -OutFile .tmp\pmd-bin-$Env:_PMD_VERSION.zip; }"
-        IF ERRORLEVEL 1 GOTO ERROR_PMD
-        powershell.exe  -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "Expand-Archive -Path .tmp\pmd-bin-$Env:_PMD_VERSION.zip -DestinationPath .tmp -Force"
-        IF ERRORLEVEL 1 GOTO ERROR_PMD
-    )
-  displayName: Install PMD $(_PMD_VERSION)
-- script: |
-    IF NOT EXIST "%CD%\.tmp\cloc.exe" (
-        IF NOT EXIST .tmp MKDIR .tmp
-        powershell.exe -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "& { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest https://github.com/AlDanial/cloc/releases/download/$Env:_CLOC_VERSION/cloc-$Env:_CLOC_VERSION.exe -OutFile .tmp\cloc.exe; }"
-        IF ERRORLEVEL 1 GOTO ERROR_CLOC
-    )
-  displayName: Install CLOC $(_CLOC_VERSION)
+- task: BatchScript@1
+  inputs:
+    filename: build\SetEnv.bat
+    arguments: /useCurrentJavaHome
+    modifyEnvironment: True
+    workingFolder: $(Build.Repository.LocalPath)
 - script: |
     IF NOT EXIST ivy MKDIR ivy
     PUSHD ivy
@@ -60,10 +26,9 @@ steps:
 - task: Ant@1
   inputs:
     buildFile: 'build.xml'
-    options:  -noclasspath -nouserlib -noinput -lib 'ivy/lib/test' -Dverbosity=verbose
+    options: -noclasspath -nouserlib -noinput -lib ivy/lib/test -Dverbosity=verbose
     targets: release
     publishJUnitResults: true
-    testResultsFiles: '$(Agent.BuildDirectory)\tmp\obj\test\results\**\TEST-*.xml'
-    antHomeDirectory: '$(Agent.BuildDirectory)\.tmp\apache-ant-$(_ANT_VERSION)'
+    testResultsFiles: '$(Build.Repository.LocalPath)\tmp\obj\test\results\**\TEST-*.xml'
+    antHomeDirectory: '$(ANT_HOME)'
     jdkVersionOption: 1.8
-- script: ECHO ##vso[build.uploadlog]$(Agent.BuildDirectory)\build.log

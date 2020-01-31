@@ -18,7 +18,12 @@ package com.mcartoixa.ant.sfdx.force.source;
 import com.mcartoixa.ant.sfdx.ISfdxJsonParser;
 import com.mcartoixa.ant.sfdx.SfdxTask;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.apache.tools.ant.types.Commandline;
+import org.apache.tools.ant.types.Path;
+import org.apache.tools.ant.types.Reference;
 
 /**
  *
@@ -37,10 +42,22 @@ public class ConvertTask extends SfdxTask {
         super();
     }
 
-    public void setPackageName(final String name) {
-        if (name != null && !name.isEmpty()) {
+    public void addConfiguredMetadata(final MetadataNameWrapper metadata) {
+        this.metadata.add(metadata.getName());
+    }
+
+    public Path createSourcepath() {
+        if (this.sourcePath == null) {
+            this.sourcePath = new Path(this.getProject());
+        }
+        return this.sourcePath.createPath();
+    }
+
+    public void setManifest(final File manifest) {
+        if (manifest != null) {
             final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setLine("--packagename " + name);
+            arg.setPrefix("-x");
+            arg.setFile(manifest);
         }
     }
 
@@ -49,8 +66,16 @@ public class ConvertTask extends SfdxTask {
             final File dir = outputDir.isDirectory() ? outputDir : outputDir.getParentFile();
 
             final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-r");
+            arg.setPrefix("-d");
             arg.setValue(dir.getAbsolutePath());
+        }
+    }
+
+    public void setPackageName(final String name) {
+        if (name != null && !name.isEmpty()) {
+            final Commandline.Argument arg = getCommandline().createArgument();
+            arg.setPrefix("-n");
+            arg.setValue(name);
         }
     }
 
@@ -64,6 +89,19 @@ public class ConvertTask extends SfdxTask {
         }
     }
 
+    public void setSourcepath(final Path sourcePath) {
+        if (this.sourcePath == null) {
+            this.sourcePath = sourcePath;
+        } else {
+            this.sourcePath.append(sourcePath);
+        }
+    }
+
+    public void setSourcepathRef(final Reference ref) {
+        this.createSourcepath().setRefid(ref);
+
+    }
+
     @Override
     protected String getCommand() {
         return "force:source:convert";
@@ -73,4 +111,31 @@ public class ConvertTask extends SfdxTask {
     protected ISfdxJsonParser getParser() {
         return new ConvertTask.JsonParser();
     }
+
+    @Override
+    protected void createArguments() {
+        if (!this.metadata.isEmpty()) {
+            final Commandline.Argument arg = getCommandline().createArgument();
+            arg.setPrefix("-m");
+            arg.setValue(String.join(",", this.metadata));
+        }
+
+        if (this.sourcePath != null) {
+            // Commandline.Argument cannot join path with commas, so we are faking it
+            final Commandline.Argument fakeArg = new Commandline.Argument();
+            fakeArg.setPath(this.sourcePath);
+            final String[] sp = Arrays.stream(fakeArg.getParts())
+                    .map(p -> p.replace(File.pathSeparatorChar, ','))
+                    .toArray(String[]::new);
+
+            final Commandline.Argument arg = getCommandline().createArgument();
+            arg.setPrefix("-p");
+            arg.setValue(String.join(",", sp));
+        }
+
+        super.createArguments();
+    }
+
+    private transient Path sourcePath;
+    private transient final List<String> metadata = new ArrayList<>();
 }

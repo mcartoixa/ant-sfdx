@@ -41,15 +41,15 @@ limitations under the License.
       </thead>
       <tbody>
         <tr>
-          <td>rootdir</td>
-          <td>-r</td>
-          <td>A directory other than the default package directory that contains the source-formatted files to convert.</td>
-          <td>No</td>
+          <td>manifest</td>
+          <td>-x</td>
+          <td>The path for the manifest (package.xml) file that specifies the metadata types to convert.</td>
+          <td>No.</td>
         </tr>
         <tr>
           <td>outputdir</td>
           <td>-d</td>
-          <td>The output directory to store the Metadata API–formatted metadata files in.</td>
+          <td>The output directory to store the Metadata API-formatted metadata files in.</td>
           <td>No</td>
         </tr>
         <tr>
@@ -58,7 +58,38 @@ limitations under the License.
           <td>The name of the package to associate with the metadata-formatted files.</td>
           <td>No</td>
         </tr>
+        <tr>
+          <td>rootdir</td>
+          <td>-r</td>
+          <td>A directory other than the default package directory that contains the source-formatted files to convert.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>sourcepath</td>
+          <td>-p</td>
+          <td>The path to the local source file (or directory) to convert.</td>
+          <td>No</td>
+        </tr>
       </tbody>
     </table>
+
+    <h3>Parameters specified as nested elements</h3>
+
+    <h4>metadata</h4>
+    <p>Specifies the name of a metadata component to convert.</p>
+
+    <h4>sourcepath</h4>
+    <p>The <var>sourcepath</var> attribute is a <a href="https://ant.apache.org/manual/using.html#path">path-like structure</a> and can also be set via a nested <code>&lt;sourcepath&gt;</code> element.</p>
+
+    <h3>Examples</h3>
+    <pre>
+&lt;sfdx:force-source-convert sourcepath=&quot;force-app/main/default/objects/Case&quot;&gt;
+  &lt;sourcepath&gt;
+    &lt;pathelement location=&quot;force-app/main/default/objects/Contact&quot; /&gt;
+    &lt;dirset dir=&quot;force-app/main/default/objects&quot;&gt;
+      &lt;include name=&quot;Ac*&quot; /&gt;
+    &lt;/dirset&gt;
+  &lt;/sourcepath&gt;
+&lt;/sfdx:sfdx:force-source-convert&gt;</pre>
   </body>
 </html>

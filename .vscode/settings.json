@@ -16,13 +16,12 @@
       "**/tmp/*/**": true
     },
     "terminal.integrated.shell.linux": "bash",
-    "terminal.integrated.shell.osx": "bash",
-    "terminal.integrated.shell.windows": "cmd.exe",
     "terminal.integrated.shellArgs.linux": [
         "--rcfile",
         "build/.bashrc",
         "-i"
     ],
+    "terminal.integrated.shell.osx": "bash",
     "terminal.integrated.shellArgs.osx": [
         "--rcfile",
         "build/.bashrc",
@@ -31,6 +30,7 @@
         "/bin/zsh",
         "-l"
     ],
+    "terminal.integrated.shell.windows": "cmd.exe",
     "terminal.integrated.shellArgs.windows": [
         "/V:ON",
         "/K",
