@@ -13,16 +13,19 @@ These tasks can be downloaded directly [from the releases section](https://githu
 a dependency manager like [Apache Ivy](http://ant.apache.org/ivy/) (preferred). You will need the following settings in your
 `ivysettings.xml` file:
 ```xml
-<resolvers>
-  <ibiblio name="mcartoixa" m2compatible="true"
-    root="https://www.myget.org/F/mcartoixa/maven/"
-    pattern="[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"
-    checksums=""
-  />
-</resolvers>
-<modules>
-  <module organisation="mcartoixa" name="*" resolver="mcartoixa" />
-</modules>
+<ivysettings>
+  <!-- GET is required by github: HEAD returns 403 -->
+  <settings defaultResolver="default" httpRequestMethod="GET" />
+
+  <resolvers>
+    <url name="github">
+      <artifact pattern="https://github.com/[organisation]/[module]/releases/download/[revision]/[artifact].[ext]" />
+    </url>
+  </resolvers>
+  <modules>
+    <module organisation="mcartoixa" name="*" resolver="github" />
+  </modules>
+</ivysettings>
 ```
 
 ## Development
@@ -57,6 +60,6 @@ The build script at the root of the project can be used to perform different tas
 * `./build.sh release`: `rebuild` + `package`.
 
 ### Environment
-* [NetBeans](https://netbeans.org/downloads/) 8.2:
+* [NetBeans](https://netbeans.apache.org/download/index.html) 11.2:
   * [EditorConfig plugin](https://github.com/welovecoding/editorconfig-netbeans)
   * Execute the build script at least once before opening NetBeans.
