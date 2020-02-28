@@ -68,7 +68,16 @@ public abstract class SfdxTask extends Task {
             }
 
             final JSONObject result = json.optJSONObject("result");
-            if (result != null) {
+            if (result == null) {
+                final JSONArray results = json.optJSONArray("result");
+                if (results != null) {
+                    String property = SfdxTask.this.getResultProperty();
+                    if (property == null) {
+                        property = "";
+                    }
+                    parseJsonArray(property, results);
+                }
+            } else {
                 String property = SfdxTask.this.getResultProperty();
                 if (property == null) {
                     property = "";
@@ -112,11 +121,15 @@ public abstract class SfdxTask extends Task {
                 parseJsonObject(property + "." + key, (JSONObject) value);
             } else if (value instanceof JSONArray) {
                 final JSONArray array = (JSONArray) value;
-                for (int i = 0; i < array.length(); i++) {
-                    parseJsonValue(property + "." + key, Integer.toString(i), array.get(i));
-                }
+                parseJsonArray(property + "." + key, array);
             } else {
                 handleValue(property, key, value.toString());
+            }
+        }
+
+        protected void parseJsonArray(final String property, final JSONArray array) {
+            for (int i = 0; i < array.length(); i++) {
+                parseJsonValue(property, Integer.toString(i), array.get(i));
             }
         }
 
