@@ -185,14 +185,16 @@
 
   <!-- package -->
   <target name="package" depends="prepare.log,prepare.version,jar,package.ivy" description="Packages the project.">
-    <copy file="${dist.jar}" todir="${tmp.out.bin.dir}" preservelastmodified="true">
+    <copy todir="${tmp.out.bin.dir}" preservelastmodified="true">
       <resources>
         <file file="${dist.jar}" />
+        <file file="${basedir}/ivy.xml" />
       </resources>
     </copy>
     <zip destfile="${tmp.out.bin.dir}/${ant.project.name}.zip" compress="true" level="9" filesonly="true">
       <resources>
         <file file="${dist.jar}" />
+        <file file="${basedir}/ivy.xml" />
         <file file="${ivy.runtime.classpath}" />
       </resources>
       <zipfileset dir="docs" prefix="docs" />

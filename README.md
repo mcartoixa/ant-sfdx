@@ -19,6 +19,7 @@ a dependency manager like [Apache Ivy](http://ant.apache.org/ivy/) (preferred). 
 
   <resolvers>
     <url name="github">
+      <ivy pattern="https://github.com/[organisation]/[module]/releases/download/[revision]/ivy.xml" />
       <artifact pattern="https://github.com/[organisation]/[module]/releases/download/[revision]/[artifact].[ext]" />
     </url>
   </resolvers>
