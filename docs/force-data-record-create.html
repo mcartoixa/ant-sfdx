@@ -17,16 +17,16 @@ limitations under the License.
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-us">
   <head>
-    <title>force-data-tree-import Task</title>
+    <title>force-data-record-create Task</title>
     <link rel="stylesheet" type="text/css" href="css/index.css" />
   </head>
 
   <body>
-    <h2>force-data-tree-import Task</h2>
+    <h2>force-data-record-create Task</h2>
 
     <h3>Description</h3>
-    <p>Imports data into an org using the SObject Tree Save API. This data can include master-detail relationships.</p>
-    <p>It executes the <a href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_force_data.htm#cli_reference_tree_import" target="_blank">force-data-tree-import</a> command.</p>
+    <p>Creates and inserts a record.</p>
+    <p>It executes the <a href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_force_data.htm#cli_reference_record_create" target="_blank">force-data-record-create</a> command.</p>
 
     <h3>Parameters</h3>
     <p>In addition to <a href="common.html">the attributes used by every ant-sfdx task</a>, this task uses the following attributes:</p>
@@ -41,16 +41,10 @@ limitations under the License.
       </thead>
       <tbody>
         <tr>
-          <td>contenttype</td>
-          <td>-c</td>
-          <td>Provide the content type (applies to all files).</td>
-          <td>No</td>
-        </tr>
-        <tr>
-          <td>plan</td>
-          <td>-p</td>
-          <td>Path to plan to insert multiple data files that have master-detail relationships.</td>
-          <td>No</td>
+          <td>sobjecttype</td>
+          <td>-s</td>
+          <td>The sObject type of the record you are creating.</td>
+          <td>Yes</td>
         </tr>
         <tr>
           <td>targetusername</td>
@@ -58,14 +52,17 @@ limitations under the License.
           <td>A username or alias for the target org.</td>
           <td>No</td>
         </tr>
+        <tr>
+          <td>usetoolingapi</td>
+          <td>-t</td>
+          <td>If <q>true</q>, creates the record using Tooling API.</td>
+          <td>No; defaults to <q>false</q></td>
+        </tr>
       </tbody>
     </table>
 
     <h3>Parameters specified as nested elements</h3>
-    <h4>fileset</h4>
-    <p>You can use any number of nested <code>&lt;fileset&gt;</code> elements to define the record trees to insert and refer to <code>&lt;fileset&gt;</code>s defined elsewhere.</p>
-
-    <h4>filelist</h4>
-    <p>You can use any number of nested <code>&lt;filelist&gt;</code> elements to define the record trees to insert and refer to <code>&lt;filelist&gt;</code>s defined elsewhere.</p>
+    <h4>field</h4>
+    <p>Specifies the fields of the record to be created. See <a href="https://ant.apache.org/manual/Tasks/property.html" target="_blank">property</a> for usage guidelines.</p>
   </body>
 </html>
