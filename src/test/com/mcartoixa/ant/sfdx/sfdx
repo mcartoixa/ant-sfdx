@@ -1,0 +1,9 @@
+#!/bin/bash
+# Simulates the Salesforce CLI by outputting a json file corresponding to the supplied command parameter.
+# For instance sfdx.cmd force:org:list  will output the content of force\org\list.json
+
+_CURRENT_DIR="$( cd "$( dirname "$0" )" && pwd )"
+_COMMAND_PARAMETER=$1
+_RESULT_FILE_PATH=$_CURRENT_DIR/${_COMMAND_PARAMETER//://}.json
+
+cat $_RESULT_FILE_PATH

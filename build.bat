@@ -14,7 +14,7 @@ VERIFY OTHER 2>nul
 SETLOCAL ENABLEEXTENSIONS ENABLEDELAYEDEXPANSION
 IF ERRORLEVEL 1 GOTO ERROR_EXT
 
-SET IVY_VERSION=2.5.0
+
 
 SET NO_PAUSE=0
 SET PROJECT=build.xml
@@ -42,7 +42,7 @@ GOTO END
 IF NOT EXIST ivy MKDIR ivy
 PUSHD ivy
 IF NOT EXIST ivy.jar (
-    powershell.exe -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "& { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest https://repo1.maven.org/maven2/org/apache/ivy/ivy/$Env:IVY_VERSION/ivy-$Env:IVY_VERSION.jar -OutFile ivy.jar; }"
+    powershell.exe -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "& { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest https://repo1.maven.org/maven2/org/apache/ivy/ivy/$Env:_IVY_VERSION/ivy-$Env:_IVY_VERSION.jar -OutFile ivy.jar; }"
     IF ERRORLEVEL 1 GOTO END_ERROR
 )
 POPD

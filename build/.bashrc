@@ -1,5 +1,10 @@
 #!/bin/bash
 
+error() {
+    echo
+    echo -e "\033[0;31m${1}\033[0m"
+}
+
 if [ -f ~/.bashrc ]; then
     . ~/.bashrc;
 fi
@@ -11,14 +16,7 @@ if [ -f ./build/versions.env ]; then
     echo
 fi
 
-echo \$JAVA_HOME=$JAVA_HOME
 
-if [ -f ./.env ]; then
-    # xargs does not support the -d option on BSD (MacOS X)
-    export $(grep -a -v -e '^#' -e '^[[:space:]]*$' .env | tr '\n' '\0' | xargs -0)
-    grep -a -v -e '^#' -e '^[[:space:]]*$' .env | tr '\n' '\0' | xargs -0 printf "\$%s\n"
-    echo
-fi
 
 if [ ! -d .tmp ]; then mkdir .tmp; fi
 
@@ -28,23 +26,6 @@ case "$-" in
 esac
 
 
-
-#Node.js
-export NODEJS_HOME=$(pwd)/.tmp/node-v$_NODEJS_VERSION-linux-x64
-if [ ! -f $NODEJS_HOME/npm ]; then
-    wget -nv $_wget_interactive_options -O .tmp/node-v$_NODEJS_VERSION-linux-x64.tar.gz https://nodejs.org/dist/v$_NODEJS_VERSION/node-v$_NODEJS_VERSION-linux-x64.tar.gz
-    tar -xzvf .tmp/node-v$_NODEJS_VERSION-linux-x64.tar.gz -C .tmp
-fi
-echo \$NODEJS_HOME=$NODEJS_HOME
-
-#SFDX CLI
-export SFDX_HOME=$(pwd)/.tmp/node_modules/.bin
-if [ ! -f $SFDX_HOME/sfdx ]; then
-    cd .tmp
-    $NODEJS_HOME/npm install sfdx-cli --cache npm-cache
-    cd ..
-fi
-echo \$SFDX_HOME=$SFDX_HOME
 
 #Ant
 export ANT_HOME=$(pwd)/.tmp/apache-ant-$_ANT_VERSION
@@ -68,4 +49,17 @@ if [ ! -f $(pwd)/.tmp/cloc.pl ]; then
     wget -nv $_wget_interactive_options -O .tmp/cloc.pl https://github.com/AlDanial/cloc/releases/download/$_CLOC_VERSION/cloc-$_CLOC_VERSION.pl
 fi
 
-export PATH=$SFDX_HOME:$ANT_HOME/bin:$PATH
+
+
+if [ -f ./.env ]; then
+    # xargs does not support the -d option on BSD (MacOS X)
+    export $(grep -a -v -e '^#' -e '^[[:space:]]*$' .env | tr '\n' '\0' | xargs -0)
+    grep -a -v -e '^#' -e '^[[:space:]]*$' .env | tr '\n' '\0' | xargs -0 printf "\$%s\n"
+    echo
+fi
+
+if [ ! -d $JAVA_HOME ]; then error "Could not find Java JDK 8" fi
+echo \$JAVA_HOME=$JAVA_HOME
+
+
+export PATH=$ANT_HOME/bin:$PATH

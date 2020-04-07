@@ -27,7 +27,7 @@ import org.junit.rules.ExpectedException;
  *
  * @author Mathieu Cartoixa
  */
-public class DisplayTaskTest {
+public class ListTaskTest {
 
     @Rule
     public final BuildFileRule buildRule = new BuildFileRule();
@@ -35,18 +35,19 @@ public class DisplayTaskTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    public DisplayTaskTest() {
+    public ListTaskTest() {
     }
 
     @Before
     public void setUp() {
-        buildRule.configureProject("src/test/com/mcartoixa/ant/sfdx/force/org/display.xml", Project.MSG_DEBUG);
+        buildRule.configureProject("src/test/com/mcartoixa/ant/sfdx/force/org/list.xml", Project.MSG_DEBUG);
     }
 
     @Test
     public void testExecute() {
         buildRule.executeTarget("execute");
         Assert.assertEquals("0", buildRule.getProject().getProperty("execute.status"));
-        Assert.assertEquals("test@ant-sfdx.org", buildRule.getProject().getProperty("execute.result.username"));
+        Assert.assertTrue(buildRule.getFullLog().contains("ant-sfdx (00000000000000000H)  [test@ant-sfdx.org]"));
+        Assert.assertTrue(buildRule.getFullLog().contains("\t- ant-sfdx-scratch (000000000000000000) Ant SFDX [test@ant-sfdx.org]"));
     }
 }

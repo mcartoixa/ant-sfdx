@@ -2,7 +2,7 @@
 
 source build/.bashrc
 
-_IVY_VERSION=2.5.0
+
 
 _PROJECT=build.xml
 _TARGET=build

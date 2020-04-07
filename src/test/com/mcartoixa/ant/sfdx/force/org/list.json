@@ -1,0 +1,59 @@
+{
+  "status": 0,
+  "result": {
+    "nonScratchOrgs": [
+      {
+        "orgId": "00000000000000000H",
+        "accessToken": "123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abc:123456789abcdef0123456789abcdef0",
+        "instanceUrl": "https://ant-sfdx.salesforce.com/",
+        "loginUrl": "https://login.salesforce.com/",
+        "username": "test@ant-sfdx.org",
+        "clientId": "PlatformCLI",
+        "isDevHub": true,
+        "connectedStatus": "Connected",
+        "lastUsed": "2020-04-01T12:00:01.000Z",
+        "alias": "ant-sfdx"
+      },
+      {
+        "orgId": "00000000000000000S",
+        "accessToken": "123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abc:123456789abcdef0123456789abcdef0",
+        "instanceUrl": "https://ant-sfdx-sandbox.salesforce.com/",
+        "loginUrl": "https://test.salesforce.com/",
+        "username": "test@ant-sfdx.org",
+        "clientId": "PlatformCLI",
+        "connectedStatus": "Connected",
+        "lastUsed": "2020-04-01T12:00:01.000Z",
+        "alias": "ant-sfdx-sandbox"
+      }
+    ],
+    "scratchOrgs": [
+      {
+        "orgId": "000000000000000000",
+        "accessToken": "123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abc:123456789abcdef0123456789abcdef0",
+        "instanceUrl": "https://ant-sfdx-scratch.my.salesforce.com/",
+        "loginUrl": "https://scratch.salesforce.com",
+        "username": "test@ant-sfdx.org",
+        "clientId": "PlatformCLI",
+        "createdOrgInstance": "CS128",
+        "created": "1586167264905",
+        "devHubUsername": "test@ant-sfdx.org",
+        "connectedStatus": "Unknown",
+        "lastUsed": "2020-04-01T12:00:01.000Z",
+        "alias": "ant-sfdx-scratch",
+        "attributes": {
+          "type": "ScratchOrgInfo",
+          "url": "/services/data/v48.0/sobjects/ScratchOrgInfo/000000000000000000"
+        },
+        "orgName": "Ant SFDX",
+        "status": "Active",
+        "createdBy": "test@ant-sfdx.org",
+        "createdDate": "2020-01-01T00:00:01.000+0000",
+        "expirationDate": "2020-12-31",
+        "edition": "Developer",
+        "signupUsername": "test@ant-sfdx.org",
+        "devHubOrgId": "00000000000000000H",
+        "isExpired": false
+      }
+    ]
+  }
+}

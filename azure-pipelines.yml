@@ -2,9 +2,6 @@ pool:
   # cf. https://github.com/actions/virtual-environments/blob/master/images/win/Windows2019-Readme.md
   vmImage: 'windows-2019'
 
-variables:
-  IVY_VERSION: 2.5.0
-
 steps:
 - task: BatchScript@1
   inputs:
@@ -16,12 +13,12 @@ steps:
     IF NOT EXIST ivy MKDIR ivy
     PUSHD ivy
     IF NOT EXIST ivy.jar (
-        powershell.exe -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "& { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest https://repo1.maven.org/maven2/org/apache/ivy/ivy/$Env:IVY_VERSION/ivy-$Env:IVY_VERSION.jar -OutFile ivy.jar; }"
+        powershell.exe -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "& { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest https://repo1.maven.org/maven2/org/apache/ivy/ivy/$Env:_IVY_VERSION/ivy-$Env:_IVY_VERSION.jar -OutFile ivy.jar; }"
         IF ERRORLEVEL 1 GOTO END_ERROR
     )
     POPD
     "%JAVA_HOME%\bin\java.exe" -jar ivy\ivy.jar -retrieve "ivy\lib\[conf]\[artifact].[ext]"
-  displayName: Install and execute Ivy $(IVY_VERSION)
+  displayName: Install and execute Ivy $(_IVY_VERSION)
 
 - task: Ant@1
   inputs:

@@ -112,7 +112,7 @@ public class Organization {
     @Override
     public String toString() {
         return String.format(
-                "%s (%s) %s %s",
+                "%s (%s) %s [%s]",
                 alias == null ? "" : alias,
                 orgId,
                 orgName == null ? "" : orgName,

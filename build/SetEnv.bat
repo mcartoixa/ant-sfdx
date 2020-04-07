@@ -21,27 +21,6 @@ IF NOT "%1" == "/useCurrentJavaHome" (
 )
 ECHO SET JAVA_HOME=%JAVA_HOME%
 
-:: Node.js
-SET NODEJS_HOME=%CD%\.tmp\node-v%_NODEJS_VERSION%-win-x64
-IF NOT EXIST "%NODEJS_HOME%\npm.cmd" (
-    IF NOT EXIST .tmp MKDIR .tmp
-    powershell.exe -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "& { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest https://nodejs.org/dist/v$Env:_NODEJS_VERSION/node-v$Env:_NODEJS_VERSION-win-x64.zip -OutFile .tmp\node-v$Env:_NODEJS_VERSION-win-x64.zip; }"
-    IF ERRORLEVEL 1 GOTO ERROR_NODEJS
-    powershell.exe  -NoLogo -NonInteractive -ExecutionPolicy ByPass -Command "Expand-Archive -Path .tmp\node-v$Env:_NODEJS_VERSION-win-x64.zip -DestinationPath .tmp -Force"
-    IF ERRORLEVEL 1 GOTO ERROR_NODEJS
-)
-ECHO SET NODEJS_HOME=%NODEJS_HOME%
-
-:: SFDX CLI
-SET SFDX_HOME=%CD%\.tmp\node_modules\.bin
-IF NOT EXIST "%SFDX_HOME%\sfdx.cmd" (
-    IF NOT EXIST .tmp MKDIR .tmp
-    PUSHD .tmp
-    CALL "%NODEJS_HOME%\npm.cmd" install sfdx-cli --cache npm-cache
-    POPD
-)
-ECHO SET SFDX_HOME=%SFDX_HOME%
-
 :: Ant
 SET ANT_HOME=%CD%\.tmp\apache-ant-%_ANT_VERSION%
 IF NOT EXIST "%ANT_HOME%\bin\ant.bat" (
@@ -72,10 +51,7 @@ IF NOT EXIST "%CD%\.tmp\cloc.exe" (
 )
 
 
-SET PATH=%SFDX_HOME%;%ANT_HOME%\bin;%PATH%
-
-:: sfdx hates spaces in LOCALAPPDATA
-FOR %%d IN ("%LOCALAPPDATA%") DO SET LOCALAPPDATA=%%~sd
+SET PATH=%ANT_HOME%\bin;%PATH%
 GOTO END
 
 
@@ -121,29 +97,6 @@ IF "%PROCESSOR_ARCHITECTURE%"=="AMD64" (
 IF "%JAVA_HOME%"=="" EXIT /B 1
 EXIT /B 0
 
-
-
-:SetSfdxHomeHelper
-:: Interpreting a default value from the registry is cumbersome...
-SET SFDX_HOME=
-SET _SFDX_HOME=
-FOR /F "tokens=1* delims=Z" %%i IN ('REG QUERY "HKLM\SOFTWARE\sfdx" /VE') DO (
-    IF "%%j" NEQ "" (
-        SET "_SFDX_HOME=%%j"
-    )
-)
-IF "%_SFDX_HOME%"=="" (
-    FOR /F "tokens=1* delims=Z" %%i IN ('REG QUERY "HKCU\SOFTWARE\sfdx" /VE') DO (
-        IF "%%j" NEQ "" (
-            SET "_SFDX_HOME=%%j"
-        )
-    )
-)
-IF "%_SFDX_HOME%"=="" EXIT /B 1
-SET SFDX_HOME=%_SFDX_HOME:~4%
-SET SFDX_PATH=%SFDX_HOME%\bin
-SET _SFDX_HOME=
-EXIT /B 0
 
 
 :ERROR_EXT
