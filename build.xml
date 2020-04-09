@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="ant-sfdx" default="default" basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless" xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="ant-sfdx" default="default" basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless" xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:jacoco="antlib:org.jacoco.ant" xmlns:j2seproject3="http://www.netbeans.org/ns/j2se-project/3">
   <description>Builds, tests, and runs the project ant-sfdx.</description>
 
   <property name="verbosity" value="info" />
@@ -30,9 +30,21 @@
 
   <!-- prepare -->
   <target name="prepare" depends="prepare.log" />
-  <target name="-pre-init" depends="prepare.log,prepare.ivy" />
+  <target name="-pre-init" depends="prepare.log,prepare.dependencies" />
 
-  <target name="prepare.ivy" depends="prepare.ivy.tasks,prepare.ivy.credentials">
+  <target name="prepare.tasks.ivy">
+    <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant">
+      <classpath>
+        <pathelement location="${ivy.dir}/ivy.jar" />
+        <fileset dir="${ivy.lib.dir}/build">
+          <include name="**/*.jar" />
+        </fileset>
+      </classpath>
+    </taskdef>
+  </target>
+
+
+  <target name="prepare.dependencies" depends="prepare.tasks.ivy">
     <ivy:retrieve pattern="${ivy.lib.dir}/[conf]/[artifact].[ext]" log="quiet" />
 
     <pathconvert property="ivy.compile.classpath" dirsep="/" pathsep=":">
@@ -54,26 +66,10 @@
     </propertyfile>
   </target>
 
-  <target name="prepare.ivy.tasks">
-    <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant">
-      <classpath>
-        <pathelement location="${ivy.dir}/ivy.jar" />
-        <fileset dir="${ivy.lib.dir}/build">
-          <include name="**/*.jar" />
-        </fileset>
-      </classpath>
+  <target name="prepare.tasks.jacoco" depends="prepare.dependencies">
+    <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+      <classpath path="${ivy.lib.dir}/test/org.jacoco.ant.jar" />
     </taskdef>
-  </target>
-
-  <target name="prepare.ivy.credentials" depends="prepare.ivy.tasks" if="env.MYGET_KEY">
-    <echoxml file="${tmp.obj.dir}/ivysettings.xml">
-      <ivysettings>
-        <include file="${basedir}/ivysettings.xml" />
-
-        <credentials host="www.myget.org" username="mcartoixa" passwd="${env.MYGET_KEY}" />
-      </ivysettings>
-    </echoxml>
-    <ivy:configure override="true" file="${tmp.obj.dir}/ivysettings.xml" />
   </target>
 
   <target name="prepare.log">
@@ -82,6 +78,11 @@
 
   <target name="prepare.tmp">
     <mkdir dir="${tmp.dir}" />
+  </target>
+
+  <target name="prepare.jacoco" depends="prepare.tasks.jacoco">
+    <delete file="${build.test.results.dir}/jacoco.exec" quiet="true" />
+    <jacoco:agent property="test.jvmargs" destfile="${build.test.results.dir}/jacoco.exec" append="true" />
   </target>
 
   <target name="prepare.version" if="env.PACKAGE_VERSION">
@@ -101,6 +102,28 @@
     <replaceregexp file="${basedir}/manifest.mf" match="^(Implementation-Version:\s).*$" replace="\1${package.version}" byline="true" />
   </target>
 
+  <!-- Redefinition allows to add jacoco agent parameters -->
+  <target depends="-init-macrodef-test-impl,-init-macrodef-junit-impl,-init-macrodef-testng-impl" name="-init-macrodef-test">
+    <macrodef name="test" uri="http://www.netbeans.org/ns/j2se-project/3">
+      <attribute default="${includes}" name="includes"/>
+      <attribute default="${excludes}" name="excludes"/>
+      <attribute default="**" name="testincludes"/>
+      <attribute default="" name="testmethods"/>
+      <sequential>
+        <j2seproject3:test-impl excludes="@{excludes}" includes="@{includes}" testincludes="@{testincludes}" testmethods="@{testmethods}">
+          <customize>
+            <classpath>
+              <path path="${run.test.classpath}"/>
+            </classpath>
+            <jvmarg line="${endorsed.classpath.cmd.line.arg}"/>
+            <jvmarg line="${run.jvmargs}"/>
+            <jvmarg line="${run.jvmargs.ide}"/>
+            <jvmarg line="${test.jvmargs}"/>
+          </customize>
+        </j2seproject3:test-impl>
+      </sequential>
+    </macrodef>
+  </target>
 
 
   <!-- clean  (already defined by NetBeans) -->
@@ -117,19 +140,42 @@
 
 
   <!-- compile  (already defined by NetBeans) -->
-  <target name="-pre-compile" depends="prepare.ivy" />
-  <target name="-pre-compile-single" depends="prepare.ivy" />
+  <target name="-pre-compile" depends="prepare.dependencies" />
+  <target name="-pre-compile-single" depends="prepare.dependencies" />
 
 
 
   <!-- test  (already defined by NetBeans) -->
+  <target name="-pre-test-run" if="have.tests" depends="init,prepare.jacoco">
+    <mkdir dir="${build.test.results.dir}" />
+  </target>
+  <target name="-pre-test-run-single" if="have.tests" depends="init,prepare.jacoco">
+    <mkdir dir="${build.test.results.dir}" />
+  </target>
+
   <target name="test-report" if="have.tests" depends="init">
     <junitreport todir="${tmp.dir}" tofile="junit-results.xml">
-      <fileset dir="${tmp.obj.dir}/test/results">
+      <fileset dir="${build.test.results.dir}">
         <include name="TEST-*.xml" />
       </fileset>
       <report format="frames" todir="${tmp.dir}/junit-results" />
     </junitreport>
+
+    <jacoco:report>
+      <executiondata>
+        <file file="${build.test.results.dir}/jacoco.exec" />
+      </executiondata>
+      <structure name="${ant.project.name}">
+        <classfiles>
+          <fileset dir="${build.classes.dir}" />
+        </classfiles>
+        <sourcefiles encoding="UTF-8">
+          <fileset dir="${file.reference.ant-sfdx-src}" />
+        </sourcefiles>
+      </structure>
+      <html destdir="${tmp.dir}/jacoco-results" locale="en" />
+      <xml destfile="${tmp.dir}/jacoco-results.xml" />
+    </jacoco:report>
   </target>
 
 
@@ -157,7 +203,7 @@
     </exec>
   </target>
 
-  <target name="analyze.pmd" depends="prepare.tmp,prepare.ivy,init" if="env.PMD_HOME" description="Runs PMD on the project.">
+  <target name="analyze.pmd" depends="prepare.tmp,prepare.dependencies,init" if="env.PMD_HOME" description="Runs PMD on the project.">
     <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask">
       <classpath>
         <fileset dir="${env.PMD_HOME}/lib">
@@ -184,7 +230,7 @@
 
 
   <!-- package -->
-  <target name="package" depends="prepare.log,prepare.version,jar,package.ivy" description="Packages the project.">
+  <target name="package" depends="prepare.log,prepare.version,jar,package.pom" description="Packages the project.">
     <copy todir="${tmp.out.bin.dir}" preservelastmodified="true">
       <resources>
         <file file="${dist.jar}" />
@@ -201,16 +247,12 @@
     </zip>
   </target>
 
-  <target name="package.ivy" depends="prepare.ivy.credentials,prepare.version" if="package.revision">
+  <target name="package.pom" depends="prepare.version" if="package.revision">
     <ivy:makepom ivyfile="${basedir}/ivy.xml" pomfile="${tmp.out.bin.dir}/pom.xml" conf="default,compile">
       <mapping conf="default" scope="default" />
       <mapping conf="test" scope="test" />
       <mapping conf="compile" scope="compile" />
     </ivy:makepom>
-    <!-- This fails miserably, quite possibly due to my inability to make Ivy work with Apache Http Client -->
-    <!--ivy:publish resolver="mcartoixa" pubrevision="${package.revision}" status="release" if:set="env.MYGET_KEY">
-      <artifacts pattern="${tmp.bin.dir}/[artifact].[ext]" />
-    </ivy:publish-->
   </target>
 
 

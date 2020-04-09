@@ -1,6 +1,7 @@
 # ant-sfdx
 [![Build status](https://travis-ci.org/mcartoixa/ant-sfdx.svg?branch=master)](https://travis-ci.org/mcartoixa/ant-sfdx)
 [![Build Status](https://dev.azure.com/mcartoixa/ant-sfdx/_apis/build/status/ant-sfdx-CI)](https://dev.azure.com/mcartoixa/ant-sfdx/_build/latest?definitionId=1)
+[![Code coverage](https://codecov.io/gh/mcartoixa/ant-sfdx/branch/master/graph/badge.svg)](https://codecov.io/gh/mcartoixa/ant-sfdx)
 [![BCH compliance](https://bettercodehub.com/edge/badge/mcartoixa/ant-sfdx?branch=master)](https://bettercodehub.com/)
 
 Ant tasks that encapsulate the Salesforce DX CLI

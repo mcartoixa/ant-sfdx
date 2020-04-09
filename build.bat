@@ -19,7 +19,7 @@ IF ERRORLEVEL 1 GOTO ERROR_EXT
 SET NO_PAUSE=0
 SET PROJECT=build.xml
 SET TARGET=build
-SET VERBOSITY=info
+SET VERBOSITY=verbose
 GOTO ARGS
 
 :SHOW_USAGE
@@ -78,7 +78,7 @@ IF /I "%~1"=="package"              SET TARGET=package& SHIFT & GOTO ARGS_PARSE
 IF /I "%~1"=="rebuild"              SET TARGET=rebuild& SHIFT & GOTO ARGS_PARSE
 IF /I "%~1"=="build"                SET TARGET=build& SHIFT & GOTO ARGS_PARSE
 IF /I "%~1"=="release"              SET TARGET=release& SHIFT & GOTO ARGS_PARSE
-IF /I "%~1"=="/log"                 SET VERBOSITY=verbose& SHIFT & GOTO ARGS_PARSE
+IF /I "%~1"=="/log"                 SET VERBOSITY=debug& SHIFT & GOTO ARGS_PARSE
 IF /I "%~1"=="/NoPause"             SET NO_PAUSE=1& SHIFT & GOTO ARGS_PARSE
 IF /I "%~1"=="/?"   GOTO SHOW_USAGE
 IF    "%~1" EQU ""  GOTO ARGS_DONE

@@ -13,6 +13,7 @@
     <artifact conf="*" />
   </publications>
   <dependencies>
+    <dependency org="org.jacoco" name="org.jacoco.ant" rev="0.8.5" conf="test->default" />
     <dependency org="org.json" name="json" rev="20180130" conf="compile->default" />
     <dependency org="junit" name="junit" rev="4.12" conf="test->default" />
     <dependency org="xalan" name="xalan" rev="2.7.2" conf="compile,test->default" />

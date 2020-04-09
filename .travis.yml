@@ -13,6 +13,7 @@ env:
   global:
     - _IVY_VERSION=2.5.0
     - PACKAGE_VERSION=0.8.$TRAVIS_BUILD_NUMBER
+    - CODECOV_TOKEN=7eb11ac4-c9b4-45d3-bbb2-a34c0dd7b723
 
 install:
   - . build/.bashrc
@@ -24,6 +25,9 @@ install:
 
 script:
   - $ANT_HOME/bin/ant -noclasspath -nouserlib -noinput -lib "ivy/lib/test" -logger org.apache.tools.ant.listener.AnsiColorLogger -f build.xml release
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -f tmp/jacoco-results.xml
 
 deploy:
   provider: releases

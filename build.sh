@@ -6,7 +6,7 @@ source build/.bashrc
 
 _PROJECT=build.xml
 _TARGET=build
-_VERBOSITY=info
+_VERBOSITY=verbose
 
 
 usage() {

@@ -58,7 +58,7 @@ if [ -f ./.env ]; then
     echo
 fi
 
-if [ ! -d $JAVA_HOME ]; then error "Could not find Java JDK 8" fi
+if [ ! -d $JAVA_HOME ]; then error "Could not find Java JDK 8"; fi
 echo \$JAVA_HOME=$JAVA_HOME
 
 

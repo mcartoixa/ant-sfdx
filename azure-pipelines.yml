@@ -29,3 +29,10 @@ steps:
     testResultsFiles: '$(Build.Repository.LocalPath)\tmp\obj\test\results\**\TEST-*.xml'
     antHomeDirectory: '$(ANT_HOME)'
     jdkVersionOption: 1.8
+
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: 'jaCoCo'
+    summaryFileLocation: '$(Build.Repository.LocalPath)\tmp\jacoco-results.xml'
+    pathToSources: '$(Build.Repository.LocalPath)\src\main'
+    reportDirectory: '$(Build.Repository.LocalPath)\tmp\jacoco-results'

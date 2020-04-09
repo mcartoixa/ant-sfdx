@@ -1,0 +1,10 @@
+codecov:
+  token: "7eb11ac4-c9b4-45d3-bbb2-a34c0dd7b723"
+  ci:
+    - "travis.org"
+  require_ci_to_pass: no
+
+coverage:
+  precision: 2
+  round: down
+  range: "15...100"
