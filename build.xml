@@ -68,7 +68,7 @@
 
   <target name="prepare.tasks.jacoco" depends="prepare.dependencies">
     <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
-      <classpath path="${ivy.lib.dir}/test/org.jacoco.ant.jar" />
+      <classpath path="${ivy.test.classpath}" />
     </taskdef>
   </target>
 
@@ -82,7 +82,8 @@
 
   <target name="prepare.jacoco" depends="prepare.tasks.jacoco">
     <delete file="${build.test.results.dir}/jacoco.exec" quiet="true" />
-    <jacoco:agent property="test.jvmargs" destfile="${build.test.results.dir}/jacoco.exec" append="true" />
+    <property name="jacoco.exec" value="${build.test.results.dir}/jacoco.exec" />
+    <jacoco:agent property="test.jvmargs" destfile="${jacoco.exec}" append="true" />
   </target>
 
   <target name="prepare.version" if="env.PACKAGE_VERSION">
@@ -153,17 +154,21 @@
     <mkdir dir="${build.test.results.dir}" />
   </target>
 
-  <target name="test-report" if="have.tests" depends="init">
+  <target name="test-report" if="have.tests" depends="init,test.report.junit,test.report.jacoco" />
+
+  <target name="test.report.junit" if="have.tests">
     <junitreport todir="${tmp.dir}" tofile="junit-results.xml">
       <fileset dir="${build.test.results.dir}">
         <include name="TEST-*.xml" />
       </fileset>
       <report format="frames" todir="${tmp.dir}/junit-results" />
     </junitreport>
+  </target>
 
+  <target name="test.report.jacoco" if="have.tests">
     <jacoco:report>
       <executiondata>
-        <file file="${build.test.results.dir}/jacoco.exec" />
+        <file file="${jacoco.exec}" />
       </executiondata>
       <structure name="${ant.project.name}">
         <classfiles>

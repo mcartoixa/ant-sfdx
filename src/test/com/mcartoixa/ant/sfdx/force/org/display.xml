@@ -10,6 +10,10 @@
   </target>
 
   <target name="execute" depends="init">
-    <org-display statusproperty="execute.status" resultproperty="execute.result" executable="${sfdx-path}" />
+    <org-display targetusername="testuser" statusproperty="execute.status" resultproperty="execute.result" executable="${sfdx-path}" />
+  </target>
+
+  <target name="execute-quiet" depends="init">
+    <org-display quiet="true" executable="${sfdx-path}" />
   </target>
 </project>

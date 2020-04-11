@@ -12,4 +12,16 @@
   <target name="execute" depends="init">
     <org-list statusproperty="execute.status" resultproperty="execute.result" executable="${sfdx-path}" />
   </target>
+
+  <target name="execute-quiet" depends="init">
+    <org-list quiet="true" executable="${sfdx-path}" />
+  </target>
+
+  <target name="execute-with-all" depends="init">
+    <org-list all="true" executable="${sfdx-path}" />
+  </target>
+
+  <target name="execute-with-clean" depends="init">
+    <org-list clean="true" executable="${sfdx-path}" />
+  </target>
 </project>

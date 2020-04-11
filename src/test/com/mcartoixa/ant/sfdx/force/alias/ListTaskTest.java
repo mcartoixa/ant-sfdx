@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Mathieu Cartoixa.
+ * Copyright 2020 Mathieu.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mcartoixa.ant.sfdx.force.org;
+package com.mcartoixa.ant.sfdx.force.alias;
 
 import org.apache.tools.ant.BuildFileRule;
 import org.apache.tools.ant.Project;
@@ -25,7 +25,7 @@ import org.junit.rules.ExpectedException;
 
 /**
  *
- * @author Mathieu Cartoixa
+ * @author Mathieu
  */
 public class ListTaskTest {
 
@@ -40,7 +40,7 @@ public class ListTaskTest {
 
     @Before
     public void setUp() {
-        buildRule.configureProject("src/test/com/mcartoixa/ant/sfdx/force/org/list.xml", Project.MSG_DEBUG);
+        buildRule.configureProject("src/test/com/mcartoixa/ant/sfdx/force/alias/list.xml", Project.MSG_DEBUG);
     }
 
     @Test
@@ -56,33 +56,14 @@ public class ListTaskTest {
     }
 
     @Test
-    public void executeShouldAddNoPromptArgument() {
+    public void executeShouldLogAliases() {
         buildRule.executeTarget("execute");
-        Assert.assertTrue("Full log should contain -p argument", buildRule.getFullLog().contains("'-p"));
-    }
-
-    @Test
-    public void executeShouldLogOrgSummary() {
-        buildRule.executeTarget("execute");
-        Assert.assertTrue("Non scratch orgs should be logged", buildRule.getLog().contains("ant-sfdx (00000000000000000H)  [test@ant-sfdx.org]"));
-        Assert.assertTrue("Scratch orgs should be logged", buildRule.getLog().contains("\t- ant-sfdx-scratch (000000000000000000) Ant SFDX [test@ant-sfdx.org]"));
+        Assert.assertTrue("Alias should be logged", buildRule.getLog().contains("DevHub: test@ant-sfdx.org"));
     }
 
     @Test
     public void executeQuietShouldHaveNoOutput() {
         buildRule.executeTarget("execute-quiet");
         Assert.assertTrue("Log should be empty", buildRule.getLog().isEmpty());
-    }
-
-    @Test
-    public void executeWithAllShouldAddAllArgument() {
-        buildRule.executeTarget("execute-with-all");
-        Assert.assertTrue("Full log should contain --all argument", buildRule.getFullLog().contains("'--all'"));
-    }
-
-    @Test
-    public void executeWithCleanShouldAddAllArgument() {
-        buildRule.executeTarget("execute-with-clean");
-        Assert.assertTrue("Full log should contain --clean argument", buildRule.getFullLog().contains("'--clean'"));
     }
 }

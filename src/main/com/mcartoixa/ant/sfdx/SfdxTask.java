@@ -148,10 +148,11 @@ public abstract class SfdxTask extends Task {
     @SuppressWarnings("PMD.AvoidUncheckedExceptionsInSignatures")
     @Override
     public void execute() throws BuildException {
+        this.prepareContext();
         this.checkConfiguration();
 
         this.getCommandline().createArgument(true).setValue(getCommand());
-        createArguments();
+        this.createArguments();
 
         try {
             final Project p = getProject();
@@ -236,6 +237,10 @@ public abstract class SfdxTask extends Task {
 
     protected void createArguments() {
         this.getCommandline().createArgument().setValue("--json");
+    }
+
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
+    protected void prepareContext() {
     }
 
     protected abstract String getCommand();

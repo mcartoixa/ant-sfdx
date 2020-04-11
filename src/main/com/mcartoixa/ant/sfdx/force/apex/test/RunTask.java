@@ -222,6 +222,15 @@ public class RunTask extends SfdxTask {
     @SuppressWarnings("PMD.ConfusingTernary")
     @Override
     protected void checkConfiguration() {
+        if (!this.classes.isEmpty() ? !this.suites.isEmpty() || !this.tests.isEmpty() : !this.suites.isEmpty() && !this.tests.isEmpty()) {
+            throw new BuildException("The class, suite and test nested elements are mutually exclusive.");
+        }
+
+        super.checkConfiguration();
+    }
+
+    @Override
+    protected void prepareContext() {
         if (this.toDir == null) {
             try {
                 final File td = TempDirectoryHelper.generateDirectory("test-result-", "", TempDirectoryHelper.location());
@@ -232,11 +241,7 @@ public class RunTask extends SfdxTask {
             }
         }
 
-        if (!this.classes.isEmpty() ? !this.suites.isEmpty() || !this.tests.isEmpty() : !this.suites.isEmpty() && !this.tests.isEmpty()) {
-            throw new BuildException("The class, suite and test nested elements are mutually exclusive.");
-        }
-
-        super.checkConfiguration();
+        super.prepareContext();
     }
 
     @SuppressWarnings("PMD.ConfusingTernary")

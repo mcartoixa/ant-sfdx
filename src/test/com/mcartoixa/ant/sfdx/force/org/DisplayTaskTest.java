@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Mathieu Cartoixa.
+ * Copyright 2020 Mathieu Cartoixa.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,9 +44,32 @@ public class DisplayTaskTest {
     }
 
     @Test
-    public void testExecute() {
+    public void executeShouldSetStatusProperty() {
         buildRule.executeTarget("execute");
-        Assert.assertEquals("0", buildRule.getProject().getProperty("execute.status"));
-        Assert.assertEquals("test@ant-sfdx.org", buildRule.getProject().getProperty("execute.result.username"));
+        Assert.assertEquals("Status property should be set", "0", buildRule.getProject().getProperty("execute.status"));
+    }
+
+    @Test
+    public void executeShouldSetResultUsernameProperty() {
+        buildRule.executeTarget("execute");
+        Assert.assertEquals("Username result property should set", "test@ant-sfdx.org", buildRule.getProject().getProperty("execute.result.username"));
+    }
+
+    @Test
+    public void executeShouldAddJsonArgument() {
+        buildRule.executeTarget("execute");
+        Assert.assertTrue("Full log should contain --json argument", buildRule.getFullLog().contains("'--json'"));
+    }
+
+    @Test
+    public void executeShouldAddTargetusernameArgument() {
+        buildRule.executeTarget("execute");
+        Assert.assertTrue("Full log should contain -u argument", buildRule.getFullLog().contains("'-utestuser'"));
+    }
+
+    @Test
+    public void executeQuietShouldHaveNoOutput() {
+        buildRule.executeTarget("execute-quiet");
+        Assert.assertTrue("Log should be empty", buildRule.getLog().isEmpty());
     }
 }

@@ -1,0 +1,17 @@
+{
+  "status": 0,
+  "result": [
+    {
+      "alias": "DevHub",
+      "value": "test@ant-sfdx.org"
+    },
+    {
+      "alias": "Sandbox",
+      "value": "test-sandbox@ant-sfdx.org"
+    },
+    {
+      "alias": "test",
+      "value": "test-scratchorg@ant-sfdx.org"
+    }
+  ]
+}

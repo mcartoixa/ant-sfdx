@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="ListTaskTest" basedir="." xmlns:force-alias="antlib:com.mcartoixa.ant.sfdx.force.alias">
+  <condition property="sfdx-path" value="..\..\sfdx.cmd" else="../../sfdx">
+    <os family="dos" />
+  </condition>
+
+  <target name="init">
+    <taskdef name="alias-list" classname="com.mcartoixa.ant.sfdx.force.alias.ListTask" classpath="tmp/obj/classes" />
+  </target>
+
+  <target name="execute" depends="init">
+    <alias-list statusproperty="execute.status" resultproperty="execute.result" executable="${sfdx-path}" />
+  </target>
+
+  <target name="execute-quiet" depends="init">
+    <alias-list quiet="true" executable="${sfdx-path}" />
+  </target>
+</project>

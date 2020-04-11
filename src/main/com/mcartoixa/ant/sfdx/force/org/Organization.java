@@ -22,7 +22,6 @@ package com.mcartoixa.ant.sfdx.force.org;
 public class Organization {
 
     public Organization() {
-
     }
 
     /**
