@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="SetTaskTest" basedir="." xmlns:force-alias="antlib:com.mcartoixa.ant.sfdx.force.set">
+  <condition property="sfdx-path" value="..\..\sfdx.cmd" else="../../sfdx">
+    <os family="dos" />
+  </condition>
+
+  <target name="init">
+    <taskdef name="alias-set" classname="com.mcartoixa.ant.sfdx.force.alias.SetTask" classpath="tmp/obj/classes" />
+  </target>
+
+  <target name="execute" depends="init">
+    <alias-set statusproperty="execute.status" resultproperty="execute.result" executable="${sfdx-path}">
+      <alias name="DevHub" value="test@ant-sfdx.org" />
+      <alias name="Sandbox" value="test-sandbox@ant-sfdx.org" />
+      <alias name="test" value="test-scratchorg@ant-sfdx.org" />
+    </alias-set>
+  </target>
+
+  <target name="execute-quiet" depends="init">
+    <alias-set quiet="true" executable="${sfdx-path}">
+      <alias name="DevHub" value="test@ant-sfdx.org" />
+      <alias name="Sandbox" value="test-sandbox@ant-sfdx.org" />
+      <alias name="test" value="test-scratchorg@ant-sfdx.org" />
+    </alias-set>
+  </target>
+</project>

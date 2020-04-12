@@ -27,7 +27,7 @@ import org.junit.rules.ExpectedException;
  *
  * @author Mathieu Cartoixa
  */
-public class ListTaskTest {
+public class SetTaskTest {
 
     @Rule
     public final BuildFileRule buildRule = new BuildFileRule();
@@ -35,12 +35,12 @@ public class ListTaskTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    public ListTaskTest() {
+    public SetTaskTest() {
     }
 
     @Before
     public void setUp() {
-        buildRule.configureProject("src/test/com/mcartoixa/ant/sfdx/force/alias/list.xml", Project.MSG_DEBUG);
+        buildRule.configureProject("src/test/com/mcartoixa/ant/sfdx/force/alias/set.xml", Project.MSG_DEBUG);
     }
 
     @Test
@@ -53,6 +53,14 @@ public class ListTaskTest {
     public void executeShouldAddJsonArgument() {
         buildRule.executeTarget("execute");
         Assert.assertTrue("Full log should contain --json argument", buildRule.getFullLog().contains("'--json'"));
+    }
+
+    @Test
+    public void executeShouldAddAliasArgument() {
+        buildRule.executeTarget("execute");
+        Assert.assertTrue("Full log should contain alias argument", buildRule.getFullLog().contains("'DevHub=test@ant-sfdx.org'"));
+        Assert.assertTrue("Full log should contain alias argument", buildRule.getFullLog().contains("'Sandbox=test-sandbox@ant-sfdx.org'"));
+        Assert.assertTrue("Full log should contain alias argument", buildRule.getFullLog().contains("'test=test-scratchorg@ant-sfdx.org'"));
     }
 
     @Test

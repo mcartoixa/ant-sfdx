@@ -54,7 +54,7 @@ public class Alias {
 
     @Override
     public String toString() {
-        return String.format("%s: %s", alias, value);
+        return String.format("%s: %s", this.getAlias(), this.getValue());
     }
 
     @SuppressWarnings("PMD.AvoidFieldNameMatchingTypeName")

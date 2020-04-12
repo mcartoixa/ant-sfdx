@@ -143,7 +143,6 @@ public class CreateTask extends SfdxTask {
             final Commandline.Argument arg = this.getCommandline().createArgument();
             arg.setPrefix(p.getName() + "=");
             arg.setValue(p.getValue());
-
         });
 
         super.createArguments();

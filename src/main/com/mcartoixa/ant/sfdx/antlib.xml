@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <antlib>
   <taskdef name="force-alias-list" classname="com.mcartoixa.ant.sfdx.force.alias.ListTask" />
+  <taskdef name="force-alias-set" classname="com.mcartoixa.ant.sfdx.force.alias.SetTask" />
   <taskdef name="force-apex-execute" classname="com.mcartoixa.ant.sfdx.force.apex.ExecuteTask" />
   <taskdef name="force-apex-test-run" classname="com.mcartoixa.ant.sfdx.force.apex.test.RunTask" />
   <taskdef name="force-data-record-create" classname="com.mcartoixa.ant.sfdx.force.data.record.CreateTask" />
