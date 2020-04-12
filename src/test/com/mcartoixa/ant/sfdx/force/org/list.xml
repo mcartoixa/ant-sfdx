@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="ListTaskTest" basedir="." xmlns:force-org="antlib:com.mcartoixa.ant.sfdx.force.org">
+<project name="ListTaskTest" basedir="." xmlns:sfdx="com.mcartoixa.ant.sfdx">
   <condition property="sfdx-path" value="..\..\sfdx.cmd" else="../../sfdx">
     <os family="dos" />
   </condition>
 
   <target name="init">
-    <taskdef name="org-list" classname="com.mcartoixa.ant.sfdx.force.org.ListTask" classpath="tmp/obj/classes" />
+    <taskdef uri="com.mcartoixa.ant.sfdx" resource="com/mcartoixa/ant/sfdx/antlib.xml" classpath="tmp/obj/classes" />
   </target>
 
   <target name="execute" depends="init">
-    <org-list statusproperty="execute.status" resultproperty="execute.result" executable="${sfdx-path}" />
+    <sfdx:force-org-list statusproperty="execute.status" resultproperty="execute.result" executable="${sfdx-path}" />
   </target>
 
   <target name="execute-quiet" depends="init">
-    <org-list quiet="true" executable="${sfdx-path}" />
+    <sfdx:force-org-list quiet="true" executable="${sfdx-path}" />
   </target>
 
   <target name="execute-with-all" depends="init">
-    <org-list all="true" executable="${sfdx-path}" />
+    <sfdx:force-org-list all="true" executable="${sfdx-path}" />
   </target>
 
   <target name="execute-with-clean" depends="init">
-    <org-list clean="true" executable="${sfdx-path}" />
+    <sfdx:force-org-list clean="true" executable="${sfdx-path}" />
   </target>
 </project>
