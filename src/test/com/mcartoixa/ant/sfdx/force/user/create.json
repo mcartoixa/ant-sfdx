@@ -1,0 +1,20 @@
+{
+  "status": 0,
+  "result": {
+    "orgId": "000000000000000000",
+    "permissionSetAssignments": [],
+    "fields": {
+      "username": "test@ant-sfdx.org",
+      "profileid": "000000000000000000",
+      "lastname": "User",
+      "email": "test@ant-sfdx.org",
+      "alias": "Admin",
+      "timezonesidkey": "Europe/Paris",
+      "localesidkey": "fr_FR_EURO",
+      "emailencodingkey": "ISO-8859-1",
+      "languagelocalekey": "en_US",
+      "id": "000000000000000001",
+      "createddate": "1586677164000"
+    }
+  }
+}
