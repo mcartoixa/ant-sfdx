@@ -27,7 +27,7 @@ import org.junit.rules.ExpectedException;
  *
  * @author Mathieu Cartoixa
  */
-public class ListTaskTest {
+public class DeleteTaskTest {
 
     @Rule
     public final BuildFileRule buildRule = new BuildFileRule();
@@ -35,18 +35,24 @@ public class ListTaskTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    public ListTaskTest() {
+    public DeleteTaskTest() {
     }
 
     @Before
     public void setUp() {
-        buildRule.configureProject("src/test/com/mcartoixa/ant/sfdx/force/org/list.xml", Project.MSG_DEBUG);
+        buildRule.configureProject("src/test/com/mcartoixa/ant/sfdx/force/org/delete.xml", Project.MSG_DEBUG);
     }
 
     @Test
     public void executeShouldSetStatusProperty() {
         buildRule.executeTarget("execute");
         Assert.assertEquals("Status property should be set", "0", buildRule.getProject().getProperty("execute.status"));
+    }
+
+    @Test
+    public void executeShouldSetResultOrgIdProperty() {
+        buildRule.executeTarget("execute");
+        Assert.assertEquals("OrgId result property should set", "000000000000000000", buildRule.getProject().getProperty("execute.result.orgid"));
     }
 
     @Test
@@ -62,27 +68,20 @@ public class ListTaskTest {
     }
 
     @Test
-    public void executeShouldLogOrgSummary() {
+    public void executeShouldAddTargetUsernameArgument() {
         buildRule.executeTarget("execute");
-        Assert.assertTrue("Non scratch orgs should be logged", buildRule.getLog().contains("ant-sfdx (00000000000000000H)  [test@ant-sfdx.org]"));
-        Assert.assertTrue("Scratch orgs should be logged", buildRule.getLog().contains("\t- ant-sfdx-scratch (000000000000000000) Ant SFDX [test@ant-sfdx.org]"));
+        Assert.assertTrue("Full log should contain -u argument", buildRule.getFullLog().contains("'-utestuser'"));
+    }
+
+    @Test
+    public void executeShouldLogDeletedOrg() {
+        buildRule.executeTarget("execute");
+        Assert.assertTrue("Deleted org should be logged", buildRule.getLog().contains("Org 000000000000000000 deleted"));
     }
 
     @Test
     public void executeQuietShouldHaveNoOutput() {
         buildRule.executeTarget("execute-quiet");
         Assert.assertTrue("Log should be empty", buildRule.getLog().isEmpty());
-    }
-
-    @Test
-    public void executeWithAllShouldAddAllArgument() {
-        buildRule.executeTarget("execute-with-all");
-        Assert.assertTrue("Full log should contain --all argument", buildRule.getFullLog().contains("'--all'"));
-    }
-
-    @Test
-    public void executeWithCleanShouldAddAllArgument() {
-        buildRule.executeTarget("execute-with-clean");
-        Assert.assertTrue("Full log should contain --clean argument", buildRule.getFullLog().contains("'--clean'"));
     }
 }

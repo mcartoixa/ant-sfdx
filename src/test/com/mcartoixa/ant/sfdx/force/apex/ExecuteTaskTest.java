@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mcartoixa.ant.sfdx.force.org;
+package com.mcartoixa.ant.sfdx.force.apex;
 
+import java.io.File;
 import org.apache.tools.ant.BuildFileRule;
 import org.apache.tools.ant.Project;
 import org.junit.Assert;
@@ -27,7 +28,7 @@ import org.junit.rules.ExpectedException;
  *
  * @author Mathieu Cartoixa
  */
-public class ListTaskTest {
+public class ExecuteTaskTest {
 
     @Rule
     public final BuildFileRule buildRule = new BuildFileRule();
@@ -35,12 +36,12 @@ public class ListTaskTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    public ListTaskTest() {
+    public ExecuteTaskTest() {
     }
 
     @Before
     public void setUp() {
-        buildRule.configureProject("src/test/com/mcartoixa/ant/sfdx/force/org/list.xml", Project.MSG_DEBUG);
+        buildRule.configureProject("src/test/com/mcartoixa/ant/sfdx/force/apex/execute.xml", Project.MSG_DEBUG);
     }
 
     @Test
@@ -56,33 +57,20 @@ public class ListTaskTest {
     }
 
     @Test
-    public void executeShouldAddNoPromptArgument() {
+    public void executeShouldAddApexCodeFileArgument() {
         buildRule.executeTarget("execute");
-        Assert.assertTrue("Full log should contain -p argument", buildRule.getFullLog().contains("'-p'"));
+        Assert.assertTrue("Full log should contain -f argument", buildRule.getFullLog().contains("'-f" + new File(buildRule.getProject().getBaseDir(), "testfile").getAbsolutePath() + "'"));
     }
 
     @Test
-    public void executeShouldLogOrgSummary() {
+    public void executeShouldAddTargetUsernameArgument() {
         buildRule.executeTarget("execute");
-        Assert.assertTrue("Non scratch orgs should be logged", buildRule.getLog().contains("ant-sfdx (00000000000000000H)  [test@ant-sfdx.org]"));
-        Assert.assertTrue("Scratch orgs should be logged", buildRule.getLog().contains("\t- ant-sfdx-scratch (000000000000000000) Ant SFDX [test@ant-sfdx.org]"));
+        Assert.assertTrue("Full log should contain -u argument", buildRule.getFullLog().contains("'-utestuser'"));
     }
 
     @Test
     public void executeQuietShouldHaveNoOutput() {
         buildRule.executeTarget("execute-quiet");
         Assert.assertTrue("Log should be empty", buildRule.getLog().isEmpty());
-    }
-
-    @Test
-    public void executeWithAllShouldAddAllArgument() {
-        buildRule.executeTarget("execute-with-all");
-        Assert.assertTrue("Full log should contain --all argument", buildRule.getFullLog().contains("'--all'"));
-    }
-
-    @Test
-    public void executeWithCleanShouldAddAllArgument() {
-        buildRule.executeTarget("execute-with-clean");
-        Assert.assertTrue("Full log should contain --clean argument", buildRule.getFullLog().contains("'--clean'"));
     }
 }

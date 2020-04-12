@@ -6,14 +6,14 @@
   </condition>
 
   <target name="init">
-    <taskdef name="org-display" classname="com.mcartoixa.ant.sfdx.force.org.DisplayTask" classpath="tmp/obj/classes" />
+    <taskdef name="org-delete" classname="com.mcartoixa.ant.sfdx.force.org.DeleteTask" classpath="tmp/obj/classes" />
   </target>
 
   <target name="execute" depends="init">
-    <org-display targetusername="testuser" statusproperty="execute.status" resultproperty="execute.result" executable="${sfdx-path}" />
+    <org-delete targetusername="testuser" statusproperty="execute.status" resultproperty="execute.result" executable="${sfdx-path}" />
   </target>
 
   <target name="execute-quiet" depends="init">
-    <org-display quiet="true" executable="${sfdx-path}" />
+    <org-delete quiet="true" executable="${sfdx-path}" />
   </target>
 </project>

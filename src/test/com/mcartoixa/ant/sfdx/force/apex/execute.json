@@ -1,0 +1,13 @@
+{
+  "status": 0,
+  "result": {
+    "compiled": true,
+    "compileProblem": "",
+    "success": true,
+    "line": -1,
+    "column": -1,
+    "exceptionMessage": "",
+    "exceptionStackTrace": "",
+    "logs": "48.0 APEX_CODE,DEBUG;APEX_PROFILING,INFO\n00:00:01.00 (00000000)|EXECUTION_FINISHED\n"
+  }
+}

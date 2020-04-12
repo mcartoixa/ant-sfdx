@@ -112,10 +112,10 @@ public class Organization {
     public String toString() {
         return String.format(
                 "%s (%s) %s [%s]",
-                alias == null ? "" : alias,
-                orgId,
-                orgName == null ? "" : orgName,
-                userName
+                getAlias() == null ? "" : getAlias(),
+                getOrgId(),
+                getOrgName() == null ? "" : getOrgName(),
+                getUserName()
         );
     }
 

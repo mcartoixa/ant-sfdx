@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="ExecuteTaskTest" basedir="." xmlns:force-apex="antlib:com.mcartoixa.ant.sfdx.force.apex">
+  <condition property="sfdx-path" value="..\..\sfdx.cmd" else="../../sfdx">
+    <os family="dos" />
+  </condition>
+
+  <target name="init">
+    <taskdef name="apex-execute" classname="com.mcartoixa.ant.sfdx.force.apex.ExecuteTask" classpath="tmp/obj/classes" />
+  </target>
+
+  <target name="execute" depends="init">
+    <apex-execute apexcodefile="testfile" targetusername="testuser" statusproperty="execute.status" resultproperty="execute.result" executable="${sfdx-path}" />
+  </target>
+
+  <target name="execute-quiet" depends="init">
+    <apex-execute quiet="true" executable="${sfdx-path}" />
+  </target>
+</project>
