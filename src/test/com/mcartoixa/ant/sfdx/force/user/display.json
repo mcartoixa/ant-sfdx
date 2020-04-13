@@ -1,0 +1,13 @@
+{
+  "status": 0,
+  "result": {
+    "username": "test@ant-sfdx.org",
+    "profileName": "System Administrator",
+    "id": "00000000000000000U",
+    "orgId": "00000000000000000H",
+    "accessToken": "123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abc:123456789abcdef0123456789abcdef0",
+    "instanceUrl": "https://ant-sfdx.salesforce.com/",
+    "loginUrl": "https://login.salesforce.com/",
+    "alias": "ant-sfdx"
+  }
+}
