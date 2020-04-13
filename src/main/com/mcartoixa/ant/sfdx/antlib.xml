@@ -19,5 +19,6 @@
   <taskdef name="force-source-deploy" classname="com.mcartoixa.ant.sfdx.force.source.DeployTask" />
   <taskdef name="force-source-push" classname="com.mcartoixa.ant.sfdx.force.source.PushTask" />
   <taskdef name="force-user-create" classname="com.mcartoixa.ant.sfdx.force.user.CreateTask" />
+  <taskdef name="force-user-list" classname="com.mcartoixa.ant.sfdx.force.user.ListTask" />
   <taskdef name="force-user-permset-assign" classname="com.mcartoixa.ant.sfdx.force.user.permset.AssignTask" />
 </antlib>
