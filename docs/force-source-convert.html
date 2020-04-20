@@ -82,14 +82,23 @@ limitations under the License.
     <p>The <var>sourcepath</var> attribute is a <a href="https://ant.apache.org/manual/using.html#path">path-like structure</a> and can also be set via a nested <code>&lt;sourcepath&gt;</code> element.</p>
 
     <h3>Examples</h3>
-    <pre>
-&lt;sfdx:force-source-convert sourcepath=&quot;force-app/main/default/objects/Case&quot;&gt;
+    <blockquote><pre>
+&lt;force-source-convert rootdir=&quot;path/to/source&quot; /&gt;</pre></blockquote>
+    <blockquote><pre>
+&lt;force-source-convert rootdir=&quot;path/to/source&quot; outputdir=&quot;path/to/outputdir&quot; packagename=&quot;My Package&quot; /&gt;</pre></blockquote>
+    <blockquote><pre>
+&lt;force-source-convert rootdir=&quot;path/to/source&quot;&gt;
+  &lt;metadata&gt;Component1&lt;/metadata&gt;
+  &lt;metadata&gt;Component2&lt;/metadata&gt;
+&lt;/force-source-convert&gt;</pre></blockquote>
+    <blockquote><pre>
+&lt;force-source-convert sourcepath=&quot;force-app/main/default/objects/Case&quot;&gt;
   &lt;sourcepath&gt;
     &lt;pathelement location=&quot;force-app/main/default/objects/Contact&quot; /&gt;
     &lt;dirset dir=&quot;force-app/main/default/objects&quot;&gt;
       &lt;include name=&quot;Ac*&quot; /&gt;
     &lt;/dirset&gt;
   &lt;/sourcepath&gt;
-&lt;/sfdx:sfdx:force-source-convert&gt;</pre>
+&lt;/force-source-convert&gt;</pre></blockquote>
   </body>
 </html>

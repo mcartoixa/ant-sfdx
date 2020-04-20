@@ -65,7 +65,7 @@ public class RetrieveTask extends SfdxTask {
 
     public void setRetrieveTargetDir(final File retrieveTargetDir) {
         if (retrieveTargetDir != null) {
-            final File dir = retrieveTargetDir.isDirectory() ? retrieveTargetDir : retrieveTargetDir.getParentFile();
+            final File dir = !retrieveTargetDir.exists() || retrieveTargetDir.isDirectory() ? retrieveTargetDir : retrieveTargetDir.getParentFile();
 
             final Commandline.Argument arg = getCommandline().createArgument();
             arg.setPrefix("-r");
@@ -82,7 +82,7 @@ public class RetrieveTask extends SfdxTask {
 
     public void setSourceDir(final File sourceDir) {
         if (sourceDir != null) {
-            final File dir = sourceDir.isDirectory() ? sourceDir : sourceDir.getParentFile();
+            final File dir = !sourceDir.exists() || sourceDir.isDirectory() ? sourceDir : sourceDir.getParentFile();
 
             final Commandline.Argument arg = getCommandline().createArgument();
             arg.setPrefix("-d");

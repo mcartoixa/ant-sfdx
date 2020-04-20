@@ -183,6 +183,8 @@
     </jacoco:report>
   </target>
 
+  <!-- Required by NetBeans (cf. https://issues.apache.org/jira/browse/NETBEANS-591) -->
+  <target name="debug-single-method" depends="debug-test-method" />
 
 
   <!-- analyze -->

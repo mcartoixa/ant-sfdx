@@ -21,6 +21,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Commandline;
 import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.Reference;
@@ -35,6 +36,19 @@ public class ConvertTask extends SfdxTask {
 
         /* default */ JsonParser() {
             super();
+        }
+
+        @Override
+        protected void handleValue(final String property, final String key, final String value) {
+            super.handleValue(property, key, value);
+
+            switch (key) {
+                case "location":
+                    this.log("Metadata stored in " + value, Project.MSG_INFO);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -63,7 +77,7 @@ public class ConvertTask extends SfdxTask {
 
     public void setOutputDir(final File outputDir) {
         if (outputDir != null) {
-            final File dir = outputDir.isDirectory() ? outputDir : outputDir.getParentFile();
+            final File dir = !outputDir.exists() || outputDir.isDirectory() ? outputDir : outputDir.getParentFile();
 
             final Commandline.Argument arg = getCommandline().createArgument();
             arg.setPrefix("-d");
@@ -81,7 +95,7 @@ public class ConvertTask extends SfdxTask {
 
     public void setRootDir(final File rootDir) {
         if (rootDir != null) {
-            final File dir = rootDir.isDirectory() ? rootDir : rootDir.getParentFile();
+            final File dir = !rootDir.exists() || rootDir.isDirectory() ? rootDir : rootDir.getParentFile();
 
             final Commandline.Argument arg = getCommandline().createArgument();
             arg.setPrefix("-r");

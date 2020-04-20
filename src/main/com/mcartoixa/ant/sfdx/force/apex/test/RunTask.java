@@ -201,7 +201,7 @@ public class RunTask extends SfdxTask {
 
     public void setToDir(final File toDir) {
         if (toDir != null) {
-            this.toDir = toDir.isDirectory() ? toDir : toDir.getParentFile();
+            this.toDir = !toDir.exists() || toDir.isDirectory() ? toDir : toDir.getParentFile();
 
             final Commandline.Argument arg = getCommandline().createArgument();
             arg.setPrefix("-d");

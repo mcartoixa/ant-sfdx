@@ -42,12 +42,12 @@ limitations under the License.
         </tr>
         <tr>
           <td>failonerror</td>
-          <td>When set to <q>false</q> this task does not fail when the underlying sfdx command returns an error.</td>
+          <td>When set to <q>false</q> this task does not fail when the underlying sfdx command returns an error. Only relevant if <var>quiet</var> is <q>false</q>.</td>
           <td>No; default <q>true</q></td>
         </tr>
         <tr>
           <td>quiet</td>
-          <td>When set to <q>true</q> this task does not output any message.</td>
+          <td>When set to <q>true</q> this task does not output any message. Setting this to true implies setting <var>failonerror</var> to <q>false</q>.</td>
           <td>No; default <q>false</q></td>
         </tr>
         <tr>

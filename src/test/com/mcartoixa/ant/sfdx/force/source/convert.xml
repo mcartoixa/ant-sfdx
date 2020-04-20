@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="ExecuteTaskTest" basedir="." xmlns:sfdx="com.mcartoixa.ant.sfdx">
+  <condition property="sfdx-path" value="..\..\sfdx.cmd" else="../../sfdx">
+    <os family="dos" />
+  </condition>
+
+  <target name="init">
+    <taskdef uri="com.mcartoixa.ant.sfdx" resource="com/mcartoixa/ant/sfdx/antlib.xml" classpath="tmp/obj/classes" />
+  </target>
+
+  <target name="execute" depends="init">
+    <sfdx:force-source-convert rootdir="${basedir}" outputdir="C:\Temp\ant-sfdx" packagename="testpackage" manifest="testmanifest" sourcepath="testsourcepath" statusproperty="execute.status" resultproperty="execute.result" executable="${sfdx-path}">
+      <metadata>TestComponent1</metadata>
+      <metadata>TestComponent2</metadata>
+    </sfdx:force-source-convert>
+  </target>
+
+  <target name="execute-sourcepath" depends="init">
+    <sfdx:force-source-convert executable="${sfdx-path}">
+    </sfdx:force-source-convert>
+  </target>
+
+  <target name="execute-quiet" depends="init">
+    <sfdx:force-source-convert quiet="true" executable="${sfdx-path}" />
+  </target>
+</project>
