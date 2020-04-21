@@ -54,6 +54,9 @@ public abstract class SfdxTask extends Task {
         @Override
         public void parse(final JSONObject json) {
             if (json != null) {
+                if (SfdxTask.this.getJsonProperty() != null && !SfdxTask.this.getJsonProperty().isEmpty()) {
+                    SfdxTask.this.getProject().setNewProperty(SfdxTask.this.getJsonProperty(), json.toString());
+                }
                 this.log("JSON received: " + json.toString(), Project.MSG_DEBUG);
 
                 doParse(json);
@@ -203,6 +206,10 @@ public abstract class SfdxTask extends Task {
         }
     }
 
+    public void setJsonProperty(final String jsonProperty) {
+        this.jsonProperty = jsonProperty;
+    }
+
     public void setResultProperty(final String resultProperty) {
         this.resultProperty = resultProperty;
     }
@@ -279,6 +286,11 @@ public abstract class SfdxTask extends Task {
     }
 
     @SuppressWarnings("PMD.DefaultPackage")
+    /* default */ String getJsonProperty() {
+        return this.jsonProperty;
+    }
+
+    @SuppressWarnings("PMD.DefaultPackage")
     /* default */ String getResultProperty() {
         return this.resultProperty;
     }
@@ -292,6 +304,7 @@ public abstract class SfdxTask extends Task {
     private transient String errorMessage;
     private transient boolean failonerror = true;
     private transient boolean quiet = false;
+    private transient String jsonProperty;
     private transient String resultProperty;
     private transient String statusProperty;
 
