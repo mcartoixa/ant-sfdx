@@ -17,7 +17,6 @@ package com.mcartoixa.ant.sfdx.force.source;
 
 import com.mcartoixa.ant.sfdx.ISfdxJsonParser;
 import com.mcartoixa.ant.sfdx.SfdxTask;
-import java.io.File;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Commandline;
 import org.json.JSONArray;
@@ -37,26 +36,19 @@ public class PullTask extends SfdxTask {
 
         @Override
         protected void doParse(final JSONObject json) {
-            final JSONArray result = json.optJSONArray("result");
-            if (result != null) {
-                for (int i = 0; i < result.length(); i++) {
-                    final Object value = result.get(i);
+            final JSONArray error = json.optJSONArray("result");
+            if (error != null) {
+                for (int i = 0; i < error.length(); i++) {
+                    final Object value = error.get(i);
                     if (value instanceof JSONObject) {
                         final JSONObject object = (JSONObject) value;
-                        final String filePath = object.optString("filePath");
-                        if (filePath == null || filePath.isEmpty() || filePath.equals("N/A")) {
-                            this.log(object.getString("error"), Project.MSG_ERR);
-                        } else {
-                            final String lineNumber = object.optString("lineNumber");
-                            final String message = String.format(
-                                    "%s:%s: %s error: %s",
-                                    new File(filePath).getAbsolutePath(),
-                                    lineNumber == null || lineNumber.isEmpty() ? "0" : lineNumber,
-                                    object.getString("type"),
-                                    object.getString("error")
-                            );
-                            this.log(message, Project.MSG_ERR);
-                        }
+                        final String message = String.format(
+                                "%s in %s %s",
+                                object.getString("state"),
+                                object.getString("type"),
+                                object.getString("fullName")
+                        );
+                        this.log(message, Project.MSG_ERR);
                     }
                 }
             }

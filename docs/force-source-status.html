@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Copyright 2020 Mathieu Cartoixa.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-us">
+  <head>
+    <title>force-source-status Task</title>
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+  </head>
+
+  <body>
+    <h2>force-source-status Task</h2>
+
+    <h3>Description</h3>
+    <p>Lists changes that have been made locally, in a scratch org, or both.</p>
+    <p>It executes the <a href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference_force_source.htm#cli_reference_status" target="_blank">force:source:status</a> command.</p>
+
+    <h3>Parameters</h3>
+    <p>In addition to <a href="common.html">the attributes used by every ant-sfdx task</a>, this task uses the following attributes:</p>
+    <table class="attr">
+      <thead>
+        <tr>
+          <th scope="col">Attribute</th>
+          <th scope="col">Command line equivalent</th>
+          <th scope="col">Description</th>
+          <th scope="col">Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>scope</td>
+          <td>-a; -l; -r</td>
+          <td>Specifies which kind of changes are to be listed:
+            <ul>
+              <li><q>All</q>: lists all the changes that have been made..</li>
+              <li><q>Local</q>: lists the changes that have been made locally.</li>
+              <li><q>Remote</q>: lists the changes that have been made in the scratch org.</li>
+            </ul>
+          </td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td>targetusername</td>
+          <td>-u</td>
+          <td>A username or alias for the target org.</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Examples</h3>
+    <blockquote><pre>
+&lt;force-source-status scope=&quot;Local&quot; /&gt;</pre></blockquote>
+    <blockquote><pre>
+&lt;force-source-status scope=&quot;Remote&quot; /&gt;</pre></blockquote>
+    <blockquote><pre>
+&lt;force-source-status scope=&quot;All&quot; /&gt;</pre></blockquote>
+    <blockquote><pre>
+&lt;force-source-status scope=&quot;All&quot; targetusername=&quot;me@example.com&quot; /&gt;</pre></blockquote>
+  </body>
+</html>

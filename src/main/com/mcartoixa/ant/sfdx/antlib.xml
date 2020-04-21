@@ -19,6 +19,7 @@
   <taskdef name="force-source-deploy" classname="com.mcartoixa.ant.sfdx.force.source.DeployTask" />
   <taskdef name="force-source-pull" classname="com.mcartoixa.ant.sfdx.force.source.PullTask" />
   <taskdef name="force-source-push" classname="com.mcartoixa.ant.sfdx.force.source.PushTask" />
+  <taskdef name="force-source-status" classname="com.mcartoixa.ant.sfdx.force.source.StatusTask" />
   <taskdef name="force-user-create" classname="com.mcartoixa.ant.sfdx.force.user.CreateTask" />
   <taskdef name="force-user-display" classname="com.mcartoixa.ant.sfdx.force.user.DisplayTask" />
   <taskdef name="force-user-list" classname="com.mcartoixa.ant.sfdx.force.user.ListTask" />

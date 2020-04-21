@@ -37,10 +37,10 @@ public class PushTask extends SfdxTask {
 
         @Override
         protected void doParse(final JSONObject json) {
-            final JSONArray result = json.optJSONArray("result");
-            if (result != null) {
-                for (int i = 0; i < result.length(); i++) {
-                    final Object value = result.get(i);
+            final JSONArray error = json.optJSONArray("result");
+            if (error != null) {
+                for (int i = 0; i < error.length(); i++) {
+                    final Object value = error.get(i);
                     if (value instanceof JSONObject) {
                         final JSONObject object = (JSONObject) value;
                         final String filePath = object.optString("filePath");

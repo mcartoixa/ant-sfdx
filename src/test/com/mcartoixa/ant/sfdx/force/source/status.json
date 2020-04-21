@@ -1,0 +1,17 @@
+{
+  "status": 0,
+  "result": [
+    {
+      "state": "Remote Changed",
+      "fullName": "TestClass",
+      "type": "ApexClass",
+      "filePath": "path/to/TestClass.cls"
+    },
+    {
+      "state": "Local Changed",
+      "fullName": "TestClass",
+      "type": "ApexClass",
+      "filePath": "path/to/TestClass.cls"
+    }
+  ]
+}
