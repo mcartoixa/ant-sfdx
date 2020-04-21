@@ -65,7 +65,7 @@ public class ConvertTaskTest {
     @Test
     public void executeShouldAddOutputDirArgument() {
         buildRule.executeTarget("execute");
-        Assert.assertTrue("Full log should contain -d argument", buildRule.getFullLog().contains("'-dC:\\Temp\\ant-sfdx'"));
+        Assert.assertTrue("Full log should contain -d argument", buildRule.getFullLog().contains("'-d" + new File(buildRule.getProject().getBaseDir(), "ant-sfdx").getAbsolutePath() + "'"));
     }
 
     @Test

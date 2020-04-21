@@ -10,7 +10,7 @@
   </target>
 
   <target name="execute" depends="init">
-    <sfdx:force-source-convert rootdir="${basedir}" outputdir="C:\Temp\ant-sfdx" packagename="testpackage" manifest="testmanifest" sourcepath="testsourcepath" statusproperty="execute.status" resultproperty="execute.result" executable="${sfdx-path}">
+    <sfdx:force-source-convert rootdir="${basedir}" outputdir="ant-sfdx" packagename="testpackage" manifest="testmanifest" sourcepath="testsourcepath" statusproperty="execute.status" resultproperty="execute.result" executable="${sfdx-path}">
       <metadata>TestComponent1</metadata>
       <metadata>TestComponent2</metadata>
     </sfdx:force-source-convert>
