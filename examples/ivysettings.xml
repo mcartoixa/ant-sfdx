@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivysettings>
+  <property name="ivy.retrieve.pattern" value="ivy/lib/[conf]/[artifact].[ext]" override="true" />
+
+  <!-- GET is required by github: HEAD returns 403 -->
+  <settings defaultResolver="default" httpRequestMethod="GET" />
+
+  <resolvers>
+    <url name="github">
+      <ivy pattern="https://github.com/[organisation]/[module]/releases/download/v[revision]/ivy.xml" />
+      <artifact pattern="https://github.com/[organisation]/[module]/releases/download/v[revision]/[artifact].[ext]" />
+    </url>
+  </resolvers>
+  <modules>
+    <module organisation="mcartoixa" name="*" resolver="github-v" />
+  </modules>
+</ivysettings>

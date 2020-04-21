@@ -1,0 +1,27 @@
+image: Visual Studio 2019
+
+environment:
+  _ANT_VERSION: 1.10.7
+  SFDX_DISABLE_APP_HUB: true
+
+
+
+install:
+  - ps: '[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12'
+  - cmd: MKDIR .tmp
+  # Set up the Salesforce CLI
+  - ps: Invoke-WebRequest 'https://developer.salesforce.com/media/salesforce-cli/sfdx-windows-amd64.exe' -OutFile .tmp\sfdx-windows-amd64.exe
+  - cmd: .tmp\sfdx-windows-amd64.exe /S
+  # Set up Ant
+  - ps: Invoke-WebRequest http://mirrors.ircam.fr/pub/apache//ant/binaries/apache-ant-$Env:_ANT_VERSION-bin.zip -OutFile .tmp\apache-ant-bin.zip
+  - ps: Expand-Archive -Path .tmp\apache-ant-bin.zip -DestinationPath .tmp -Force
+
+
+
+before_build:
+  - cmd: sfdx force:auth:jwt:grant --clientid %CONSUMERKEY% --jwtkeyfile assets/server.key --username %USERNAME% --setdefaultdevhubusername -a HubOrg
+
+
+
+build_script:
+  - cmd: CALL ".tmp\apache-ant\bin\ant.bat" -noclasspath -nouserlib -noinput

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0">
+  <info organisation="ant-sfdx" module="example" revision="0.0.0" />
+  <configurations defaultconf="default">
+    <conf name="build" visibility="private" />
+    <conf name="default" extends="compile" />
+  </configurations>
+  <dependencies>
+    <dependency org="mcartoixa" name="ant-sfdx" rev="0.8" conf="build->compile" />
+  </dependencies>
+</ivy-module>

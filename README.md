@@ -6,6 +6,34 @@
 
 Ant tasks that encapsulate the Salesforce DX CLI
 
+## Rationale
+
+One of the promises of the Salesforce DX CLI is to allow easy Continuous Integration on Salesforce projects. There are many samples
+of how to achieve that on platforms like [CircleCI](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ci_circle.htm),
+[Jenkins](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ci_jenkins.htm)
+or [Travis CI](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ci_travis.htm).
+
+The direct use of the CLI for CI integration seems to be alright for simple scenarii but there are several limitations to it:
+* the build is difficult to reproduce locally.
+* the build is tied to the shell technology provided by the platform, be it *bash*, *PowerShell* or (gasp!) *Windows Command*.
+* the CLI commands outputs can be very verbose making the build log difficult to interpret when there is a problem.
+* the real fun begins when you have an advanced scenario where the execution of a command depends on the result of another command...
+  * the CLI commands have a JSON output option to allow interpretation, but then you lose the regular output.
+  * there is no easy way to interpret JSON in, say, *bash* (try [jq](https://stedolan.github.io/jq/) if you want to do just that).
+  * the JSON to be interpreted can be (and is often) inconsistent: the *result* property can be an object or an array for the same command depending on the status...
+
+[Apache Ant](http://ant.apache.org/) is not for everyone. You have to understand it in order to respect it (like any technology) and you must not be allergic to XML.
+But if you can handle it, this project allows you to:
+* repeat your build locally, cross-platform.
+* significantly clean the output of your build.
+* handle complex scenarii where the execution of a command depends on the result of another command:
+  * with regular Ant [properties](http://ant.apache.org/manual/properties.html) and [conditions](http://ant.apache.org/manual/Tasks/condition.html).
+  * with native JSON support in Ant [scripts](http://ant.apache.org/manual/Tasks/script.html) if necessary.
+* easily integrate third-party Java based tools like [PMD](https://pmd.github.io/) or [ApexDoc](https://github.com/SalesforceFoundation/ApexDoc).
+* read your build more easily (if you can pass past [the angle bracket tax](https://blog.codinghorror.com/xml-the-angle-bracket-tax/)). What's more readable:
+  * `sfdx force:org:create -v HubOrg -s -f config/project-scratch-def.json -a ciorg --wait 2` ?
+  * or `<sfdx:force-org-create targetdevhubusername="HubOrg" defaultusername="true" definitionfile="config/project-scratch-def.json" alias="ciorg" wait="2" />` ?
+
 ## Usage
 
 The current documentation (`master` branch) for these tasks can be found at https://mcartoixa.github.io/ant-sfdx/.

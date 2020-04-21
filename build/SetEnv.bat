@@ -112,11 +112,11 @@ ECHO [31mCould not install Apache Ant %_ANT_VERSION%[0m 1>&2
 GOTO END_ERROR
 
 :ERROR_PMD
-ECHO [31mCould not install %_PMD_VERSION%[0m 1>&2
+ECHO [31mCould not install PMD %_PMD_VERSION%[0m 1>&2
 GOTO END_ERROR
 
 :ERROR_CLOC
-ECHO [31mCould not install %_CLOC_VERSION%[0m 1>&2
+ECHO [31mCould not install CLOC  %_CLOC_VERSION%[0m 1>&2
 GOTO END_ERROR
 
 :END_ERROR
