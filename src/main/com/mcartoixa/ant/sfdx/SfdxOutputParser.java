@@ -30,7 +30,7 @@ public class SfdxOutputParser extends PumpStreamHandler {
      * @param parser the parser to use
      */
     public SfdxOutputParser(final ISfdxJsonParser parser) {
-        super(new JsonOutputStream(parser), new JsonOutputStream(parser));
+        super(new JsonOutputStream(parser), new ErrorOutputStream(parser));
     }
 
     /**

@@ -1,0 +1,13 @@
+{
+  "status": 0,
+  "result": {
+    "pulledSource": [
+      {
+        "state": "Changed",
+        "fullName": "TestClass",
+        "type": "ApexClass",
+        "filePath": "path/to/TestClass.cls"
+      }
+    ]
+  }
+}

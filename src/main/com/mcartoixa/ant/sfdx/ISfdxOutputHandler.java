@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Mathieu Cartoixa.
+ * Copyright 2020 Mathieu Cartoixa.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,12 @@
  */
 package com.mcartoixa.ant.sfdx;
 
-import org.json.JSONObject;
-
 /**
  *
  * @author Mathieu Cartoixa
  */
-public interface ISfdxJsonParser extends ISfdxOutputHandler {
+public interface ISfdxOutputHandler {
 
-
-    void parse(JSONObject json);
+    void log(String message, int level);
+    
 }

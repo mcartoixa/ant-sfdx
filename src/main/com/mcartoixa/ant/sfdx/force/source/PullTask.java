@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Mathieu Cartoixa.
+ * Copyright 2020 Mathieu Cartoixa.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import org.json.JSONObject;
  *
  * @author Mathieu Cartoixa
  */
-public class PushTask extends SfdxTask {
+public class PullTask extends SfdxTask {
 
     /* default */ class JsonParser extends SfdxTask.JsonParser {
 
@@ -63,7 +63,7 @@ public class PushTask extends SfdxTask {
 
             final JSONObject success = json.optJSONObject("result");
             if (success != null) {
-                final JSONArray pushedSource = success.optJSONArray("pushedSource");
+                final JSONArray pushedSource = success.optJSONArray("pulledSource");
                 if (pushedSource != null) {
                     for (int i = 0; i < pushedSource.length(); i++) {
                         final Object value = pushedSource.get(i);
@@ -85,7 +85,7 @@ public class PushTask extends SfdxTask {
         }
     }
 
-    public PushTask() {
+    public PullTask() {
         super();
     }
 
@@ -93,13 +93,6 @@ public class PushTask extends SfdxTask {
         if (forceOverwrite) {
             final Commandline.Argument arg = getCommandline().createArgument();
             arg.setValue("-f");
-        }
-    }
-
-    public void setIgnoreWarnings(final boolean ignoreWarnings) {
-        if (ignoreWarnings) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setValue("-g");
         }
     }
 
@@ -119,11 +112,11 @@ public class PushTask extends SfdxTask {
 
     @Override
     protected String getCommand() {
-        return "force:source:push";
+        return "force:source:pull";
     }
 
     @Override
     protected ISfdxJsonParser getParser() {
-        return new PushTask.JsonParser();
+        return new PullTask.JsonParser();
     }
 }
