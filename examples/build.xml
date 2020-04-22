@@ -5,9 +5,6 @@ This project should reproduce the build defined in https://github.com/forcedotco
 It installs Apache Ivy (cf. http://ant.apache.org/ivy/) which is a dependency manager that will then be used to download ant-sfdx.
 It could also be used to download other dependencies such as ApexDoc
   -->
-  <property environment="env" />
-  <property name="verbosity" value="info" />
-
   <property name="ivy.version" value="2.5.0" />
   <property name="ivy.dir" value="${basedir}/ivy" />
   <property name="ivy.lib.dir" value="${ivy.dir}/lib" />
@@ -41,7 +38,6 @@ It could also be used to download other dependencies such as ApexDoc
 
   <target name="build" depends="-init-tasks-sfdx">
     <sfdx:force-org-create targetdevhubusername="HubOrg" defaultusername="true" definitionfile="config/project-scratch-def.json" alias="ciorg" wait="2" />
-    <sfdx:force-org-display targetusername="ciorg" />
     <sfdx:force-source-push targetusername="ciorg" />
     <sfdx:force-apex-test-run targetusername="ciorg" wait="10" />
     <sfdx:force-org-delete targetusername="ciorg" />

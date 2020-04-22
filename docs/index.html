@@ -27,7 +27,24 @@ limitations under the License.
     <p>Ant tasks that encapsulate the Salesforce DX CLI.</p>
 
     <h2>Usage</h2>
-    <pre>&lt;taskdef uri="com.mcartoixa.ant.sfdx" resource="com/mcartoixa/ant/sfdx/antlib.xml" classpath="ant-sfdx.jar" /&gt;</pre>
+    <p>You simply have to make the tasks (and their dependencies) available to your build and you are ready to go:</p>
+    <pre>&lt;taskdef uri="com.mcartoixa.ant.sfdx" resource="com/mcartoixa/ant/sfdx/antlib.xml" classpath="ant-sfdx.jar:json.jar" /&gt;</pre>
+    <p>Note that for a better handling of dependencies the use of a dependency manager like <a href="http://ant.apache.org/ivy/">Apache Ivy</a> is highly recommended.</p>
+
+    <h3>Example</h3>
+    <blockquote><pre>
+&lt;project name=&quot;example&quot; default=&quot;build&quot; xmlns:sfdx=&quot;com.mcartoixa.ant.sfdx&quot;&gt;
+  &lt;target name=&quot;-init-tasks-sfdx&quot;&gt;
+    &lt;taskdef uri=&quot;com.mcartoixa.ant.sfdx&quot; resource=&quot;com/mcartoixa/ant/sfdx/antlib.xml&quot; classpath=&quot;ant-sfdx.jar:json.jar&quot; /&gt;
+  &lt;/target&gt;
+
+  &lt;target name=&quot;build&quot; depends=&quot;-init-tasks-sfdx&quot;&gt;
+    &lt;sfdx:force-org-create targetdevhubusername=&quot;HubOrg&quot; defaultusername=&quot;true&quot; definitionfile=&quot;config/project-scratch-def.json&quot; alias=&quot;ciorg&quot; wait=&quot;2&quot; /&gt;
+    &lt;sfdx:force-source-push targetusername=&quot;ciorg&quot; /&gt;
+    &lt;sfdx:force-apex-test-run targetusername=&quot;ciorg&quot; wait=&quot;10&quot; /&gt;
+    &lt;sfdx:force-org-delete targetusername=&quot;ciorg&quot; /&gt;
+  &lt;/target&gt;
+&lt;/project&gt;</pre></blockquote>
 
     <hr />
     <h2>Tasks</h2>

@@ -6,6 +6,6 @@
     <conf name="default" extends="compile" />
   </configurations>
   <dependencies>
-    <dependency org="mcartoixa" name="ant-sfdx" rev="0.8" conf="build->compile" />
+    <dependency org="mcartoixa" name="ant-sfdx" rev="1.0" conf="build->compile" />
   </dependencies>
 </ivy-module>
