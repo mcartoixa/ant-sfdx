@@ -57,7 +57,7 @@ limitations under the License.
         </tr>
         <tr>
           <td>resultproperty</td>
-          <td>The name of a property in which the result of the command should be stored. The subproperties are named according to the JSON properties returned by each sfdx task.</td>
+          <td>The name of a property in which the result of the command should be stored. Subproperties are named according to the (lowercased) JSON properties returned by each sfdx task.</td>
           <td>No</td>
         </tr>
         <tr>
@@ -67,5 +67,26 @@ limitations under the License.
         </tr>
       </tbody>
     </table>
+
+    <h3>Examples</h3>
+    <p>Find if a Scratch Org with a specified alias already exists:</p>
+    <blockquote><pre>
+&lt;force-org-display quiet=&quot;true&quot; targetusername=&quot;ciorg&quot; statusproperty=&quot;display.status&quot; /&gt;
+&lt;condition property=&quot;scratch.exists&quot;&gt;
+  &lt;equals arg1=&quot;${display.status}&quot; arg2=&quot;0&quot; /&gt;
+&lt;/condition&gt;</pre></blockquote>
+
+    <p>Find if the Conga Composer package has already been installed:</p>
+    <blockquote><pre>
+&lt;force-package-installed-list quiet=&quot;true&quot; targetusername=&quot;ciorg&quot; resultproperty=&quot;installed.list&quot; /&gt;
+&lt;condition property=&quot;conga-composer.installed&quot;&gt;
+  &lt;or&gt;
+    &lt;equals arg1=&quot;${installed.list.0.subscriberpackageversionid}&quot; arg2=&quot;04t600000001j3YAAQ&quot; /&gt;
+    &lt;equals arg1=&quot;${installed.list.1.subscriberpackageversionid}&quot; arg2=&quot;04t600000001j3YAAQ&quot; /&gt;
+  &lt;/or&gt;
+&lt;/condition&gt;
+      </pre></blockquote>
+
+    <p class="center">Version: <span class="version-number">0.0.0-master</span></p>
   </body>
 </html>

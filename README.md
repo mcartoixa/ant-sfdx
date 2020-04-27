@@ -40,7 +40,9 @@ But if you can handle it, this project allows you to:
 
 ## Usage
 
-The current documentation (`master` branch) for these tasks can be found at https://mcartoixa.github.io/ant-sfdx/.
+The current documentation (`master` branch) for these tasks can be found at https://mcartoixa.github.io/ant-sfdx/. The documentation
+for any specific version can be downloaded [from the releases section](https://github.com/mcartoixa/ant-sfdx/releases) as an asset of
+the release in question.
 
 These tasks can be downloaded directly [from the releases section](https://github.com/mcartoixa/ant-sfdx/releases) or with
 a dependency manager like [Apache Ivy](http://ant.apache.org/ivy/) (preferred). You will need the following settings in your

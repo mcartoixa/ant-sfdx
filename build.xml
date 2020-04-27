@@ -8,6 +8,7 @@
   <property environment="env" />
 
   <property name="bin.dir" value="${basedir}/build" />
+  <property name="doc.dir" value="${basedir}/docs" />
   <property name="ivy.dir" value="${basedir}/ivy" />
   <property name="tmp.dir" value="${basedir}/tmp" />
   <property name="_tmp.dir" value="${basedir}/.tmp" />
@@ -99,6 +100,10 @@
       </filterchain>
     </loadresource>
     <replaceregexp file="${basedir}/ivy.xml" match="(revision=&quot;).*(&quot;)" replace="\1${package.revision}\2" byline="true" />
+
+    <replaceregexp match="(&lt;span\s+class=&quot;version-number&quot;&gt;).*?(&lt;/span&gt;)" replace="\1${package.revision}\2" flags="gs">
+      <fileset dir="${doc.dir}" includes="**/*.html"/>
+    </replaceregexp>
 
     <replaceregexp file="${basedir}/manifest.mf" match="^(Implementation-Version:\s).*$" replace="\1${package.version}" byline="true" />
   </target>
