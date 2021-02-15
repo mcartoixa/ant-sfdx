@@ -172,7 +172,7 @@ public abstract class SfdxTask extends Task {
             this.onExecuted(r);
 
             if (this.getFailOnError() && Execute.isFailure(r) || this.hasErrorMessage()) {
-                String message = this.errorMessage;
+                String message = this.getErrorMessage();
                 if (message == null || message.isEmpty()) {
                     message = cmd.getExecutable() + " returned " + r;
                 }
@@ -254,6 +254,10 @@ public abstract class SfdxTask extends Task {
 
     protected Commandline getCommandline() {
         return this.cmd;
+    }
+
+    protected String getErrorMessage() {
+        return this.errorMessage;
     }
 
     protected boolean getFailOnError() {

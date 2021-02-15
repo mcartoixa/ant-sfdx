@@ -35,6 +35,7 @@ import org.apache.tools.ant.types.resources.FileResource;
 import org.apache.tools.ant.types.resources.Union;
 import org.apache.tools.ant.util.ResourceUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -49,6 +50,7 @@ public class ImportTask extends SfdxTask {
             super();
         }
 
+        @SuppressWarnings("PMD.EmptyCatchBlock")
         @Override
         protected void doParse(final JSONObject json) {
             final JSONArray result = json.optJSONArray("result");
@@ -66,31 +68,48 @@ public class ImportTask extends SfdxTask {
                 }
             }
 
-            final boolean hasErrors = json.optBoolean("hasErrors", false);
-            if (hasErrors) {
-                final JSONArray results = json.optJSONArray("results");
-                if (results != null) {
-                    for (int i = 0; i < results.length(); i++) {
-                        final Object value = results.get(i);
-                        if (value instanceof JSONObject) {
-                            final JSONObject object = (JSONObject) value;
-                            final JSONArray errors = object.getJSONArray("errors");
-                            String errorMessages = "";
-                            for (int j = 0; j < errors.length(); j++) {
-                                if (!errorMessages.isEmpty()) {
-                                    errorMessages = errorMessages.concat("\n\t");
-                                }
-                                errorMessages = errorMessages.concat(errors.getJSONObject(j).getString("message"));
-                            }
-                            final String message = String.format(
-                                    "%s not imported: %s",
-                                    object.getString("referenceId"),
-                                    errorMessages
+            final String errorMessage = json.optString("message");
+            if (errorMessage != null && !errorMessage.isEmpty()) {
+                // JSON embedded inside JSON...
+                try {
+                    final JSONObject errorJson = new JSONObject(errorMessage);
+                    final boolean hasErrors = errorJson.optBoolean("hasErrors", false);
+                    if (hasErrors) {
+                        final JSONArray results = errorJson.optJSONArray("results");
+                        if (results != null) {
+                            json.remove("message");
+                            ImportTask.this.setErrorMessage(
+                                    String.format(
+                                            "There were %d error(s) while importing data.",
+                                            results.length()
+                                    )
                             );
-                            this.log(message, Project.MSG_ERR);
+                            for (int i = 0; i < results.length(); i++) {
+                                final Object value = results.get(i);
+                                if (value instanceof JSONObject) {
+                                    final JSONObject object = (JSONObject) value;
+                                    final JSONArray errors = object.getJSONArray("errors");
+                                    String errorMessages = "";
+                                    for (int j = 0; j < errors.length(); j++) {
+                                        if (!errorMessages.isEmpty()) {
+                                            errorMessages = errorMessages.concat("\n\t");
+                                        }
+                                        errorMessages = errorMessages.concat(errors.getJSONObject(j).getString("message"));
+                                    }
+                                    final String message = String.format(
+                                            "%s not imported: %s",
+                                            object.getString("referenceId"),
+                                            errorMessages
+                                    );
+                                    this.log(message, Project.MSG_ERR);
+                                }
+                            }
                         }
                     }
+                } catch (JSONException jex) {
+                    // Error message is not JSON
                 }
+
             }
 
             super.doParse(json);
