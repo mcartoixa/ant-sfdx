@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Mathieu Cartoixa.
+ * Copyright 2021 Mathieu Cartoixa.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mcartoixa.ant.sfdx.force.source;
+package com.mcartoixa.ant.sfdx.force.data.tree;
 
 import org.apache.tools.ant.BuildFileRule;
 import org.apache.tools.ant.Project;
@@ -27,7 +27,7 @@ import org.junit.rules.ExpectedException;
  *
  * @author Mathieu Cartoixa
  */
-public class StatusTaskTest {
+public class ImportTaskTest {
 
     @Rule
     public final BuildFileRule buildRule = new BuildFileRule();
@@ -35,12 +35,12 @@ public class StatusTaskTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    public StatusTaskTest() {
+    public ImportTaskTest() {
     }
 
     @Before
     public void setUp() {
-        buildRule.configureProject("src/test/com/mcartoixa/ant/sfdx/force/source/status.xml", Project.MSG_DEBUG);
+        buildRule.configureProject("src/test/com/mcartoixa/ant/sfdx/force/data/tree/import.xml", Project.MSG_DEBUG);
     }
 
     @Test
@@ -62,27 +62,9 @@ public class StatusTaskTest {
     }
 
     @Test
-    public void executeShouldLogChanges() {
+    public void executeShouldLogImports() {
         buildRule.executeTarget("execute");
-        Assert.assertTrue("Changes should be logged", buildRule.getLog().contains("ApexClass TestClass: Local Changed"));
-    }
-
-    @Test
-    public void executeScopeAllShouldAddScopeArgument() {
-        buildRule.executeTarget("execute-scope-all");
-        Assert.assertTrue("Full log should contain -a argument", buildRule.getFullLog().contains("'-a'"));
-    }
-
-    @Test
-    public void executeScopeLocalShouldAddScopeArgument() {
-        buildRule.executeTarget("execute-scope-local");
-        Assert.assertTrue("Full log should contain -l argument", buildRule.getFullLog().contains("'-l'"));
-    }
-
-    @Test
-    public void executeScopeRemoteShouldAddScopeArgument() {
-        buildRule.executeTarget("execute-scope-remote");
-        Assert.assertTrue("Full log should contain -r argument", buildRule.getFullLog().contains("'-r'"));
+        Assert.assertTrue("Imports should be logged", buildRule.getLog().contains("Object__cRef1 imported"));
     }
 
     @Test

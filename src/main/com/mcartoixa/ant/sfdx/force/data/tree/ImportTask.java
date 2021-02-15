@@ -66,6 +66,33 @@ public class ImportTask extends SfdxTask {
                 }
             }
 
+            final boolean hasErrors = json.optBoolean("hasErrors", false);
+            if (hasErrors) {
+                final JSONArray results = json.optJSONArray("results");
+                if (results != null) {
+                    for (int i = 0; i < results.length(); i++) {
+                        final Object value = results.get(i);
+                        if (value instanceof JSONObject) {
+                            final JSONObject object = (JSONObject) value;
+                            final JSONArray errors = object.getJSONArray("errors");
+                            String errorMessages = "";
+                            for (int j = 0; j < errors.length(); j++) {
+                                if (!errorMessages.isEmpty()) {
+                                    errorMessages = errorMessages.concat("\n\t");
+                                }
+                                errorMessages = errorMessages.concat(errors.getJSONObject(j).getString("message"));
+                            }
+                            final String message = String.format(
+                                    "%s not imported: %s",
+                                    object.getString("referenceId"),
+                                    errorMessages
+                            );
+                            this.log(message, Project.MSG_ERR);
+                        }
+                    }
+                }
+            }
+
             super.doParse(json);
         }
     }
@@ -97,14 +124,6 @@ public class ImportTask extends SfdxTask {
             this.resources = new Union();
         }
         this.resources.add(list);
-    }
-
-    public void setContentType(final String contentType) {
-        if (contentType != null && !contentType.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-c");
-            arg.setValue(contentType);
-        }
     }
 
     public void setPlan(final File plan) {

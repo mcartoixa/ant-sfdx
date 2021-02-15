@@ -11,7 +11,7 @@ cache:
 
 env:
   global:
-    - PACKAGE_VERSION=1.0.$TRAVIS_BUILD_NUMBER
+    - PACKAGE_VERSION=1.1.$TRAVIS_BUILD_NUMBER
     - CODECOV_TOKEN=7eb11ac4-c9b4-45d3-bbb2-a34c0dd7b723
 
 install:

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="ExecuteTaskTest" basedir="." xmlns:sfdx="com.mcartoixa.ant.sfdx">
+<project name="ConvertTaskTest" basedir="." xmlns:sfdx="com.mcartoixa.ant.sfdx">
   <condition property="sfdx-path" value="..\..\sfdx.cmd" else="../../sfdx">
     <os family="dos" />
   </condition>

@@ -1,0 +1,14 @@
+{
+  "status": 0,
+  "result": [{
+      "refId": "Object__cRef1",
+      "id": "a063N000004OhI7QAK",
+      "type": "Object__c"
+    },
+    {
+      "refId": "Object__cRef2",
+      "id": "a063N000004OhI8QAK",
+      "type": "Object__c"
+    }
+  ]
+}

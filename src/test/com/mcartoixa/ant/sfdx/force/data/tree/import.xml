@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="ImportTaskTest" basedir="." xmlns:sfdx="com.mcartoixa.ant.sfdx">
+  <condition property="sfdx-path" value="..\..\..\sfdx.cmd" else="../../../sfdx">
+    <os family="dos" />
+  </condition>
+
+  <target name="init">
+    <taskdef uri="com.mcartoixa.ant.sfdx" resource="com/mcartoixa/ant/sfdx/antlib.xml" classpath="tmp/obj/classes" />
+
+    <filelist id="datafiles" files="testdata.json" />
+  </target>
+
+
+  <target name="execute" depends="init">
+    <sfdx:force-data-tree-import targetusername="testuser" statusproperty="execute.status" resultproperty="execute.result"  executable="${sfdx-path}">
+      <filelist refid="datafiles" />
+    </sfdx:force-data-tree-import>
+  </target>
+
+  <target name="execute-quiet" depends="init">
+    <sfdx:force-data-tree-import quiet="true" executable="${sfdx-path}">
+      <filelist refid="datafiles" />
+    </sfdx:force-data-tree-import>
+  </target>
+</project>
