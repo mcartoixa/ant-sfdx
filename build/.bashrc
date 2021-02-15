@@ -30,7 +30,7 @@ esac
 #Ant
 export ANT_HOME=$(pwd)/.tmp/apache-ant-$_ANT_VERSION
 if [ ! -f $_ANT_HOME/bin/ant ]; then
-    wget -nv $_wget_interactive_options -O .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz http://mirrors.ircam.fr/pub/apache//ant/binaries/apache-ant-$_ANT_VERSION-bin.tar.gz
+    wget -nv $_wget_interactive_options -O .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz https://archive.apache.org/dist/ant/binaries/apache-ant-$_ANT_VERSION-bin.tar.gz
     tar -xzvf .tmp/apache-ant-$_ANT_VERSION-bin.tar.gz -C .tmp
 fi
 echo \$ANT_HOME=$ANT_HOME
