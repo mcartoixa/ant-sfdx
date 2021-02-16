@@ -1,0 +1,25 @@
+{
+  "status": 0,
+  "result": {
+    "totalSize": 2,
+    "done": true,
+    "records": [
+      {
+        "attributes": {
+          "type": "Object__c",
+          "url": "/services/data/v50.0/sobjects/Object__c/0123N0000027luQQAQ"
+        },
+        "Id": "0123N0000027luQQAQ",
+        "Name": "Object 1"
+      },
+      {
+        "attributes": {
+          "type": "Object__c",
+          "url": "/services/data/v50.0/sobjects/Object__c/0123N0000027luRQAQ"
+        },
+        "Id": "0123N0000027luRQAQ",
+        "Name": "Object 2"
+      }
+    ]
+  }
+}

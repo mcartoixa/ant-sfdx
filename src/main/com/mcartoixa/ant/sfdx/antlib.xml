@@ -5,6 +5,7 @@
   <taskdef name="force-apex-execute" classname="com.mcartoixa.ant.sfdx.force.apex.ExecuteTask" />
   <taskdef name="force-apex-test-run" classname="com.mcartoixa.ant.sfdx.force.apex.test.RunTask" />
   <taskdef name="force-data-record-create" classname="com.mcartoixa.ant.sfdx.force.data.record.CreateTask" />
+  <taskdef name="force-data-soql-query" classname="com.mcartoixa.ant.sfdx.force.data.soql.QueryTask" />
   <taskdef name="force-data-tree-import" classname="com.mcartoixa.ant.sfdx.force.data.tree.ImportTask" />
   <taskdef name="force-limits-api-display" classname="com.mcartoixa.ant.sfdx.force.limits.api.DisplayTask" />
   <taskdef name="force-mdapi-describemetadata" classname="com.mcartoixa.ant.sfdx.force.mdapi.DescribeMetadataTask" />

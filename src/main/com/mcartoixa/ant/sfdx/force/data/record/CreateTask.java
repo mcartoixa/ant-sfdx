@@ -101,8 +101,7 @@ public class CreateTask extends SfdxTask {
 
     public void setUseToolingApi(final boolean useToolingApi) {
         if (useToolingApi) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setValue("-t");
+            getCommandline().createArgument().setValue("-t");
         }
     }
 

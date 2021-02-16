@@ -70,6 +70,7 @@ public abstract class SfdxTask extends Task {
                 SfdxTask.this.getProject().setNewProperty(SfdxTask.this.getStatusProperty(), Integer.toString(status));
             }
 
+            // Result can either be an array or an object, depending on what the developer had for breakfast in the morning is my guess
             final JSONObject result = json.optJSONObject("result");
             if (result == null) {
                 final JSONArray results = json.optJSONArray("result");

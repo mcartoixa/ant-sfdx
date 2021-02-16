@@ -43,7 +43,7 @@ public class CreateTask extends SfdxTask {
             if (!CreateTask.this.getQuiet()) {
                 switch (key) {
                     case "orgid":
-                        this.log("Org " + value + " created", Project.MSG_INFO);
+                        this.log("Org " + value + " created.", Project.MSG_INFO);
                         break;
                     default:
                         break;
