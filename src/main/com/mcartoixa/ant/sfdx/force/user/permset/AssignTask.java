@@ -18,7 +18,6 @@ package com.mcartoixa.ant.sfdx.force.user.permset;
 import com.mcartoixa.ant.sfdx.ISfdxJsonParser;
 import com.mcartoixa.ant.sfdx.SfdxTask;
 import org.apache.tools.ant.Project;
-import org.apache.tools.ant.types.Commandline;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -71,25 +70,22 @@ public class AssignTask extends SfdxTask {
 
     public void setOnBehalfof(final String onBehalfOf) {
         if (onBehalfOf != null && !onBehalfOf.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-o");
-            arg.setValue(onBehalfOf);
+            getCommandline().createArgument().setValue("-o");
+            getCommandline().createArgument().setValue(onBehalfOf);
         }
     }
 
     public void setPermsetName(final String permsetName) {
         if (permsetName != null && !permsetName.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-n");
-            arg.setValue(permsetName);
+            getCommandline().createArgument().setValue("-n");
+            getCommandline().createArgument().setValue(permsetName);
         }
     }
 
     public void setTargetUserName(final String userName) {
         if (userName != null && !userName.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-u");
-            arg.setValue(userName);
+            getCommandline().createArgument().setValue("-u");
+            getCommandline().createArgument().setValue(userName);
         }
     }
 

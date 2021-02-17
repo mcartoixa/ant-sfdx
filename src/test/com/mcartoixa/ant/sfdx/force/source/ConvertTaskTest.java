@@ -59,37 +59,37 @@ public class ConvertTaskTest {
     @Test
     public void executeShouldAddManifestArgument() {
         buildRule.executeTarget("execute");
-        Assert.assertTrue("Full log should contain -x argument", buildRule.getFullLog().contains("'-x" + new File(buildRule.getProject().getBaseDir(), "testmanifest").getAbsolutePath() + "'"));
+        Assert.assertTrue("Full log should contain -x argument", buildRule.getFullLog().contains("'-x'" + System.lineSeparator() + "'" + new File(buildRule.getProject().getBaseDir(), "testmanifest").getAbsolutePath() + "'"));
     }
 
     @Test
     public void executeShouldAddOutputDirArgument() {
         buildRule.executeTarget("execute");
-        Assert.assertTrue("Full log should contain -d argument", buildRule.getFullLog().contains("'-d" + new File(buildRule.getProject().getBaseDir(), "ant-sfdx").getAbsolutePath() + "'"));
+        Assert.assertTrue("Full log should contain -d argument", buildRule.getFullLog().contains("'-d'" + System.lineSeparator() + "'" + new File(buildRule.getProject().getBaseDir(), "ant-sfdx").getAbsolutePath() + "'"));
     }
 
     @Test
     public void executeShouldAddMetadataArgument() {
         buildRule.executeTarget("execute");
-        Assert.assertTrue("Full log should contain -m argument", buildRule.getFullLog().contains("'-mTestComponent1,TestComponent2'"));
+        Assert.assertTrue("Full log should contain -m argument", buildRule.getFullLog().contains("'-m'" + System.lineSeparator() + "'TestComponent1,TestComponent2'"));
     }
 
     @Test
     public void executeShouldAddPackageNameArgument() {
         buildRule.executeTarget("execute");
-        Assert.assertTrue("Full log should contain -n argument", buildRule.getFullLog().contains("'-ntestpackage'"));
+        Assert.assertTrue("Full log should contain -n argument", buildRule.getFullLog().contains("'-n'" + System.lineSeparator() + "'testpackage'"));
     }
 
     @Test
     public void executeShouldAddRootDirArgument() {
         buildRule.executeTarget("execute");
-        Assert.assertTrue("Full log should contain -r argument", buildRule.getFullLog().contains("'-r" + buildRule.getProject().getBaseDir().getAbsolutePath() + "'"));
+        Assert.assertTrue("Full log should contain -r argument", buildRule.getFullLog().contains("'-r'" + System.lineSeparator() + "'" + buildRule.getProject().getBaseDir().getAbsolutePath() + "'"));
     }
 
     @Test
     public void executeShouldAddSourcePathArgument() {
         buildRule.executeTarget("execute");
-        Assert.assertTrue("Full log should contain -p argument", buildRule.getFullLog().contains("'-p" + new File(buildRule.getProject().getBaseDir(), "testsourcepath").getAbsolutePath() + "'"));
+        Assert.assertTrue("Full log should contain -p argument", buildRule.getFullLog().contains("'-p'" + System.lineSeparator() + "'" + new File(buildRule.getProject().getBaseDir(), "testsourcepath").getAbsolutePath() + "'"));
     }
 
     @Test

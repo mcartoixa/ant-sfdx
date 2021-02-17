@@ -69,9 +69,8 @@ public class ConvertTask extends SfdxTask {
 
     public void setManifest(final File manifest) {
         if (manifest != null) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-x");
-            arg.setFile(manifest);
+            getCommandline().createArgument().setValue("-x");
+            getCommandline().createArgument().setFile(manifest);
         }
     }
 
@@ -79,17 +78,15 @@ public class ConvertTask extends SfdxTask {
         if (outputDir != null) {
             final File dir = !outputDir.exists() || outputDir.isDirectory() ? outputDir : outputDir.getParentFile();
 
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-d");
-            arg.setValue(dir.getAbsolutePath());
+            getCommandline().createArgument().setValue("-d");
+            getCommandline().createArgument().setValue(dir.getAbsolutePath());
         }
     }
 
     public void setPackageName(final String name) {
         if (name != null && !name.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-n");
-            arg.setValue(name);
+            getCommandline().createArgument().setValue("-n");
+            getCommandline().createArgument().setValue(name);
         }
     }
 
@@ -97,9 +94,8 @@ public class ConvertTask extends SfdxTask {
         if (rootDir != null) {
             final File dir = !rootDir.exists() || rootDir.isDirectory() ? rootDir : rootDir.getParentFile();
 
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-r");
-            arg.setValue(dir.getAbsolutePath());
+            getCommandline().createArgument().setValue("-r");
+            getCommandline().createArgument().setValue(dir.getAbsolutePath());
         }
     }
 
@@ -129,9 +125,8 @@ public class ConvertTask extends SfdxTask {
     @Override
     protected void createArguments() {
         if (!this.metadata.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-m");
-            arg.setValue(String.join(",", this.metadata));
+            getCommandline().createArgument().setValue("-m");
+            getCommandline().createArgument().setValue(String.join(",", this.metadata));
         }
 
         if (this.sourcePath != null) {
@@ -142,9 +137,8 @@ public class ConvertTask extends SfdxTask {
                     .map(p -> p.replace(File.pathSeparatorChar, ','))
                     .toArray(String[]::new);
 
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-p");
-            arg.setValue(String.join(",", sp));
+            getCommandline().createArgument().setValue("-p");
+            getCommandline().createArgument().setValue(String.join(",", sp));
         }
 
         super.createArguments();

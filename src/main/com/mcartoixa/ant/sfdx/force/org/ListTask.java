@@ -20,7 +20,6 @@ import com.mcartoixa.ant.sfdx.SfdxTask;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.tools.ant.Project;
-import org.apache.tools.ant.types.Commandline;
 import org.json.JSONObject;
 
 /**
@@ -137,15 +136,13 @@ public class ListTask extends SfdxTask {
 
     public void setAll(final boolean all) {
         if (all) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setValue("--all");
+            getCommandline().createArgument().setValue("--all");
         }
     }
 
     public void setClean(final boolean clean) {
         if (clean) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setValue("--clean");
+            getCommandline().createArgument().setValue("--clean");
         }
     }
 

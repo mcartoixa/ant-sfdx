@@ -18,7 +18,6 @@ package com.mcartoixa.ant.sfdx.force.user;
 import com.mcartoixa.ant.sfdx.ISfdxJsonParser;
 import com.mcartoixa.ant.sfdx.SfdxTask;
 import org.apache.tools.ant.Project;
-import org.apache.tools.ant.types.Commandline;
 
 /**
  *
@@ -54,17 +53,15 @@ public class ListTask extends SfdxTask {
 
     public void setTargetUserName(final String userName) {
         if (userName != null && !userName.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-u");
-            arg.setValue(userName);
+            getCommandline().createArgument().setValue("-u");
+            getCommandline().createArgument().setValue(userName);
         }
     }
 
     public void setTargetDevHubUserName(final String devHubUserName) {
         if (devHubUserName != null && !devHubUserName.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-v");
-            arg.setValue(devHubUserName);
+            getCommandline().createArgument().setValue("-v");
+            getCommandline().createArgument().setValue(devHubUserName);
         }
     }
 

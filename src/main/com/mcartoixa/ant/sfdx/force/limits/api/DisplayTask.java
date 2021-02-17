@@ -18,7 +18,6 @@ package com.mcartoixa.ant.sfdx.force.limits.api;
 import com.mcartoixa.ant.sfdx.ISfdxJsonParser;
 import com.mcartoixa.ant.sfdx.SfdxTask;
 import org.apache.tools.ant.Project;
-import org.apache.tools.ant.types.Commandline;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -76,9 +75,8 @@ public class DisplayTask extends SfdxTask {
 
     public void setTargetUserName(final String userName) {
         if (userName != null && !userName.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-u");
-            arg.setValue(userName);
+            getCommandline().createArgument().setValue("-u");
+            getCommandline().createArgument().setValue(userName);
         }
     }
 

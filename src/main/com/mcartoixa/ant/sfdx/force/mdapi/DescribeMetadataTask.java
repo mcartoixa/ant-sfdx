@@ -19,7 +19,6 @@ import com.mcartoixa.ant.sfdx.ISfdxJsonParser;
 import com.mcartoixa.ant.sfdx.SfdxTask;
 import java.io.File;
 import org.apache.tools.ant.Project;
-import org.apache.tools.ant.types.Commandline;
 
 /**
  *
@@ -53,17 +52,15 @@ public class DescribeMetadataTask extends SfdxTask {
 
     public void setResultFile(final File resultFile) {
         if (resultFile != null) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-f");
-            arg.setValue(resultFile.getPath());
+            getCommandline().createArgument().setValue("-f");
+            getCommandline().createArgument().setValue(resultFile.getPath());
         }
     }
 
     public void setTargetUserName(final String userName) {
         if (userName != null && !userName.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-u");
-            arg.setValue(userName);
+            getCommandline().createArgument().setValue("-u");
+            getCommandline().createArgument().setValue(userName);
         }
     }
 

@@ -112,30 +112,26 @@ public class DeployTask extends SfdxTask {
 
     public void setCheckOnly(final boolean checkOnly) {
         if (checkOnly) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setValue("-c");
+            getCommandline().createArgument().setValue("-c");
         }
     }
 
     public void setIgnoreErrors(final boolean ignoreErrors) {
         if (ignoreErrors) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setValue("-o");
+            getCommandline().createArgument().setValue("-o");
         }
     }
 
     public void setIgnoreWarnings(final boolean ignoreWarnings) {
         if (ignoreWarnings) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setValue("-g");
+            getCommandline().createArgument().setValue("-g");
         }
     }
 
     public void setManifest(final File manifest) {
         if (manifest != null) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-x");
-            arg.setFile(manifest);
+            getCommandline().createArgument().setValue("-x");
+            getCommandline().createArgument().setFile(manifest);
         }
     }
 
@@ -149,14 +145,13 @@ public class DeployTask extends SfdxTask {
 
     public void setSourcepathRef(final Reference ref) {
         this.createSourcepath().setRefid(ref);
-        
+
     }
 
     public void setTargetUserName(final String userName) {
         if (userName != null && !userName.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-u");
-            arg.setValue(userName);
+            getCommandline().createArgument().setValue("-u");
+            getCommandline().createArgument().setValue(userName);
         }
     }
 
@@ -168,9 +163,8 @@ public class DeployTask extends SfdxTask {
 
     public void setValidateddeployrequestid(final String vdrId) {
         if (vdrId != null && !vdrId.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-q");
-            arg.setValue(vdrId);
+            getCommandline().createArgument().setValue("-q");
+            getCommandline().createArgument().setValue(vdrId);
         }
     }
 
@@ -181,9 +175,8 @@ public class DeployTask extends SfdxTask {
     @Override
     protected void createArguments() {
         if (!this.metadata.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-m");
-            arg.setValue(String.join(",", this.metadata));
+            getCommandline().createArgument().setValue("-m");
+            getCommandline().createArgument().setValue(String.join(",", this.metadata));
         }
 
         if (this.sourcePath != null) {
@@ -191,18 +184,16 @@ public class DeployTask extends SfdxTask {
             final Commandline.Argument fakeArg = new Commandline.Argument();
             fakeArg.setPath(this.sourcePath);
             final String[] sp = Arrays.stream(fakeArg.getParts())
-                .map(p -> p.replace(File.pathSeparatorChar, ','))
-                .toArray(String[]::new);
+                    .map(p -> p.replace(File.pathSeparatorChar, ','))
+                    .toArray(String[]::new);
 
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-p");
-            arg.setValue(String.join(",", sp));
+            getCommandline().createArgument().setValue("-p");
+            getCommandline().createArgument().setValue(String.join(",", sp));
         }
 
         if (!this.runTests.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-r");
-            arg.setValue(String.join(",", this.runTests));
+            getCommandline().createArgument().setValue("-r");
+            getCommandline().createArgument().setValue(String.join(",", this.runTests));
         }
 
         {

@@ -69,32 +69,28 @@ public class CreateTask extends SfdxTask {
 
     public void setAlias(final String alias) {
         if (alias != null && !alias.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-a");
-            arg.setValue(alias);
+            getCommandline().createArgument().setValue("-a");
+            getCommandline().createArgument().setValue(alias);
         }
     }
 
     public void setClientId(final String clientId) {
         if (clientId != null && !clientId.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-i");
-            arg.setValue(clientId);
+            getCommandline().createArgument().setValue("-i");
+            getCommandline().createArgument().setValue(clientId);
         }
     }
 
     public void setDefaultUserName(final boolean isDefaultUserName) {
         if (isDefaultUserName) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setValue("-s");
+            getCommandline().createArgument().setValue("-s");
         }
     }
 
     public void setDefinitionFile(final File definitionFile) {
         if (definitionFile != null) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-f");
-            arg.setFile(definitionFile);
+            getCommandline().createArgument().setValue("-f");
+            getCommandline().createArgument().setFile(definitionFile);
         }
     }
 
@@ -108,23 +104,20 @@ public class CreateTask extends SfdxTask {
 
     public void setNoAncestors(final boolean noAncestors) {
         if (noAncestors) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setValue("-c");
+            getCommandline().createArgument().setValue("-c");
         }
     }
 
     public void setNoNamespace(final boolean noNamespace) {
         if (noNamespace) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setValue("-n");
+            getCommandline().createArgument().setValue("-n");
         }
     }
 
     public void setTargetDevHubUserName(final String devHubUserName) {
         if (devHubUserName != null && !devHubUserName.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-v");
-            arg.setValue(devHubUserName);
+            getCommandline().createArgument().setValue("-v");
+            getCommandline().createArgument().setValue(devHubUserName);
         }
     }
 

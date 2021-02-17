@@ -83,16 +83,14 @@ public class PullTask extends SfdxTask {
 
     public void setForceOverwrite(final boolean forceOverwrite) {
         if (forceOverwrite) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setValue("-f");
+            getCommandline().createArgument().setValue("-f");
         }
     }
 
     public void setTargetUserName(final String userName) {
         if (userName != null && !userName.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-u");
-            arg.setValue(userName);
+            getCommandline().createArgument().setValue("-u");
+            getCommandline().createArgument().setValue(userName);
         }
     }
 

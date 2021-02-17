@@ -75,9 +75,8 @@ public class InstallTask extends SfdxTask {
 
     public void setInstallationKey(final String key) {
         if (key != null && !key.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-k");
-            arg.setValue(key);
+            getCommandline().createArgument().setValue("-k");
+            getCommandline().createArgument().setValue(key);
         }
     }
 
@@ -99,9 +98,8 @@ public class InstallTask extends SfdxTask {
 
     public void setTargetUserName(final String userName) {
         if (userName != null && !userName.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-u");
-            arg.setValue(userName);
+            getCommandline().createArgument().setValue("-u");
+            getCommandline().createArgument().setValue(userName);
         }
     }
 

@@ -65,13 +65,13 @@ public class CreateTaskTest {
     @Test
     public void executeShouldAddAliasArgument() {
         buildRule.executeTarget("execute");
-        Assert.assertTrue("Full log should contain -a argument", buildRule.getFullLog().contains("'-atestalias'"));
+        Assert.assertTrue("Full log should contain -a argument", buildRule.getFullLog().contains("'-a'" + System.lineSeparator() + "'testalias'"));
     }
 
     @Test
     public void executeShouldAddDefinitionFileArgument() {
         buildRule.executeTarget("execute");
-        Assert.assertTrue("Full log should contain -f argument", buildRule.getFullLog().contains("'-f" + new File(buildRule.getProject().getBaseDir(), "testfile").getAbsolutePath() + "'"));
+        Assert.assertTrue("Full log should contain -f argument", buildRule.getFullLog().contains("'-f'" + System.lineSeparator() + "'" + new File(buildRule.getProject().getBaseDir(), "testfile").getAbsolutePath() + "'"));
     }
 
     @Test
@@ -83,13 +83,13 @@ public class CreateTaskTest {
     @Test
     public void executeShouldAddTargetDevHubUsernameArgument() {
         buildRule.executeTarget("execute");
-        Assert.assertTrue("Full log should contain -v argument", buildRule.getFullLog().contains("'-vtestdevhub'"));
+        Assert.assertTrue("Full log should contain -v argument", buildRule.getFullLog().contains("'-v'" + System.lineSeparator() + "'testdevhub'"));
     }
 
     @Test
     public void executeShouldAddTargetUsernameArgument() {
         buildRule.executeTarget("execute");
-        Assert.assertTrue("Full log should contain -u argument", buildRule.getFullLog().contains("'-utestuser'"));
+        Assert.assertTrue("Full log should contain -u argument", buildRule.getFullLog().contains("'-u'" + System.lineSeparator() + "'testuser'"));
     }
 
     @Test

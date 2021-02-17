@@ -64,33 +64,29 @@ public class CreateTask extends SfdxTask {
 
     public void setAlias(final String alias) {
         if (alias != null && !alias.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-a");
-            arg.setValue(alias);
+            getCommandline().createArgument().setValue("-a");
+            getCommandline().createArgument().setValue(alias);
         }
     }
 
     public void setTargetUserName(final String userName) {
         if (userName != null && !userName.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-u");
-            arg.setValue(userName);
+            getCommandline().createArgument().setValue("-u");
+            getCommandline().createArgument().setValue(userName);
         }
     }
 
     public void setDefinitionFile(final File definitionFile) {
         if (definitionFile != null) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-f");
-            arg.setFile(definitionFile);
+            getCommandline().createArgument().setValue("-f");
+            getCommandline().createArgument().setFile(definitionFile);
         }
     }
 
     public void setTargetDevHubUserName(final String devHubUserName) {
         if (devHubUserName != null && !devHubUserName.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-v");
-            arg.setValue(devHubUserName);
+            getCommandline().createArgument().setValue("-v");
+            getCommandline().createArgument().setValue(devHubUserName);
         }
     }
 

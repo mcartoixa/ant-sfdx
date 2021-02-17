@@ -187,9 +187,8 @@ public class RunTask extends SfdxTask {
 
     public void setTargetUserName(final String userName) {
         if (userName != null && !userName.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-u");
-            arg.setValue(userName);
+            getCommandline().createArgument().setValue("-u");
+            getCommandline().createArgument().setValue(userName);
         }
     }
 
@@ -203,9 +202,8 @@ public class RunTask extends SfdxTask {
         if (toDir != null) {
             this.toDir = !toDir.exists() || toDir.isDirectory() ? toDir : toDir.getParentFile();
 
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-d");
-            arg.setValue(toDir.getAbsolutePath());
+            getCommandline().createArgument().setValue("-d");
+            getCommandline().createArgument().setValue(toDir.getAbsolutePath());
         }
     }
 
@@ -248,17 +246,14 @@ public class RunTask extends SfdxTask {
     @Override
     protected void createArguments() {
         if (!classes.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-n");
-            arg.setValue(String.join(",", classes));
+            getCommandline().createArgument().setValue("-n");
+            getCommandline().createArgument().setValue(String.join(",", classes));
         } else if (!suites.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-s");
-            arg.setValue(String.join(",", suites));
+            getCommandline().createArgument().setValue("-s");
+            getCommandline().createArgument().setValue(String.join(",", suites));
         } else if (!tests.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-t");
-            arg.setValue(String.join(",", tests));
+            getCommandline().createArgument().setValue("-n");
+            getCommandline().createArgument().setValue(String.join(",", tests));
         }
 
         getCommandline().createArgument().setValue("-c");

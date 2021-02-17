@@ -67,16 +67,14 @@ public class RetrieveTask extends SfdxTask {
         if (retrieveTargetDir != null) {
             final File dir = !retrieveTargetDir.exists() || retrieveTargetDir.isDirectory() ? retrieveTargetDir : retrieveTargetDir.getParentFile();
 
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-r");
-            arg.setValue(dir.getAbsolutePath());
+            getCommandline().createArgument().setValue("-r");
+            getCommandline().createArgument().setValue(dir.getAbsolutePath());
         }
     }
 
     public void setSinglePackage(final boolean singlePackage) {
         if (singlePackage) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setValue("-s");
+            getCommandline().createArgument().setValue("-s");
         }
     }
 
@@ -84,25 +82,22 @@ public class RetrieveTask extends SfdxTask {
         if (sourceDir != null) {
             final File dir = !sourceDir.exists() || sourceDir.isDirectory() ? sourceDir : sourceDir.getParentFile();
 
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-d");
-            arg.setValue(dir.getAbsolutePath());
+            getCommandline().createArgument().setValue("-d");
+            getCommandline().createArgument().setValue(dir.getAbsolutePath());
         }
     }
 
     public void setTargetUserName(final String userName) {
         if (userName != null && !userName.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-u");
-            arg.setValue(userName);
+            getCommandline().createArgument().setValue("-u");
+            getCommandline().createArgument().setValue(userName);
         }
     }
 
     public void setUnpackaged(final File unpackaged) {
         if (unpackaged != null) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-k");
-            arg.setValue(unpackaged.getAbsolutePath());
+            getCommandline().createArgument().setValue("-k");
+            getCommandline().createArgument().setValue(unpackaged.getAbsolutePath());
         }
     }
 
@@ -116,9 +111,8 @@ public class RetrieveTask extends SfdxTask {
     @Override
     protected void createArguments() {
         if (!packages.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-p");
-            arg.setValue(String.join(",", packages));
+            getCommandline().createArgument().setValue("-p");
+            getCommandline().createArgument().setValue(String.join(",", packages));
         }
 
         super.createArguments();

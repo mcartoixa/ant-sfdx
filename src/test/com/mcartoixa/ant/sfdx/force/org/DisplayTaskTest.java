@@ -64,7 +64,7 @@ public class DisplayTaskTest {
     @Test
     public void executeShouldAddTargetusernameArgument() {
         buildRule.executeTarget("execute");
-        Assert.assertTrue("Full log should contain -u argument", buildRule.getFullLog().contains("'-utestuser'"));
+        Assert.assertTrue("Full log should contain -u argument", buildRule.getFullLog().contains("'-u'" + System.lineSeparator() + "'testuser'"));
     }
 
     @Test

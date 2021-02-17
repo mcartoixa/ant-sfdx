@@ -58,13 +58,13 @@ public class ListTaskTest {
     @Test
     public void executeShouldAddTargetDevHubUsernameArgument() {
         buildRule.executeTarget("execute");
-        Assert.assertTrue("Full log should contain -v argument", buildRule.getFullLog().contains("'-vtestdevhub'"));
+        Assert.assertTrue("Full log should contain -v argument", buildRule.getFullLog().contains("'-v'" + System.lineSeparator() + "'testdevhub'"));
     }
 
     @Test
     public void executeShouldAddTargetUsernameArgument() {
         buildRule.executeTarget("execute");
-        Assert.assertTrue("Full log should contain -u argument", buildRule.getFullLog().contains("'-utestuser'"));
+        Assert.assertTrue("Full log should contain -u argument", buildRule.getFullLog().contains("'-u'" + System.lineSeparator() + "'testuser'"));
     }
 
     @Test

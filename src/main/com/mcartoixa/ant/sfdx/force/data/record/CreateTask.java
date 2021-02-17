@@ -93,9 +93,8 @@ public class CreateTask extends SfdxTask {
 
     public void setTargetUserName(final String userName) {
         if (userName != null && !userName.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-u");
-            arg.setValue(userName);
+            getCommandline().createArgument().setValue("-u");
+            getCommandline().createArgument().setValue(userName);
         }
     }
 
@@ -119,8 +118,7 @@ public class CreateTask extends SfdxTask {
                 record.append(f.getValue());
                 record.append("'");
             });
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setLine("-v \"" + record + "\"");
+            getCommandline().createArgument().setLine("-v \"" + record + "\"");
         }
 
         super.createArguments();

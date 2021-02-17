@@ -26,7 +26,6 @@ import java.util.List;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Project;
-import org.apache.tools.ant.types.Commandline;
 import org.apache.tools.ant.types.FileList;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.Resource;
@@ -147,17 +146,15 @@ public class ImportTask extends SfdxTask {
 
     public void setPlan(final File plan) {
         if (plan != null) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-p");
-            arg.setValue(plan.getPath());
+            getCommandline().createArgument().setValue("-p");
+            getCommandline().createArgument().setValue(plan.getPath());
         }
     }
 
     public void setTargetUserName(final String userName) {
         if (userName != null && !userName.isEmpty()) {
-            final Commandline.Argument arg = getCommandline().createArgument();
-            arg.setPrefix("-u");
-            arg.setValue(userName);
+            getCommandline().createArgument().setValue("-u");
+            getCommandline().createArgument().setValue(userName);
         }
     }
 
@@ -201,9 +198,8 @@ public class ImportTask extends SfdxTask {
             }
         }
         if (sobjecttreefiles.length() > 0) {
-            final Commandline.Argument arg = this.getCommandline().createArgument();
-            arg.setPrefix("-f");
-            arg.setValue(sobjecttreefiles.toString());
+            getCommandline().createArgument().setValue("-f");
+            getCommandline().createArgument().setValue(sobjecttreefiles.toString());
         }
 
         super.createArguments();
