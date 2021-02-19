@@ -20,6 +20,7 @@ import com.mcartoixa.ant.sfdx.SfdxTask;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Property;
 import org.apache.tools.ant.types.Commandline;
@@ -119,6 +120,12 @@ public class CreateTask extends SfdxTask {
             getCommandline().createArgument().setValue("-v");
             getCommandline().createArgument().setValue(devHubUserName);
         }
+    }
+
+    public void setType(final OrganizationType type) {
+        final Commandline.Argument arg = getCommandline().createArgument();
+        arg.setPrefix("-t");
+        arg.setValue(type.name().toLowerCase(Locale.ROOT));
     }
 
     public void setWait(final int timeout) {
