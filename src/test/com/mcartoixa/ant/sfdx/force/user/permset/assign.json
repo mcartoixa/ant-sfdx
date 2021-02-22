@@ -1,0 +1,14 @@
+{
+  "result": {
+    "failures": [
+
+    ],
+    "successes": [
+      {
+        "name": "testuser",
+        "value": "testpermset"
+      }
+    ]
+  },
+  "status": 0
+}

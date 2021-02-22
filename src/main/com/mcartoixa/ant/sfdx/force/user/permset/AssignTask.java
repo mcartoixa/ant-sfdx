@@ -40,16 +40,34 @@ public class AssignTask extends SfdxTask {
 
             if (json != null) {
                 final JSONObject result = json.getJSONObject("result");
-                if (result != null && result.has("failures")) {
-                    final JSONArray failures = result.getJSONArray("failures");
-                    if (failures != null) {
-                        for (int i = 0; i < failures.length(); i++) {
-                            final JSONObject f = failures.getJSONObject(i);
-                            final String message = f.optString("message");
-                            if (message != null && !message.isEmpty()) {
-                                this.log(message, Project.MSG_ERR);
-                                if (AssignTask.this.getFailOnError() && !AssignTask.this.hasErrorMessage()) {
-                                    AssignTask.this.setErrorMessage("Permissions could not be assigned.");
+                if (result != null) {
+                    if (result.has("successes")) {
+                        final JSONArray successes = result.getJSONArray("successes");
+                        if (successes != null) {
+                            for (int i = 0; i < successes.length(); i++) {
+                                final JSONObject s = successes.getJSONObject(i);
+                                this.log(
+                                        String.format(
+                                                "Permission set %s assigned to %s",
+                                                s.optString("value"),
+                                                s.optString("name")
+                                        ),
+                                        Project.MSG_INFO
+                                );
+                            }
+                        }
+                    }
+                    if (result.has("failures")) {
+                        final JSONArray failures = result.getJSONArray("failures");
+                        if (failures != null) {
+                            for (int i = 0; i < failures.length(); i++) {
+                                final JSONObject f = failures.getJSONObject(i);
+                                final String message = f.optString("message");
+                                if (message != null && !message.isEmpty()) {
+                                    this.log(message, Project.MSG_ERR);
+                                    if (AssignTask.this.getFailOnError() && !AssignTask.this.hasErrorMessage()) {
+                                        AssignTask.this.setErrorMessage("Permissions could not be assigned.");
+                                    }
                                 }
                             }
                         }
