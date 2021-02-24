@@ -63,6 +63,13 @@ public abstract class SfdxTask extends Task {
             }
         }
 
+        @Override
+        public void setErrorMessage(final String message) {
+            if (SfdxTask.this.getFailOnError() && !SfdxTask.this.hasErrorMessage()) {
+                SfdxTask.this.setErrorMessage(message.trim());
+            }
+        }
+
         @SuppressWarnings({"PMD.DataflowAnomalyAnalysis", "PMD.NPathComplexity"})
         protected void doParse(final JSONObject json) {
             final int status = json.optInt("status");

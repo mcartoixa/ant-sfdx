@@ -22,5 +22,6 @@ package com.mcartoixa.ant.sfdx;
 public interface ISfdxOutputHandler {
 
     void log(String message, int level);
-    
+
+    void setErrorMessage(String message);
 }

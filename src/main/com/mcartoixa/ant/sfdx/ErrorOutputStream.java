@@ -15,6 +15,7 @@
  */
 package com.mcartoixa.ant.sfdx;
 
+import java.io.IOException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.util.LineOrientedOutputStream;
 
@@ -32,16 +33,25 @@ public class ErrorOutputStream extends LineOrientedOutputStream {
     public ErrorOutputStream(final ISfdxOutputHandler handler) {
         super();
         this.handler = handler;
+        this.errorMessage = "";
     }
 
     @Override
     protected void processLine(final String string) {
         if (string != null && !string.isEmpty()) {
-            // Proper messages will be generated from the JSON response (if there is one!)
             handler.log(string, Project.MSG_VERBOSE);
+            this.errorMessage = this.errorMessage.concat(string + "\n");
         }
     }
 
-    private final transient ISfdxOutputHandler handler;
+    @Override
+    public void close() throws IOException {
+        if (!this.errorMessage.isEmpty()) {
+            handler.setErrorMessage(this.errorMessage);
+        }
+        super.close();
+    }
 
+    private final transient ISfdxOutputHandler handler;
+    private transient String errorMessage;
 }
