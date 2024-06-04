@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source build/.bashrc
+source build/setenv.sh
 
 
 

@@ -23,6 +23,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Project;
@@ -41,6 +42,7 @@ import org.json.JSONObject;
  *
  * @author Mathieu Cartoixa
  */
+@SuppressWarnings("PMD.LongVariable")
 public class ImportTask extends SfdxTask {
 
     /* default */ class JsonParser extends SfdxTask.JsonParser {
@@ -49,7 +51,7 @@ public class ImportTask extends SfdxTask {
             super();
         }
 
-        @SuppressWarnings("PMD.EmptyCatchBlock")
+        @SuppressWarnings({"PMD.EmptyCatchBlock", "PMD.LongVariable"})
         @Override
         protected void doParse(final JSONObject json) {
             final JSONArray result = json.optJSONArray("result");
@@ -58,9 +60,17 @@ public class ImportTask extends SfdxTask {
                     final Object value = result.get(i);
                     if (value instanceof JSONObject) {
                         final JSONObject object = (JSONObject) value;
+                        final String refId = object.getString("refId");
+                        final String id = object.getString("id");
+                        final String referencesProperty = ImportTask.this.getReferencesProperty();
+                        if (referencesProperty != null && !referencesProperty.isEmpty()) {
+                            ImportTask.this.getProject().setNewProperty(referencesProperty + "." + refId.toLowerCase(Locale.ROOT), id);
+                        }
+
                         final String message = String.format(
-                                "%s imported.",
-                                object.getString("refId")
+                                "%s imported (%s).",
+                                refId,
+                                id
                         );
                         this.log(message, Project.MSG_INFO);
                     }
@@ -151,6 +161,10 @@ public class ImportTask extends SfdxTask {
         }
     }
 
+    public void setReferencesProperty(final String referencesProperty) {
+        this.referencesProperty = referencesProperty;
+    }
+
     public void setTargetUserName(final String userName) {
         if (userName != null && !userName.isEmpty()) {
             getCommandline().createArgument().setValue("-u");
@@ -210,6 +224,12 @@ public class ImportTask extends SfdxTask {
         return new ImportTask.JsonParser();
     }
 
+    @SuppressWarnings("PMD.DefaultPackage")
+    /* default */ String getReferencesProperty() {
+        return this.referencesProperty;
+    }
+
     private transient final List<FileSet> fileSets = new ArrayList<>();
+    private transient String referencesProperty;
     private transient Union resources = null;
 }

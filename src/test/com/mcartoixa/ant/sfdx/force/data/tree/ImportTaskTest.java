@@ -50,6 +50,12 @@ public class ImportTaskTest {
     }
 
     @Test
+    public void executeShouldSetReferencesProperties() {
+        buildRule.executeTarget("execute");
+        Assert.assertEquals("References properties should be set", "a063N000004OhI8QAK", buildRule.getProject().getProperty("execute.references.object__cref2"));
+    }
+
+    @Test
     public void executeShouldAddJsonArgument() {
         buildRule.executeTarget("execute");
         Assert.assertTrue("Full log should contain --json argument", buildRule.getFullLog().contains("'--json'"));

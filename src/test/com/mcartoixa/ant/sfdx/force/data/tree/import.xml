@@ -13,7 +13,7 @@
 
 
   <target name="execute" depends="init">
-    <sfdx:force-data-tree-import targetusername="testuser" statusproperty="execute.status" resultproperty="execute.result"  executable="${sfdx-path}">
+    <sfdx:force-data-tree-import targetusername="testuser" statusproperty="execute.status" resultproperty="execute.result" referencesproperty="execute.references" executable="${sfdx-path}">
       <filelist refid="datafiles" />
     </sfdx:force-data-tree-import>
   </target>

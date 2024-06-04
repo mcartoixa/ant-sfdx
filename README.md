@@ -1,8 +1,6 @@
 # ant-sfdx
-[![Build status](https://travis-ci.org/mcartoixa/ant-sfdx.svg?branch=master)](https://travis-ci.org/mcartoixa/ant-sfdx)
-[![Build Status](https://dev.azure.com/mcartoixa/ant-sfdx/_apis/build/status/ant-sfdx-CI)](https://dev.azure.com/mcartoixa/ant-sfdx/_build/latest?definitionId=1)
+[![Build status](https://github.com/mcartoixa/ant-sfdx/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/mcartoixa/ant-sfdx/actions/workflows/build.yml)
 [![Code coverage](https://codecov.io/gh/mcartoixa/ant-sfdx/branch/master/graph/badge.svg)](https://codecov.io/gh/mcartoixa/ant-sfdx)
-[![BCH compliance](https://bettercodehub.com/edge/badge/mcartoixa/ant-sfdx?branch=master)](https://bettercodehub.com/)
 
 Ant tasks that encapsulate the Salesforce DX CLI
 
@@ -35,8 +33,8 @@ But if you can handle it, this project allows you to:
   * with native JSON support in Ant [scripts](http://ant.apache.org/manual/Tasks/script.html) if necessary.
 * easily integrate third-party Java based tools like [PMD](https://pmd.github.io/) or [ApexDoc](https://github.com/SalesforceFoundation/ApexDoc).
 * read your build more easily (if you can accept [the angle bracket tax](https://blog.codinghorror.com/xml-the-angle-bracket-tax/)). What's more readable:
-  * `sfdx force:org:create -v HubOrg -s -f config/project-scratch-def.json -a ciorg --wait 2` ?
-  * or `<sfdx:force-org-create targetdevhubusername="HubOrg" defaultusername="true" definitionfile="config/project-scratch-def.json" alias="ciorg" wait="2" />` ?
+  * `sfdx force:org:create -v HubOrg -s -f config/project-scratch-def.json -a ciorg --wait 2`?
+  * or `<sfdx:force-org-create targetdevhubusername="HubOrg" defaultusername="true" definitionfile="config/project-scratch-def.json" alias="ciorg" wait="2" />`?
 
 ## Usage
 
