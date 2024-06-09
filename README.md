@@ -1,6 +1,7 @@
-# ant-sfdx
+# ant-sfdx (archived)
 [![Build status](https://github.com/mcartoixa/ant-sfdx/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/mcartoixa/ant-sfdx/actions/workflows/build.yml)
-[![Code coverage](https://codecov.io/gh/mcartoixa/ant-sfdx/branch/master/graph/badge.svg)](https://codecov.io/gh/mcartoixa/ant-sfdx)
+
+:warning: Development has been transfered to [the new ant-sf](https://github.com/mcartoixa/ant-sf) project.
 
 Ant tasks that encapsulate the Salesforce DX CLI
 
